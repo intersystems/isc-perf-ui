@@ -1,0 +1,21 @@
+
+c:\intersystems\iris\mgr\user>cd /D C:\Users\tleavitt\Perforce\tleavitt_USE7420tleavitt_7785\projects\AppServices\OpenExchange\zpm\isc.perf.ui\latest\ng\monlbl-viewer\ 
+
+C:\Users\tleavitt\Perforce\tleavitt_USE7420tleavitt_7785\projects\AppServices\OpenExchange\zpm\isc.perf.ui\latest\ng\monlbl-viewer>call npm ci 
+
+added 930 packages, and audited 931 packages in 1m
+
+104 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+main.b8745506825fed68.js      | main          | 438.81 kB |               106.00 kB
+styles.5d831e64b93b4b27.css   | styles        | 402.25 kB |                46.94 kB
+polyfills.4180c405ce01c3c1.js | polyfills     |  33.03 kB |                10.63 kB
+runtime.396bca918e0d1bb8.js   | runtime       |   1.05 kB |               598 bytes
+
+| Initial Total | 875.13 kB |               164.16 kB
+
+Build at: 2022-05-16T15:49:40.304Z - Hash: f811d797cf62533c - Time: 49424ms

@@ -1,0 +1,16 @@
+npm WARN deprecated source-map-resolve@0.6.0: See https://github.com/lydell/source-map-resolve#deprecated
+- Generating browser application bundles (phase: setup)...
+√ Browser application bundle generation complete.
+√ Browser application bundle generation complete.
+- Copying assets...
+√ Copying assets complete.
+- Generating index html...
+- Generating index html...
+2 rules skipped due to selector errors:
+  legend+* -> Cannot read properties of undefined (reading 'type')
+  .table>>>* -> Did not expect successive traversals.
+√ Index html generation complete.
+
+Warning: bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 375.13 kB with a total of 875.13 kB.
+
+

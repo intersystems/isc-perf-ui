@@ -1,0 +1,17 @@
+<ng-container *ngIf="code | async as code">
+  <div *ngIf="code.results" class="code" [style]="computeGridStyle()">
+    <ng-container *ngFor="let metric of metrics; let i = index">
+      <span class="grid-item header" [class.bold]="this.sort === metric" (click)="toggleSort(metric)">{{metric}}</span>
+    </ng-container>
+    <span class="grid-item header" style="padding-left: 2em;" (click)="toggleSort('')">Routine Code</span>
+    <ng-container *ngFor="let line of code.results; let lineNumber = index">
+      <ng-container *ngFor="let metric of metrics; let i = index">
+        <span class="grid-item">{{line.metrics[metric]}}</span>
+      </ng-container>
+      <span [id]="'line'+line.line" [innerHTML]='line.coloredLine' class="grid-item code-line" [attr.data-linenumber]="line.line" (click)="viewInContext(line.line)"></span>
+    </ng-container>
+  </div>
+  <div *ngIf="!code.results">
+    <em>No metrics recorded for this routine.</em>
+  </div>
+</ng-container>

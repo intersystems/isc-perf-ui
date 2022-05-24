@@ -1,0 +1,26 @@
+<ng-container *ngIf="restService.getStatus() | async as status">
+  <div class="row" style="font-size: x-large;">
+    <div class="col-lg-10">
+      Current status: <strong>{{status.status}}</strong><span *ngIf="status.status !== 'stopped'">, collecting <em>{{status.metrics.length}}</em> metrics on <em>{{status.routines.length}}</em> routines.</span>
+    </div>
+    <a *ngIf="status.status === 'stopped'" (click)="start()" class="col-lg-1 bi bi-play-circle"></a>
+    <a *ngIf="status.status === 'paused'" (click)="restService.resume()" class="col-lg-1 bi bi-play-circle"></a>
+    <a *ngIf="status.status === 'running'" (click)="restService.pause()" class="col-lg-1 bi bi-pause-circle"></a>
+    <a *ngIf="status.status !== 'stopped'" (click)="restService.stop()" class="col-lg-1 bi bi-stop-circle"></a>
+  </div>
+  <div class="row" style="font-size: large;" *ngIf="status.status !== 'stopped'">
+    <div class="form-group col-lg-10">
+      <label for="routines">View Stats for Routine:</label>
+      <select class="form-control" name="routines" (change)="routineChange($event)">
+        <option value=""></option>
+        <option *ngFor="let routine of status.routines | removeClassDescriptors" [value]="routine">
+          {{routine}}
+        </option>
+      </select>
+    </div>
+    <div class="col-lg-1">
+      <a (click)="codeService.refreshResults()" class="refresh bi bi-arrow-clockwise" style="vertical-align: baseline;"></a>
+    </div>
+  </div>
+  <app-code *ngIf="status.status !== 'stopped'"></app-code>
+</ng-container>

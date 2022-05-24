@@ -1,0 +1,297 @@
+SPAN.NULL_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.NULL_01 {}
+SPAN.COS_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.COS_01 {}
+SPAN.COS_02 {}
+SPAN.COS_03 {color: #ff0000; }
+SPAN.COS_04 {color: #000000; }
+SPAN.COS_05 {color: #000080; }
+SPAN.COS_06 {color: #008000; }
+SPAN.COS_07 {color: #008000; }
+SPAN.COS_08 {color: #000000; }
+SPAN.COS_09 {color: #800080; }
+SPAN.COS_0A {color: #0000ff; }
+SPAN.COS_0B {color: #0000ff; }
+SPAN.COS_0C {color: #0000ff; }
+SPAN.COS_0D {color: #000000; }
+SPAN.COS_0E {color: #000000; }
+SPAN.COS_0F {color: #0000ff; }
+SPAN.COS_10 {color: #000000; }
+SPAN.COS_11 {color: #0000ff; }
+SPAN.COS_12 {color: #000000; }
+SPAN.COS_13 {color: #000000; }
+SPAN.COS_14 {color: #800000; }
+SPAN.COS_15 {color: #000000; }
+SPAN.COS_16 {color: #000000; }
+SPAN.COS_17 {color: #000000; }
+SPAN.COS_18 {color: #000000; }
+SPAN.COS_19 {color: #000000; }
+SPAN.COS_1A {color: #000000; }
+SPAN.COS_1B {color: #0000ff; }
+SPAN.COS_1C {color: #0000ff; }
+SPAN.COS_1D {color: #800080; }
+SPAN.COS_1E {color: #0000ff; }
+SPAN.COS_1F {color: #008080; }
+SPAN.COS_20 {color: #0000ff; }
+SPAN.COS_21 {color: #000000; }
+SPAN.COS_22 {}
+SPAN.COS_23 {color: #0000ff; }
+SPAN.COS_24 {color: #0000ff; }
+SPAN.COS_25 {color: #000080; }
+SPAN.COS_26 {}
+SPAN.COS_27 {}
+SPAN.COS_28 {}
+SPAN.COS_29 {color: #808000; }
+SPAN.COS_2A {color: #800080; }
+SPAN.COS_2B {color: #800080; }
+SPAN.COS_2C {color: #800080; }
+SPAN.COS_2D {color: #000080; }
+SPAN.COS_2E {color: #808000; }
+SPAN.COS_2F {color: #800080; }
+SPAN.COS_30 {color: #ff00ff; }
+SPAN.COS_31 {color: #000000; }
+SPAN.COS_32 {color: #808000; }
+SPAN.COS_33 {color: #0000ff; }
+SPAN.COS_34 {color: #808000; }
+SPAN.COS_35 {color: #808000; }
+SPAN.COS_36 {color: #808000; }
+SPAN.COS_37 {color: #0000ff; }
+SPAN.COS_38 {color: #ff00ff; }
+SPAN.COS_39 {color: #808080; }
+SPAN.COS_3A {color: #0000ff; }
+SPAN.SQL_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.SQL_01 {}
+SPAN.SQL_02 {}
+SPAN.SQL_03 {color: #000000; }
+SPAN.SQL_04 {color: #008080; }
+SPAN.SQL_05 {color: #000000; }
+SPAN.SQL_06 {color: #000000; }
+SPAN.SQL_07 {color: #000000; }
+SPAN.SQL_08 {color: #008000; }
+SPAN.SQL_09 {color: #800000; }
+SPAN.SQL_0A {color: #800000; }
+SPAN.SQL_0B {color: #800000; }
+SPAN.SQL_0C {color: #000000; }
+SPAN.SQL_0D {color: #808000; }
+SPAN.SQL_0E {color: #808000; }
+SPAN.SQL_0F {color: #808000; }
+SPAN.SQL_10 {color: #000080; }
+SPAN.SQL_11 {color: #0000ff; }
+SPAN.SQL_12 {color: #000080; }
+SPAN.SQL_13 {color: #000080; }
+SPAN.SQL_14 {color: #800000; }
+SPAN.SQL_15 {color: #800000; }
+SPAN.CLS_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.CLS_01 {}
+SPAN.CLS_02 {}
+SPAN.CLS_03 {color: #800080; }
+SPAN.CLS_04 {color: #000080; }
+SPAN.CLS_05 {color: #000080; }
+SPAN.CLS_06 {color: #008000; }
+SPAN.CLS_07 {color: #000080; }
+SPAN.CLS_08 {color: #000000; }
+SPAN.CLS_09 {color: #000080; }
+SPAN.CLS_0A {color: #800080; }
+SPAN.CLS_0B {color: #000000; }
+SPAN.CLS_0C {color: #008000; }
+SPAN.CLS_0D {color: #ff0000; }
+SPAN.CLS_0E {color: #000080; }
+SPAN.CLS_0F {color: #008000; }
+SPAN.CLS_10 {color: #000000; }
+SPAN.CLS_11 {color: #000080; }
+SPAN.CLS_12 {color: #ff0000; }
+SPAN.CLS_13 {color: #008000; }
+SPAN.CLS_14 {color: #008000; }
+SPAN.CLS_15 {color: #000080; }
+SPAN.CLS_16 {color: #000000; }
+SPAN.CLS_17 {color: #000080; }
+SPAN.CLS_18 {color: #ff00ff; }
+SPAN.CLS_19 {color: #000000; }
+SPAN.CLS_1A {color: #000000; }
+SPAN.BAS_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.BAS_01 {}
+SPAN.BAS_02 {}
+SPAN.BAS_03 {color: #000000; }
+SPAN.BAS_04 {color: #000000; }
+SPAN.BAS_05 {color: #000080; }
+SPAN.BAS_06 {color: #008000; }
+SPAN.BAS_07 {color: #000080; }
+SPAN.BAS_08 {color: #000000; }
+SPAN.BAS_09 {color: #0000ff; }
+SPAN.BAS_0A {color: #000000; }
+SPAN.BAS_0B {color: #000000; }
+SPAN.BAS_0C {color: #000000; }
+SPAN.BAS_0D {color: #0000ff; }
+SPAN.BAS_0E {color: #000000; }
+SPAN.BAS_0F {color: #008080; }
+SPAN.BAS_10 {color: #000000; }
+SPAN.BAS_11 {color: #0000ff; }
+SPAN.BAS_12 {color: #0000ff; }
+SPAN.BAS_13 {color: #000000; }
+SPAN.BAS_14 {color: #000000; }
+SPAN.BAS_15 {color: #000080; }
+SPAN.BAS_16 {color: #008000; }
+SPAN.BAS_17 {color: #0000ff; }
+SPAN.BAS_18 {color: #0000ff; }
+SPAN.BAS_19 {color: #ff0000; }
+SPAN.BAS_1A {color: #000000; }
+SPAN.BAS_1B {color: #000000; }
+SPAN.HTML_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.HTML_01 {}
+SPAN.HTML_02 {}
+SPAN.HTML_03 {color: #000000; }
+SPAN.HTML_04 {color: #008000; }
+SPAN.HTML_05 {color: #000000; }
+SPAN.HTML_06 {color: #000080; }
+SPAN.HTML_07 {color: #000080; }
+SPAN.HTML_08 {color: #000080; }
+SPAN.HTML_09 {color: #000000; }
+SPAN.HTML_0A {color: #800080; }
+SPAN.HTML_0B {color: #ff0000; }
+SPAN.HTML_0C {color: #000000; }
+SPAN.NULL_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.NULL_01 {}
+SPAN.NULL_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.NULL_01 {}
+SPAN.NULL_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.NULL_01 {}
+SPAN.XML_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.XML_01 {}
+SPAN.XML_02 {}
+SPAN.XML_03 {color: #000000; }
+SPAN.XML_04 {color: #000000; }
+SPAN.XML_05 {color: #000080; }
+SPAN.XML_06 {color: #800000; }
+SPAN.XML_07 {color: #800000; }
+SPAN.XML_08 {color: #800000; }
+SPAN.XML_09 {color: #008000; }
+SPAN.XML_0A {color: #800080; }
+SPAN.XML_0B {color: #800080; }
+SPAN.XML_0C {color: #800080; }
+SPAN.XML_0D {color: #000000; }
+SPAN.XML_0E {color: #800000; }
+SPAN.XML_0F {color: #808000; }
+SPAN.XML_10 {color: #000000; }
+SPAN.XML_11 {color: #008000; }
+SPAN.XML_12 {color: #c0c0c0; }
+SPAN.XML_13 {color: #800000; }
+SPAN.NULL_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.NULL_01 {}
+SPAN.JAVASCRIPT_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.JAVASCRIPT_01 {}
+SPAN.JAVASCRIPT_02 {}
+SPAN.JAVASCRIPT_03 {color: #800000; }
+SPAN.JAVASCRIPT_04 {color: #000000; }
+SPAN.JAVASCRIPT_05 {color: #800000; }
+SPAN.JAVASCRIPT_06 {color: #008000; }
+SPAN.JAVASCRIPT_07 {color: #000080; }
+SPAN.JAVASCRIPT_08 {color: #0000ff; }
+SPAN.JAVASCRIPT_09 {color: #008080; }
+SPAN.JAVASCRIPT_0A {color: #008080; }
+SPAN.JAVASCRIPT_0B {color: #000080; }
+SPAN.JAVASCRIPT_0C {color: #0000ff; }
+SPAN.JAVASCRIPT_0D {color: #008000; }
+SPAN.JAVASCRIPT_0E {color: #000000; }
+SPAN.JAVASCRIPT_0F {color: #000080; }
+SPAN.JAVASCRIPT_10 {color: #008080; }
+SPAN.JAVASCRIPT_11 {color: #008000; }
+SPAN.JAVASCRIPT_12 {color: #000080; }
+SPAN.JAVASCRIPT_13 {color: #800000; }
+SPAN.JAVASCRIPT_14 {color: #0000ff; }
+SPAN.JAVASCRIPT_15 {color: #800000; }
+SPAN.JAVASCRIPT_16 {color: #0000ff; }
+SPAN.MVBASIC_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.MVBASIC_01 {}
+SPAN.MVBASIC_02 {}
+SPAN.MVBASIC_03 {color: #000000; }
+SPAN.MVBASIC_04 {color: #000000; }
+SPAN.MVBASIC_05 {color: #000080; }
+SPAN.MVBASIC_06 {color: #008000; }
+SPAN.MVBASIC_07 {color: #000080; }
+SPAN.MVBASIC_08 {color: #000000; }
+SPAN.MVBASIC_09 {color: #0000ff; }
+SPAN.MVBASIC_0A {color: #000000; }
+SPAN.MVBASIC_0B {color: #000000; }
+SPAN.MVBASIC_0C {color: #000000; }
+SPAN.MVBASIC_0D {color: #0000ff; }
+SPAN.MVBASIC_0E {color: #000000; }
+SPAN.MVBASIC_0F {color: #008080; }
+SPAN.MVBASIC_10 {color: #000000; }
+SPAN.MVBASIC_11 {color: #0000ff; }
+SPAN.MVBASIC_12 {color: #0000ff; }
+SPAN.MVBASIC_13 {color: #000000; }
+SPAN.MVBASIC_14 {color: #000000; }
+SPAN.MVBASIC_15 {color: #000080; }
+SPAN.MVBASIC_16 {color: #008000; }
+SPAN.MVBASIC_17 {color: #0000ff; }
+SPAN.MVBASIC_18 {color: #0000ff; }
+SPAN.MVBASIC_19 {color: #ff0000; }
+SPAN.MVBASIC_1A {color: #000000; }
+SPAN.MVBASIC_1B {color: #000000; }
+SPAN.JAVA_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.JAVA_01 {}
+SPAN.JAVA_02 {}
+SPAN.JAVA_03 {color: #ffff00; }
+SPAN.JAVA_04 {color: #000000; }
+SPAN.JAVA_05 {color: #000080; }
+SPAN.JAVA_06 {color: #000080; }
+SPAN.JAVA_07 {color: #800000; }
+SPAN.JAVA_08 {color: #008000; }
+SPAN.JAVA_09 {color: #800000; }
+SPAN.JAVA_0A {color: #000080; }
+SPAN.JAVA_0B {color: #0000ff; }
+SPAN.JAVA_0C {color: #0000ff; }
+SPAN.JAVA_0D {color: #008080; }
+SPAN.JAVA_0E {color: #000000; }
+SPAN.JAVA_0F {color: #ff0000; }
+SPAN.JAVA_10 {color: #008080; }
+SPAN.JAVA_11 {color: #ff0000; }
+SPAN.JAVA_12 {color: #000080; }
+SPAN.JAVA_13 {color: #ff0000; }
+SPAN.JAVA_14 {color: #000080; }
+SPAN.JAVA_15 {color: #800000; }
+SPAN.TSQL_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.TSQL_01 {}
+SPAN.TSQL_02 {}
+SPAN.TSQL_03 {color: #000000; }
+SPAN.TSQL_04 {color: #008080; }
+SPAN.TSQL_05 {color: #000000; }
+SPAN.TSQL_06 {color: #000000; }
+SPAN.TSQL_07 {color: #000000; }
+SPAN.TSQL_08 {color: #000000; }
+SPAN.TSQL_09 {color: #000000; }
+SPAN.TSQL_0A {color: #008000; }
+SPAN.TSQL_0B {color: #000000; }
+SPAN.TSQL_0C {color: #808000; }
+SPAN.TSQL_0D {color: #808000; }
+SPAN.TSQL_0E {color: #808000; }
+SPAN.TSQL_0F {color: #000080; }
+SPAN.TSQL_10 {color: #0000ff; }
+SPAN.TSQL_11 {color: #000080; }
+SPAN.TSQL_12 {color: #000080; }
+SPAN.TSQL_13 {color: #000080; }
+SPAN.TSQL_14 {color: #008000; }
+SPAN.TSQL_15 {color: #ff0000; background: #808080; }
+SPAN.TSQL_16 {color: #808000; }
+SPAN.TSQL_17 {color: #ff0000; background: #808080; }
+SPAN.CSS_00 {color: #FF0000; bgcolor: #FFFFFF; text-decoration: underline; }
+SPAN.CSS_01 {}
+SPAN.CSS_02 {}
+SPAN.CSS_03 {color: #000080; }
+SPAN.CSS_04 {color: #000000; }
+SPAN.CSS_05 {color: #800000; }
+SPAN.CSS_06 {color: #00ff00; }
+SPAN.CSS_07 {color: #000000; }
+SPAN.CSS_08 {color: #800000; }
+SPAN.CSS_09 {color: #800000; }
+SPAN.CSS_0A {color: #800000; }
+SPAN.CSS_0B {color: #800000; }
+SPAN.CSS_0C {color: #800000; }
+SPAN.CSS_0D {color: #800080; }
+SPAN.CSS_0E {color: #00ff00; }
+SPAN.CSS_0F {color: #008000; }
+SPAN.CSS_10 {color: #800000; }
+SPAN.CSS_11 {color: #000000; }
+SPAN.CSS_12 {color: #000080; }
+SPAN.CSS_13 {color: #000080; }
+SPAN.CSS_14 {color: #800080; }

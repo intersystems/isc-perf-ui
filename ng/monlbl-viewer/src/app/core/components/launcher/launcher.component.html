@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Start Line-by-Line Monitor</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body">
+  <mdb-form-control>
+    <textarea mdbInput matInput [(ngModel)]="routines" class="form-control" id="textAreaExample" rows="4" value="AppS.REST.*"></textarea>
+    <label mdbLabel class="form-label" for="textAreaExample">Routines (wildcards accepted; one per line)</label>
+  </mdb-form-control>
+  <mdb-form-control>
+    <label mdbLabel class="form-label">Metrics</label>
+    <app-multi-dropdown [items]="this.selectedMetrics" [showSearch]="false"></app-multi-dropdown>
+  </mdb-form-control>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+    Cancel
+  </button>
+  <button type="button" class="btn btn-primary" (click)="startMonitor()">Start Monitor</button>
+</div>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+  <Document name="isc.perf.ui.ZPM">
+    <Module>
+      <Name>isc.perf.ui</Name>
+      <Version>1.0.0</Version>
+      <Description>Provides visual representation of %SYS.MONLBL results</Description>
+      <Keywords>performance monitor</Keywords>
+      <Packaging>module</Packaging>
+      <Dependencies>
+        <ModuleReference>
+          <Name>isc.rest</Name>
+          <Version>^1.0.0</Version>
+        </ModuleReference>
+        <ModuleReference>
+          <Name>isc.ipm.js</Name>
+          <Version>^1.0.0</Version>
+        </ModuleReference>
+      </Dependencies>
+      <Resources>
+        <Resource Name="pkg.isc.perf.ui.PKG" />
+        <Resource Name="/ng/monlbl-viewer" ProcessorClass="pkg.isc.ipm.js.angular.processor">
+          <Attribute Name="baseHref">/csp/${namespace}/monlbl-viewer</Attribute>
+        </Resource>
+        <Resource Name="/ng/monlbl-viewer/dist/monlbl-viewer" ProcessorClass="CSPApplication" Generated="true">
+          <Attribute Name="DispatchClass">pkg.isc.ipm.js.angular.pathLocationHandler</Attribute>
+          <Attribute Name="Directory">${cspdir}${namespace}/monlbl-viewer</Attribute>
+          <Attribute Name="Url">/csp/${namespace}/monlbl-viewer</Attribute>
+          <Attribute Name="ServeFiles">1</Attribute>
+          <Attribute Name="Recurse">1</Attribute>
+          <Attribute Name="ServeFilesTimeout">0</Attribute>
+        </Resource>
+        <Resource Name="/csp/monlbl-viewer/api" ProcessorClass="CSPApplication" Generated="true">
+          <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.Handler</Attribute>
+          <Attribute Name="Url">/csp/${namespace}/monlbl-viewer/api</Attribute>
+          <Attribute Name="Recurse">1</Attribute>
+          <Attribute Name="PasswordAuthEnabled">1</Attribute>
+          <Attribute Name="UnauthenticatedEnabled">0</Attribute>
+        </Resource>
+        <Resource Name="/api/openapi.json" ProcessorClass="pkg.isc.ipm.js.openApiProcessor">
+          <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.Handler</Attribute>
+          <Attribute Name="Url">/csp/${namespace}/monlbl-viewer/api</Attribute>
+          <Attribute Name="BaseUrl">/api</Attribute>
+          <Attribute Name="TargetFolder">/ng/monlbl-viewer/src/app/generated</Attribute>
+          <Attribute Name="Generator">typescript-angular</Attribute>
+          <Attribute Name="AdditionalProperties">paramNaming=original,queryParamObjectFormat=key,useSingleRequestParameter=true,ngVersion=13.3.4</Attribute>
+        </Resource>
+      </Resources>
+      <Invoke Class="pkg.isc.perf.ui.Installer" Method="SetCSSToUTF8" />
+      <LifecycleClass>pkg.isc.ipm.js.openApiModule</LifecycleClass>
+      <SourcesRoot>.</SourcesRoot>
+      <AfterInstallMessage>You can view the Line-by-Line Monitor at: ${webroot}csp/${namespace}/monlbl-viewer/</AfterInstallMessage>
+    </Module>
+  </Document>
+</Export>

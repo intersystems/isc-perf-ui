@@ -1,0 +1,11 @@
+.form-group.col-lg-10 {
+  display: flex;
+  align-items: center;
+}
+.form-group label {
+  white-space: nowrap;
+  padding-right: 1em;
+}
+.refresh {
+  font-size: x-large;
+}
