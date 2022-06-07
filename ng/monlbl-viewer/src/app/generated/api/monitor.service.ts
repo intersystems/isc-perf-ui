@@ -281,7 +281,6 @@ export class MonitorService {
         }
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/monitor/${encodeURIComponent(String(id))}`,
-            null,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
