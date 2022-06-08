@@ -1,3 +1,5 @@
+/// REST model providing access to the line-by-line monitor
+/// Note: access control is provided by the individual $zu functions called
 Class pkg.isc.perf.ui.rest.models.LineByLineMonitor Extends (%pkg.isc.rest.model.resource, %Monitor.System.LineByLine)
 {
 
@@ -104,6 +106,9 @@ ClassMethod GetResults(routine As %String = "") As pkg.isc.perf.ui.rest.models.L
 /// <var>pUserContext</var> is supplied by <method>GetUserContext</method>
 ClassMethod CheckPermission(pID As %String, pOperation As %String, pUserContext As %RegisteredObject) As %Boolean
 {
+	if '$System.Security.Check("%Development","USE") {
+		quit 0
+	}
 	quit (pOperation [ "ACTION:") && $isobject(pUserContext) && (pUserContext.Username '= "UnknownUser")
 }
 
@@ -117,4 +122,3 @@ ClassMethod ListToListBuild(pList As %Library.AbstractList) As %List
 }
 
 }
-

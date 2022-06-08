@@ -1,3 +1,4 @@
+/// REST model representing results from the line-by-line monitor
 Class pkg.isc.perf.ui.rest.models.LineByLineMonitorResults Extends (%RegisteredObject, %JSON.Adaptor)
 {
 
@@ -25,7 +26,7 @@ Method %OnNew(routine As %String = "") As %Status [ Private, ServerOnly = 1 ]
 Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boolean = 0) [ Private ]
 {
 	if (color) {
-		set codeStream = ##class(%GlobalCharacterStream).%New()
+		set codeStream = ##class(%Stream.GlobalCharacter).%New()
 	}
 
 	$$$ThrowOnError(##class(%Monitor.System.LineByLine).ResultExecute(.qHandle, routine))
@@ -50,7 +51,7 @@ Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boo
 	$$$ThrowOnError(##class(%Monitor.System.LineByLine).ResultClose(.qHandle))
 
 	if (color) {
-		set coloredStream = ##class(%GlobalCharacterStream).%New()
+		set coloredStream = ##class(%Stream.GlobalCharacter).%New()
 		set colorer = ##class(%Library.SyntaxColor).%New()
 		set language = "MAC"
 		set flags = "PFES"
@@ -79,4 +80,3 @@ Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boo
 }
 
 }
-

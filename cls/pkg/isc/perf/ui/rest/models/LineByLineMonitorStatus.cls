@@ -1,3 +1,4 @@
+/// REST model representing the current status of the line-by-line monitor
 Class pkg.isc.perf.ui.rest.models.LineByLineMonitorStatus Extends (%RegisteredObject, %JSON.Adaptor)
 {
 
@@ -25,4 +26,3 @@ Method %OnNew() As %Status [ Private, ServerOnly = 1 ]
 }
 
 }
-

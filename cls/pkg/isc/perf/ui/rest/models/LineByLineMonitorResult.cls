@@ -1,3 +1,4 @@
+/// REST model representing a line-level result from the line-by-line monitor
 Class pkg.isc.perf.ui.rest.models.LineByLineMonitorResult Extends (%RegisteredObject, %JSON.Adaptor)
 {
 
@@ -12,4 +13,3 @@ Property code As %String;
 Property metrics As array Of %Numeric;
 
 }
-

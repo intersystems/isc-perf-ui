@@ -1,3 +1,4 @@
+/// Utility class to generate a CSS file used to color ObjectScript and other languages
 Class pkg.isc.perf.ui.CodeCSSGenerator
 {
 
@@ -25,4 +26,3 @@ ClassMethod Generate(file As %String)
 }
 
 }
-

@@ -47,6 +47,10 @@
         </Resource>
       </Resources>
       <Invoke Class="pkg.isc.perf.ui.Installer" Method="SetCSSToUTF8" />
+      <Invoke Class="pkg.isc.perf.ui.Installer" Method="AddCodeDBReadForStaticFiles">
+        <Arg>/csp/${namespace}/monlbl-viewer</Arg>
+      </Invoke>
+      <Invoke Class="pkg.isc.perf.ui.Installer" Method="RemoveSecurityChanges" Phase="Unconfigure" />
       <LifecycleClass>pkg.isc.ipm.js.openApiModule</LifecycleClass>
       <SourcesRoot>.</SourcesRoot>
       <AfterInstallMessage>You can view the Line-by-Line Monitor at: ${webroot}csp/${namespace}/monlbl-viewer/</AfterInstallMessage>

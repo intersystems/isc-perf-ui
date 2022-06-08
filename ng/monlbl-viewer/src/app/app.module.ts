@@ -28,7 +28,7 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApiModule } from './generated';
+import { ApiModule, BASE_PATH } from './generated';
 import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.component';
 
 @NgModule({
@@ -67,7 +67,8 @@ import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.c
     BrowserAnimationsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: BASE_PATH, useValue: 'api'}
   ],
   bootstrap: [AppComponent]
 })
