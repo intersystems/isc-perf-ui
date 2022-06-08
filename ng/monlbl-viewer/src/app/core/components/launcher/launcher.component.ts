@@ -28,7 +28,6 @@ export class LauncherComponent {
   }
 
   startMonitor() {
-    // TODO: Actually grab form field values
     this.modalRef.close({
       "metrics": this.selectedMetrics
         .filter(metric => metric.checked)

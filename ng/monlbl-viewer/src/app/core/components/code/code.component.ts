@@ -64,7 +64,6 @@ export class CodeComponent {
     // Scroll to line in context on next click.
     setTimeout(() => {
       const prevLine = (lineNumber < 11) ? 1 : lineNumber - 10;
-      // TODO: Make this more Angular?
       const el = document.getElementById("line" + lineNumber);
       if (el) {
         document.getElementById("line" + prevLine)?.scrollIntoView({behavior});
