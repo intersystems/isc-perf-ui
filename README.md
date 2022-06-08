@@ -29,21 +29,27 @@ You can view the Line-by-Line Monitor at: http://your.ip.address:52773/csp/USER/
 ```
 
 Navigate to that URL in a browser and log in with IRIS credentials.
+
 ![Login](docs/images/login.png)
 
 The monitor will (presumably) be stopped initially. To start the monitor, click the "Play" button.
+
 ![Monitor Stopped](docs/images/stopped.png)
 
 Select the routines and metrics to monitor. The wildcard syntax is the same as in `^%SYS.MONLBL`. Once selections are made, click "Start Monitor."
+
 ![Start Line-by-Line Monitor](docs/images/startOptions.png)
 
 Once running, the status will update. Clicking the "pause" button will pause the monitor (and "resume" will become an option). Selecting a routine will show its data. Clicking the "stop" button will stop the monitor and discard counts. Clicking the "refresh" button will refresh the currently-displayed metrics.
+
 ![Monitor Running](docs/images/running.png)
 
 When a routine is selected, clicking on a column header will sort by that column descending.
+
 ![Routine Selected](docs/images/metric-display.png)
 
 Clicking on a line of code will highlight it and jump to it in line order. Click it again to remove the highlighting.
+
 ![Line highlighting in context](docs/images/highlight-in-context.png)
 
 ## Support
