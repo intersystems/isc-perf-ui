@@ -9,6 +9,4 @@ export * from './lineByLineMonitorMetricsOutput';
 export * from './lineByLineMonitorResultOutput';
 export * from './lineByLineMonitorResultsOutput';
 export * from './lineByLineMonitorStatusOutput';
-export * from './monitorCollection';
-export * from './monitorOutput';
 export * from './platformUserOutput';

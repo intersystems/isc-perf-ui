@@ -21,7 +21,5 @@ model/lineByLineMonitorResultOutput.ts
 model/lineByLineMonitorResultsOutput.ts
 model/lineByLineMonitorStatusOutput.ts
 model/models.ts
-model/monitorCollection.ts
-model/monitorOutput.ts
 model/platformUserOutput.ts
 variables.ts
