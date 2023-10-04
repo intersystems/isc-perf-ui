@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased - 1.0.x]
+## [Unreleased - 1.0.2]
 
 ### Added 
 -
@@ -14,10 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -
 
 ### Fixed
--
+- Fixed handling for authentication headers to suppress the browser's credential prompts
+- Fixed export behavior when developing with git-source-control and a modern IPM version
+- Updated documentation around node/npm requirement
 
 ### Security
--
+- Bumped various dependency versions
 
 ### Removed
 -

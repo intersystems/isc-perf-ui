@@ -3,7 +3,7 @@
   <Document name="isc.perf.ui.ZPM">
     <Module>
       <Name>isc.perf.ui</Name>
-      <Version>1.0.1</Version>
+      <Version>1.0.2</Version>
       <Description>Provides visual representation of %SYS.MONLBL results</Description>
       <Keywords>performance monitor</Keywords>
       <Packaging>module</Packaging>
@@ -18,7 +18,7 @@
         </ModuleReference>
       </Dependencies>
       <Resources>
-        <Resource Name="pkg.isc.perf.ui.PKG" />
+        <Resource Name="pkg.isc.perf.ui.PKG" Directory="cls" />
         <Resource Name="/ng/monlbl-viewer" ProcessorClass="pkg.isc.ipm.js.angular.processor">
           <Attribute Name="baseHref">/csp/${namespace}/monlbl-viewer</Attribute>
         </Resource>

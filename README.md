@@ -13,6 +13,8 @@ Note: a minimum platform version of InterSystems IRIS 2018.1 is required.
 
 ### Installation: ZPM
 
+As a prerequisite, you must have Node.js ^16.14.0 || ^18.10.0 installed and on the PATH. We hope to remove this requirement in the future by publishing the package with UI build artifacts included; IPM and isc.ipm.js support this, but the Open Exchange currently does not (by design).
+
 If you already have the [ObjectScript Package Manager](https://openexchange.intersystems.com/package/ObjectScript-Package-Manager-2), installation is as easy as:
 ```
 zpm "install isc.perf.ui"

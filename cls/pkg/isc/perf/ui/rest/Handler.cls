@@ -22,7 +22,7 @@ ClassMethod Login(skipheader As %Boolean = 1) As %Status [ ProcedureBlock = 0 ]
 {
 	set sc = ##super(.skipheader)
 	// Suppress browser credentials prompt
-	do %response.RemoveHeader("WWW-Authenticate")
+	kill %response.Headers("WWW-AUTHENTICATE")
 	quit sc
 }
 
