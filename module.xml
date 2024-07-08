@@ -18,7 +18,9 @@
         </ModuleReference>
       </Dependencies>
       <Resources>
-        <Resource Name="pkg.isc.perf.ui.PKG" Directory="cls" />
+        <Resource Name="pkg.isc.perf.ui.PKG">
+          <Attribute Name="Directory">cls</Attribute>
+        </Resource>
         <Resource Name="/ng/monlbl-viewer" ProcessorClass="pkg.isc.ipm.js.angular.processor">
           <Attribute Name="baseHref">/csp/${namespace}/monlbl-viewer</Attribute>
         </Resource>
