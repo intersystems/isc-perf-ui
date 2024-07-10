@@ -16,6 +16,10 @@
           <Name>isc.ipm.js</Name>
           <Version>^1.0.0</Version>
         </ModuleReference>
+        <ModuleReference>
+          <Name>testcoverage</Name>
+          <Version>^3.1.0</Version>
+        </ModuleReference>
       </Dependencies>
       <Resources>
         <Resource Name="pkg.isc.perf.ui.PKG">
