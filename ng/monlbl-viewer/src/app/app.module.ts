@@ -40,7 +40,7 @@ import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.c
     CodeComponent,
     RemoveClassDescriptorsPipe,
     LauncherComponent,
-    MultiDropdownComponent
+    MultiDropdownComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +64,7 @@ import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.c
     MdbTabsModule,
     MdbTooltipModule,
     MdbValidationModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

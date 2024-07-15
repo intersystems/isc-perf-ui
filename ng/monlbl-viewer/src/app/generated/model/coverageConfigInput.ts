@@ -11,10 +11,10 @@
  */
 
 
-export interface InlineResponse200BuildParametersUserContext { 
-    /**
-     * The ID of the UserContext() that triggered this build (or the empty string if no such context exists)
-     */
-    _id?: string;
+export interface CoverageConfigInput { 
+    UnitTestRoot?: string;
+    metrics?: Array<string>;
+    processes?: Array<string>;
+    routines?: Array<string>;
 }
 

@@ -19,9 +19,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { InlineResponse200 } from '../model/inlineResponse200';
+import { BuildDocumentationGet200Response } from '../model/buildDocumentationGet200Response';
 // @ts-ignore
-import { InlineResponse2001 } from '../model/inlineResponse2001';
+import { BuildDocumentationPost200Response } from '../model/buildDocumentationPost200Response';
 // @ts-ignore
 import { PlatformUserOutput } from '../model/platformUserOutput';
 
@@ -48,11 +48,16 @@ export class DefaultService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
         if (typeof this.configuration.basePath !== 'string') {
+            const firstBasePath = Array.isArray(basePath) ? basePath[0] : undefined;
+            if (firstBasePath != undefined) {
+                basePath = firstBasePath;
+            }
+
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
@@ -62,6 +67,7 @@ export class DefaultService {
     }
 
 
+    // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
             httpParams = this.addToHttpParamsRecursive(httpParams, value);
@@ -81,8 +87,7 @@ export class DefaultService {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
+                    httpParams = httpParams.append(key, (value as Date).toISOString().substring(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
@@ -138,8 +143,8 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/auth/logout`,
-            null,
+        let localVarPath = `/auth/logout`;
+        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -192,7 +197,8 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.get<PlatformUserOutput>(`${this.configuration.basePath}/auth/status`,
+        let localVarPath = `/auth/status`;
+        return this.httpClient.request<PlatformUserOutput>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -209,9 +215,9 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buildDocumentationGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InlineResponse200>;
-    public buildDocumentationGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InlineResponse200>>;
-    public buildDocumentationGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InlineResponse200>>;
+    public buildDocumentationGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<BuildDocumentationGet200Response>;
+    public buildDocumentationGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<BuildDocumentationGet200Response>>;
+    public buildDocumentationGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<BuildDocumentationGet200Response>>;
     public buildDocumentationGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -245,7 +251,8 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.get<InlineResponse200>(`${this.configuration.basePath}/build-documentation`,
+        let localVarPath = `/build-documentation`;
+        return this.httpClient.request<BuildDocumentationGet200Response>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -263,12 +270,12 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public buildDocumentationPost(requestParameters: BuildDocumentationPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InlineResponse2001>;
-    public buildDocumentationPost(requestParameters: BuildDocumentationPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InlineResponse2001>>;
-    public buildDocumentationPost(requestParameters: BuildDocumentationPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InlineResponse2001>>;
-    public buildDocumentationPost(requestParameters: BuildDocumentationPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        const debug = requestParameters.debug;
-        const internal = requestParameters.internal;
+    public buildDocumentationPost(requestParameters?: BuildDocumentationPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<BuildDocumentationPost200Response>;
+    public buildDocumentationPost(requestParameters?: BuildDocumentationPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<BuildDocumentationPost200Response>>;
+    public buildDocumentationPost(requestParameters?: BuildDocumentationPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<BuildDocumentationPost200Response>>;
+    public buildDocumentationPost(requestParameters?: BuildDocumentationPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        const debug = requestParameters?.debug;
+        const internal = requestParameters?.internal;
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (debug !== undefined && debug !== null) {
@@ -311,8 +318,8 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<InlineResponse2001>(`${this.configuration.basePath}/build-documentation`,
-            null,
+        let localVarPath = `/build-documentation`;
+        return this.httpClient.request<BuildDocumentationPost200Response>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

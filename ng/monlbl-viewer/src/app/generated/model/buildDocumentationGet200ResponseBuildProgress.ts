@@ -9,20 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { JSONErrorErrorsInner } from './jSONErrorErrorsInner';
 
 
-/**
- * An error message / multiple error messages
- */
-export interface JSONError { 
+export interface BuildDocumentationGet200ResponseBuildProgress { 
     /**
-     * An array containing information about each of the errors that occurred
+     * The current stage of the OpenAPI build process
      */
-    errors?: Array<JSONErrorErrorsInner>;
+    OpenAPI?: string;
     /**
-     * A description of the error(s) that occurred
+     * The current stage of the over-all build process (monotonically increasing for a given build)
      */
-    summary?: string;
+    buildStage?: number;
 }
 

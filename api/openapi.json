@@ -58,6 +58,22 @@
         "description":"A string-format representation of the error that occurred",
         "type":"string"
       },
+      "coverage-status_output":{
+        "properties":{
+          "_id":{
+            "type":"string"
+          },
+          "status":{
+            "example":"running",
+            "type":"string"
+          }
+        },
+        "readOnly":true,
+        "required":[
+          "_id"
+        ],
+        "type":"object"
+      },
       "line-by-line-monitor-config_input":{
         "properties":{
           "metrics":{
@@ -164,7 +180,7 @@
             "type":"array"
           },
           "status":{
-            "example":"running",
+            "example":"stopped",
             "type":"string"
           }
         },
@@ -180,7 +196,7 @@
       "platform-user_output":{
         "properties":{
           "Username":{
-            "example":"tleavitt",
+            "example":"SuperUser",
             "type":"string"
           },
           "_id":{
@@ -391,6 +407,59 @@
         }
       }
     },
+    "/coverage/$start":{
+      "get":{
+        "description":"Performs the start action.",
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-status_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
     "/monitor/$clear-counters":{
       "post":{
         "description":"Performs the clear-counters action.",
@@ -555,16 +624,12 @@
         "description":"Performs the results action.",
         "parameters":[
           {
-            "content":{
-              "application/json":{
-                "schema":{
-                  "$ref":"#/components/schemas/string_input"
-                }
-              }
-            },
             "in":"query",
             "name":"routine",
-            "required":false
+            "required":false,
+            "schema":{
+              "$ref":"#/components/schemas/string_input"
+            }
           }
         ],
         "responses":{

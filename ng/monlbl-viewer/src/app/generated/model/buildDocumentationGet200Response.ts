@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { InlineResponse200BuildProgress } from './inlineResponse200BuildProgress';
-import { InlineResponse200BuildParameters } from './inlineResponse200BuildParameters';
+import { BuildDocumentationGet200ResponseBuildParameters } from './buildDocumentationGet200ResponseBuildParameters';
+import { BuildDocumentationGet200ResponseBuildProgress } from './buildDocumentationGet200ResponseBuildProgress';
 
 
 /**
  * Information on the status of a build
  */
-export interface InlineResponse200 { 
+export interface BuildDocumentationGet200Response { 
     /**
      * When the build finished (Unix time), 0 = not-yet-determined
      */
@@ -25,8 +25,8 @@ export interface InlineResponse200 {
      * Whether or not the build is currently in-progress
      */
     buildInProgress?: boolean;
-    buildParameters?: InlineResponse200BuildParameters;
-    buildProgress?: InlineResponse200BuildProgress;
+    buildParameters?: BuildDocumentationGet200ResponseBuildParameters;
+    buildProgress?: BuildDocumentationGet200ResponseBuildProgress;
     /**
      * When the build was started (Unix time)
      */

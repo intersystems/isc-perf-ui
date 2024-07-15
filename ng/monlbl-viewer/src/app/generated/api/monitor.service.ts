@@ -53,11 +53,16 @@ export class MonitorService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
         if (typeof this.configuration.basePath !== 'string') {
+            const firstBasePath = Array.isArray(basePath) ? basePath[0] : undefined;
+            if (firstBasePath != undefined) {
+                basePath = firstBasePath;
+            }
+
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
@@ -67,6 +72,7 @@ export class MonitorService {
     }
 
 
+    // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         if (typeof value === "object" && value instanceof Date === false) {
             httpParams = this.addToHttpParamsRecursive(httpParams, value);
@@ -86,8 +92,7 @@ export class MonitorService {
                 (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
+                    httpParams = httpParams.append(key, (value as Date).toISOString().substring(0, 10));
                 } else {
                    throw Error("key may not be null if value is Date");
                 }
@@ -145,8 +150,8 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.post<LineByLineMonitorStatusOutput>(`${this.configuration.basePath}/monitor/$clear-counters`,
-            null,
+        let localVarPath = `/monitor/$clear-counters`;
+        return this.httpClient.request<LineByLineMonitorStatusOutput>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -200,7 +205,8 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.get<LineByLineMonitorMetricsOutput>(`${this.configuration.basePath}/monitor/$list-metrics`,
+        let localVarPath = `/monitor/$list-metrics`;
+        return this.httpClient.request<LineByLineMonitorMetricsOutput>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -254,8 +260,8 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.post<LineByLineMonitorStatusOutput>(`${this.configuration.basePath}/monitor/$pause`,
-            null,
+        let localVarPath = `/monitor/$pause`;
+        return this.httpClient.request<LineByLineMonitorStatusOutput>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -273,11 +279,11 @@ export class MonitorService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public monitorResultsGet(requestParameters: MonitorResultsGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<LineByLineMonitorResultsOutput>;
-    public monitorResultsGet(requestParameters: MonitorResultsGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<LineByLineMonitorResultsOutput>>;
-    public monitorResultsGet(requestParameters: MonitorResultsGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<LineByLineMonitorResultsOutput>>;
-    public monitorResultsGet(requestParameters: MonitorResultsGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
-        const routine = requestParameters.routine;
+    public monitorResultsGet(requestParameters?: MonitorResultsGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<LineByLineMonitorResultsOutput>;
+    public monitorResultsGet(requestParameters?: MonitorResultsGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<LineByLineMonitorResultsOutput>>;
+    public monitorResultsGet(requestParameters?: MonitorResultsGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<LineByLineMonitorResultsOutput>>;
+    public monitorResultsGet(requestParameters?: MonitorResultsGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+        const routine = requestParameters?.routine;
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (routine !== undefined && routine !== null) {
@@ -317,7 +323,8 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.get<LineByLineMonitorResultsOutput>(`${this.configuration.basePath}/monitor/$results`,
+        let localVarPath = `/monitor/$results`;
+        return this.httpClient.request<LineByLineMonitorResultsOutput>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -372,8 +379,8 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.post<LineByLineMonitorStatusOutput>(`${this.configuration.basePath}/monitor/$resume`,
-            null,
+        let localVarPath = `/monitor/$resume`;
+        return this.httpClient.request<LineByLineMonitorStatusOutput>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -391,11 +398,11 @@ export class MonitorService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public monitorStartPost(requestParameters: MonitorStartPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<LineByLineMonitorStatusOutput>;
-    public monitorStartPost(requestParameters: MonitorStartPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<LineByLineMonitorStatusOutput>>;
-    public monitorStartPost(requestParameters: MonitorStartPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<LineByLineMonitorStatusOutput>>;
-    public monitorStartPost(requestParameters: MonitorStartPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
-        const LineByLineMonitorConfigInput = requestParameters.LineByLineMonitorConfigInput;
+    public monitorStartPost(requestParameters?: MonitorStartPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<LineByLineMonitorStatusOutput>;
+    public monitorStartPost(requestParameters?: MonitorStartPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<LineByLineMonitorStatusOutput>>;
+    public monitorStartPost(requestParameters?: MonitorStartPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<LineByLineMonitorStatusOutput>>;
+    public monitorStartPost(requestParameters?: MonitorStartPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+        const LineByLineMonitorConfigInput = requestParameters?.LineByLineMonitorConfigInput;
         if (LineByLineMonitorConfigInput === null || LineByLineMonitorConfigInput === undefined) {
             throw new Error('Required parameter LineByLineMonitorConfigInput was null or undefined when calling monitorStartPost.');
         }
@@ -441,10 +448,11 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.post<LineByLineMonitorStatusOutput>(`${this.configuration.basePath}/monitor/$start`,
-            LineByLineMonitorConfigInput,
+        let localVarPath = `/monitor/$start`;
+        return this.httpClient.request<LineByLineMonitorStatusOutput>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                body: LineByLineMonitorConfigInput,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -496,7 +504,8 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.get<LineByLineMonitorStatusOutput>(`${this.configuration.basePath}/monitor/$status`,
+        let localVarPath = `/monitor/$status`;
+        return this.httpClient.request<LineByLineMonitorStatusOutput>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -550,8 +559,8 @@ export class MonitorService {
             }
         }
 
-        return this.httpClient.post<LineByLineMonitorStatusOutput>(`${this.configuration.basePath}/monitor/$stop`,
-            null,
+        let localVarPath = `/monitor/$stop`;
+        return this.httpClient.request<LineByLineMonitorStatusOutput>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

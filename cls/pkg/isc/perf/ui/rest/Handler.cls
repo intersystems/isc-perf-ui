@@ -9,7 +9,7 @@ ClassMethod AuthenticationStrategy() As %Dictionary.CacheClassname
 
 ClassMethod CheckResourcePermitted(resourceClass As %Dictionary.Classname) As %Boolean
 {
-	return $Piece(resourceClass,".",1,5) = "pkg.isc.perf.ui.rest"
+	return ($Piece(resourceClass,".",1,5) = "pkg.isc.perf.ui.rest") || ($Piece(resourceClass,".",1,6) = "cls.pkg.isc.perf.ui.rest")
 }
 
 ClassMethod GetUserResource(pFullUserInfo As %DynamicObject) As %pkg.isc.rest.authentication.platformUser

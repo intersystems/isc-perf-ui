@@ -11,14 +11,18 @@
  */
 
 
-export interface InlineResponse200BuildProgress { 
+export interface BuildDocumentationPost200Response { 
     /**
-     * The current stage of the OpenAPI build process
+     * Whether or not the requested build was started successfully
      */
-    OpenAPI?: string;
+    buildStarted?: boolean;
     /**
-     * The current stage of the over-all build process (monotonically increasing for a given build)
+     * HTTP Method to use in conjunction with statusUrl
      */
-    buildStage?: number;
+    statusMethod?: string;
+    /**
+     * URL to view the status of the started build
+     */
+    statusUrl?: string;
 }
 

@@ -9,18 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { InlineResponse200BuildParametersUserContext } from './inlineResponse200BuildParametersUserContext';
 
 
-export interface InlineResponse200BuildParameters { 
+export interface BuildDocumentationGet200ResponseBuildParametersUserContext { 
     /**
-     * The build\'s debug parameter
+     * The ID of the UserContext() that triggered this build (or the empty string if no such context exists)
      */
-    debug?: number;
-    /**
-     * The build\'s internal parameter
-     */
-    internal?: number;
-    userContext?: InlineResponse200BuildParametersUserContext;
+    _id?: string;
 }
 

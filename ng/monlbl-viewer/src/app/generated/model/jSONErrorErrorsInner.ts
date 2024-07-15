@@ -9,20 +9,21 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JSONError } from './jSONError';
 
 
-export interface InlineResponse2001 { 
+export interface JSONErrorErrorsInner { 
     /**
-     * Whether or not the requested build was started successfully
+     * The error code
      */
-    buildStarted?: boolean;
+    code?: number;
+    domain?: string;
     /**
-     * HTTP Method to use in conjunction with statusUrl
+     * A string-format representation of the error
      */
-    statusMethod?: string;
-    /**
-     * URL to view the status of the started build
-     */
-    statusUrl?: string;
+    error?: string;
+    errors?: Array<JSONError>;
+    id?: string;
+    params?: Array<string>;
 }
 
