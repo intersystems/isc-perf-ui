@@ -30,6 +30,9 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApiModule, BASE_PATH } from './generated';
 import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.component';
+import { TestCoverageLauncherComponent } from './core/components/test-coverage-launcher/test-coverage-launcher.component';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.c
     RemoveClassDescriptorsPipe,
     LauncherComponent,
     MultiDropdownComponent,
+    TestCoverageLauncherComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +69,8 @@ import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.c
     MdbTooltipModule,
     MdbValidationModule,
     BrowserAnimationsModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
