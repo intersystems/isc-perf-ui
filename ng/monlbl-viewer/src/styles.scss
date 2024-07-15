@@ -9,3 +9,6 @@ a { cursor: pointer }
 @import '../node_modules/@fortawesome/fontawesome-free/scss/brands.scss';
  
 @import '../node_modules/mdb-angular-ui-kit/assets/scss/mdb.scss';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
