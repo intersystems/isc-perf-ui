@@ -7,17 +7,26 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 {
 <actions> 
 <action name="start" target="class" call="StartTesting" method="GET"> 
+    <argument target="pConfig" name="config" required="true" source="body" />
 </action> 
 </actions>
 }
  
-ClassMethod StartTesting() As pkg.isc.perf.ui.rest.models.CoverageStatus
+ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
-    Set ^UnitTestRoot = "C:\InterSystems\TestCoverage\internal\testing\unit_tests\UnitTest\" 
+    Set ^UnitTestRoot = pConfig.UnitTestRoot
+    Kill tCoverageParams
+    Set tCoverageParams("Timing") = pConfig.Timing
+    Set tCoverageParams("CoverageClasses") = $LISTFROMSTRING(pConfig.CoverageClasses)
+    Set tCoverageParams("CoverageRoutines") = $LISTFROMSTRING(pConfig.CoverageRoutines)
+    Set tCoverageParams("ProcessIDs") = $LISTFROMSTRING(pConfig.Pidlist)
+    Set tCoverageParams("CoverageDetail") = pConfig.CoverageLevel
+
+    kill ^IRIS.TEMPCG
     do ##class(TestCoverage.Utils).Clear() 
     set buffer = ##class(%pkg.isc.json.util.buffer).%New()
     do buffer.BeginCaptureOutput()
-    $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,,)) 
+    $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,,.tCoverageParams)) 
     set stream = ##class(%Stream.TmpCharacter).%New()
     do buffer.EndCaptureOutput(.stream)
     set output = []

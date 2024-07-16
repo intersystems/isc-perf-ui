@@ -5,9 +5,11 @@
         <mat-label>UnitTestRoot</mat-label>
         <input matInput formControlName="UnitTestRoot">
       </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
-        <mat-label>Coverage level</mat-label>
-        <input matInput formControlName="CoverageLevel">
+      <td><mat-form-field>
+        <mat-label>Coverage Level</mat-label>
+        <mat-select formControlName="CoverageLevel">
+          <mat-option *ngFor="let covlevel of CoverageLevels" [value]="covlevel">{{covlevel}}</mat-option>
+        </mat-select>
       </mat-form-field></td>
     </tr></table>
   
@@ -27,9 +29,11 @@
         <mat-label>PidList</mat-label>
         <textarea matInput placeholder="" formControlName="PidList"> </textarea>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Timing</mat-label>
-        <input matInput formControlName="Timing">
+        <mat-select formControlName="Timing">
+          <mat-option *ngFor="let timing of timingsList" [value]="timing">{{timing}}</mat-option>
+        </mat-select>
       </mat-form-field>
     </p>
   

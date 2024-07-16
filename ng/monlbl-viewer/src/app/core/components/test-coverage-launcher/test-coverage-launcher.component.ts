@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-test-coverage-launcher',
@@ -18,8 +18,11 @@ export class TestCoverageLauncherComponent {
       CoverageClasses: '',
       CoverageRoutines: '',
       PidList: '',
-      Timing: 0
+      Timing: 0,
+      MetricsTracked: ''
     });
+    timingsList: Number[] = [0, 1];
+    CoverageLevels: Number[] = [0, 1, 2, 3];
     onSubmit() 
     {
       console.log("hello world?");
