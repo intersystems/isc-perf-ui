@@ -7,7 +7,9 @@ Property Pidlist As %String;
 
 Property Timing As %Integer; // determines the metrics
 
-Property CoverageClasses As %String;
+Property CoverageClasses As %String; // comma separated
+ 
+Property CoverageRoutines As %String; 
 
 Property CoverageLevel As %Integer; 
 

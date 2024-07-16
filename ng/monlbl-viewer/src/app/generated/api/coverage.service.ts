@@ -19,6 +19,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { CoverageConfigInput } from '../model/coverageConfigInput';
+// @ts-ignore
 import { CoverageStatusOutput } from '../model/coverageStatusOutput';
 // @ts-ignore
 import { JSONError } from '../model/jSONError';
@@ -27,6 +29,10 @@ import { JSONError } from '../model/jSONError';
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
+
+export interface CoverageStartPostRequestParams {
+    CoverageConfigInput: CoverageConfigInput;
+}
 
 
 @Injectable({
@@ -96,13 +102,18 @@ export class CoverageService {
 
     /**
      * Performs the start action.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public coverageStartGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageStatusOutput>;
-    public coverageStartGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageStatusOutput>>;
-    public coverageStartGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageStatusOutput>>;
-    public coverageStartGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+    public coverageStartPost(requestParameters?: CoverageStartPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageStatusOutput>;
+    public coverageStartPost(requestParameters?: CoverageStartPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageStatusOutput>>;
+    public coverageStartPost(requestParameters?: CoverageStartPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageStatusOutput>>;
+    public coverageStartPost(requestParameters?: CoverageStartPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+        const CoverageConfigInput = requestParameters?.CoverageConfigInput;
+        if (CoverageConfigInput === null || CoverageConfigInput === undefined) {
+            throw new Error('Required parameter CoverageConfigInput was null or undefined when calling coverageStartPost.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -125,6 +136,15 @@ export class CoverageService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -137,9 +157,10 @@ export class CoverageService {
         }
 
         let localVarPath = `/coverage/$start`;
-        return this.httpClient.request<CoverageStatusOutput>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CoverageStatusOutput>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                body: CoverageConfigInput,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

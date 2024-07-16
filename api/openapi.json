@@ -58,6 +58,30 @@
         "description":"A string-format representation of the error that occurred",
         "type":"string"
       },
+      "coverage-config_input":{
+        "properties":{
+          "CoverageClasses":{
+            "type":"string"
+          },
+          "CoverageLevel":{
+            "type":"number"
+          },
+          "CoverageRoutines":{
+            "type":"string"
+          },
+          "Pidlist":{
+            "type":"string"
+          },
+          "Timing":{
+            "type":"number"
+          },
+          "UnitTestRoot":{
+            "type":"string"
+          }
+        },
+        "type":"object",
+        "writeOnly":true
+      },
       "coverage-status_output":{
         "properties":{
           "_id":{
@@ -408,8 +432,18 @@
       }
     },
     "/coverage/$start":{
-      "get":{
+      "post":{
         "description":"Performs the start action.",
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/coverage-config_input"
+              }
+            }
+          },
+          "required":true
+        },
         "responses":{
           "200":{
             "content":{

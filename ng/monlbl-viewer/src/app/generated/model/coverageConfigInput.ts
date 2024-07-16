@@ -12,9 +12,11 @@
 
 
 export interface CoverageConfigInput { 
+    CoverageClasses?: string;
+    CoverageLevel?: number;
+    CoverageRoutines?: string;
+    Pidlist?: string;
+    Timing?: number;
     UnitTestRoot?: string;
-    metrics?: Array<string>;
-    processes?: Array<string>;
-    routines?: Array<string>;
 }
 

@@ -14,6 +14,7 @@ model/buildDocumentationGet200ResponseBuildParameters.ts
 model/buildDocumentationGet200ResponseBuildParametersUserContext.ts
 model/buildDocumentationGet200ResponseBuildProgress.ts
 model/buildDocumentationPost200Response.ts
+model/coverageConfigInput.ts
 model/coverageStatusOutput.ts
 model/jSONError.ts
 model/jSONErrorErrorsInner.ts
