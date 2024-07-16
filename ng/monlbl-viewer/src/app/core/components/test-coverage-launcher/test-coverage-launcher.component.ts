@@ -12,9 +12,18 @@ export class TestCoverageLauncherComponent {
   ) {
     
   }
-
-    onSubmit(data: any) 
+    dataForm = this.formBuilder.group({
+      UnitTestRoot: '',
+      CoverageLevel: 1,
+      CoverageClasses: '',
+      CoverageRoutines: '',
+      PidList: '',
+      Timing: 0
+    });
+    onSubmit() 
     {
-      console.log("hello world?")
+      console.log("hello world?");
+      console.log(this.dataForm.value);
+      this.dataForm.reset();
     }
 }

@@ -1,35 +1,35 @@
-<form class="example-form">
+<form class="example-form" [formGroup] = "dataForm" (ngSubmit) = "onSubmit()">
   
     <table class="example-full-width" cellspacing="0"><tr>
       <td><mat-form-field class="example-full-width">
         <mat-label>UnitTestRoot</mat-label>
-        <input matInput>
+        <input matInput formControlName="UnitTestRoot">
       </mat-form-field></td>
       <td><mat-form-field class="example-full-width">
         <mat-label>Coverage level</mat-label>
-        <input matInput>
+        <input matInput formControlName="CoverageLevel">
       </mat-form-field></td>
     </tr></table>
   
     <p>
       <mat-form-field class="example-full-width">
         <mat-label>Coverage Classes</mat-label>
-        <textarea matInput placeholder=""> </textarea>
+        <textarea matInput placeholder="" formControlName="CoverageClasses"> </textarea>
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-label>Coverage Routines</mat-label>
-        <textarea matInput placeholder=""></textarea>
+        <textarea matInput placeholder="" formControlName="CoverageRoutines"></textarea>
       </mat-form-field>
     </p>
 
     <p>
       <mat-form-field class="example-full-width">
         <mat-label>PidList</mat-label>
-        <textarea matInput placeholder=""> </textarea>
+        <textarea matInput placeholder="" formControlName="PidList"> </textarea>
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-label>Timing</mat-label>
-        <input matInput>
+        <input matInput formControlName="Timing">
       </mat-form-field>
     </p>
   
