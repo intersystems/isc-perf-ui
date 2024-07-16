@@ -31,8 +31,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApiModule, BASE_PATH } from './generated';
 import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.component';
 import { TestCoverageLauncherComponent } from './core/components/test-coverage-launcher/test-coverage-launcher.component';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MdbValidationModule,
     BrowserAnimationsModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatButtonModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
