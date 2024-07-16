@@ -21,6 +21,10 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { CoverageConfigInput } from '../model/coverageConfigInput';
 // @ts-ignore
+import { CoverageResultsOutput } from '../model/coverageResultsOutput';
+// @ts-ignore
+import { CoverageRoutinePathsOutput } from '../model/coverageRoutinePathsOutput';
+// @ts-ignore
 import { CoverageStatusOutput } from '../model/coverageStatusOutput';
 // @ts-ignore
 import { JSONError } from '../model/jSONError';
@@ -29,6 +33,11 @@ import { JSONError } from '../model/jSONError';
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
+
+export interface CoverageResultsGetRequestParams {
+    routine?: string;
+    testpath?: string;
+}
 
 export interface CoverageStartPostRequestParams {
     CoverageConfigInput: CoverageConfigInput;
@@ -98,6 +107,130 @@ export class CoverageService {
             throw Error("key may not be null if value is not object or array");
         }
         return httpParams;
+    }
+
+    /**
+     * Performs the results action.
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public coverageResultsGet(requestParameters?: CoverageResultsGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageResultsOutput>;
+    public coverageResultsGet(requestParameters?: CoverageResultsGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageResultsOutput>>;
+    public coverageResultsGet(requestParameters?: CoverageResultsGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageResultsOutput>>;
+    public coverageResultsGet(requestParameters?: CoverageResultsGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+        const routine = requestParameters?.routine;
+        const testpath = requestParameters?.testpath;
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (routine !== undefined && routine !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>routine, 'routine');
+        }
+        if (testpath !== undefined && testpath !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>testpath, 'testpath');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json',
+                'default'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/coverage/$results`;
+        return this.httpClient.request<CoverageResultsOutput>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Performs the routinepaths action.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public coverageRoutinepathsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageRoutinePathsOutput>;
+    public coverageRoutinepathsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageRoutinePathsOutput>>;
+    public coverageRoutinepathsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageRoutinePathsOutput>>;
+    public coverageRoutinepathsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json',
+                'default'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/coverage/$routinepaths`;
+        return this.httpClient.request<CoverageRoutinePathsOutput>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
     /**

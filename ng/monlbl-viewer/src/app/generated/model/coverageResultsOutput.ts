@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CoverageResultOutput } from './coverageResultOutput';
 
 
-export interface CoverageStatusOutput { 
+export interface CoverageResultsOutput { 
     _id: string;
-    status: string;
+    results?: Array<CoverageResultOutput>;
 }
 

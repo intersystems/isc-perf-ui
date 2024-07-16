@@ -11,8 +11,9 @@
  */
 
 
-export interface CoverageStatusOutput { 
+export interface CoverageRoutinePathOutput { 
     _id: string;
-    status: string;
+    routine?: string;
+    testpath?: string;
 }
 

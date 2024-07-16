@@ -11,8 +11,12 @@
  */
 
 
-export interface CoverageStatusOutput { 
+export interface CoverageResultOutput { 
     _id: string;
-    status: string;
+    code?: string;
+    coloredLine?: string;
+    line?: string;
+    metrics?: number;
+    routine?: string;
 }
 

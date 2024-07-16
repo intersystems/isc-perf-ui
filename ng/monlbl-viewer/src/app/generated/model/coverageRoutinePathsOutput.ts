@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CoverageRoutinePathOutput } from './coverageRoutinePathOutput';
 
 
-export interface CoverageStatusOutput { 
+export interface CoverageRoutinePathsOutput { 
     _id: string;
-    status: string;
+    covpaths?: Array<CoverageRoutinePathOutput>;
 }
 
