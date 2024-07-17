@@ -23,12 +23,13 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     kill ^IRIS.TEMPCG
     set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = "we're here!"
     Set ^UnitTestRoot = pConfig.UnitTestRoot
+    Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = pConfig.UnitTestRoot
     Set ^UnitTestRoot = "C:\InterSystems\TestCoverage\internal\testing\unit_tests\UnitTest\"
     Kill tCoverageParams
     Set tCoverageParams("Timing") = pConfig.Timing
     Set tCoverageParams("CoverageClasses") = $LISTFROMSTRING(pConfig.CoverageClasses)
     Set tCoverageParams("CoverageRoutines") = $LISTFROMSTRING(pConfig.CoverageRoutines)
-    Set tCoverageParams("ProcessIDs") = $LISTFROMSTRING(pConfig.Pidlist)
+    Set tCoverageParams("ProcessIDs") = $LISTFROMSTRING(pConfig.PidList)
     Set tCoverageParams("CoverageDetail") = pConfig.CoverageLevel
 
     do ##class(TestCoverage.Utils).Clear() 

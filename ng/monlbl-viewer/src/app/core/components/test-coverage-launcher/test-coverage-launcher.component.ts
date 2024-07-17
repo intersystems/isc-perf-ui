@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { CoverageRestService } from '../../services/coverage-rest.service';
 
 @Component({
   selector: 'app-test-coverage-launcher',
@@ -8,7 +9,8 @@ import { FormBuilder, FormControl } from '@angular/forms';
 })
 export class TestCoverageLauncherComponent {
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private covRestService: CoverageRestService
   ) {
     
   }
@@ -19,7 +21,6 @@ export class TestCoverageLauncherComponent {
       CoverageRoutines: '',
       PidList: '',
       Timing: 0,
-      MetricsTracked: ''
     });
     timingsList: Number[] = [0, 1];
     CoverageLevels: Number[] = [0, 1, 2, 3];
@@ -27,6 +28,7 @@ export class TestCoverageLauncherComponent {
     {
       console.log("hello world?");
       console.log(this.dataForm.value);
+      this.covRestService.Start(this.dataForm.value)
       this.dataForm.reset();
     }
 }

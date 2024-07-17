@@ -15,7 +15,7 @@ export interface CoverageConfigInput {
     CoverageClasses?: string;
     CoverageLevel?: number;
     CoverageRoutines?: string;
-    Pidlist?: string;
+    PidList?: string;
     Timing?: number;
     UnitTestRoot?: string;
 }

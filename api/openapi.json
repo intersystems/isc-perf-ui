@@ -69,7 +69,7 @@
           "CoverageRoutines":{
             "type":"string"
           },
-          "Pidlist":{
+          "PidList":{
             "type":"string"
           },
           "Timing":{
@@ -84,20 +84,23 @@
       },
       "coverage-result_output":{
         "properties":{
+          "RtnLineCount":{
+            "type":"number"
+          },
+          "TIME":{
+            "type":"string"
+          },
+          "TotalTime":{
+            "type":"string"
+          },
           "_id":{
             "type":"string"
           },
           "code":{
             "type":"string"
           },
-          "coloredLine":{
-            "type":"string"
-          },
           "line":{
             "type":"string"
-          },
-          "metrics":{
-            "type":"number"
           },
           "routine":{
             "type":"string"

@@ -12,11 +12,12 @@
 
 
 export interface CoverageResultOutput { 
+    RtnLineCount?: number;
+    TIME?: string;
+    TotalTime?: string;
     _id: string;
     code?: string;
-    coloredLine?: string;
     line?: string;
-    metrics?: number;
     routine?: string;
 }
 

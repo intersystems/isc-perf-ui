@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Observable, of} from 'rxjs';
-import { TestcoverageService } from 'src/app/generated/api/testcoverage.service';
-import { TestCoverageStatusOutput } from 'src/app/generated/model/testCoverageStatusOutput';
+import { CoverageService, CoverageConfigInput, CoverageResultsOutput,  CoverageStatusOutput } from 'src/app/generated';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoverageRestService {
   
-  constructor(protected TestcovService: TestcoverageService ) { }
-  private results$ = new ReplaySubject<TestCoverageStatusOutput>
+  constructor(protected covService: CoverageService ) { }
+  private results$ = new ReplaySubject<CoverageResultsOutput>
+  private status$ = new ReplaySubject<CoverageStatusOutput>();
 
   Start(pConfig: any): Observable<any> {
-    
+    this.covService.coverageStartPost({CoverageConfigInput: pConfig},'body').subscribe((status) => {
+       this.status$.next(status)
+       console.log("finished successfully?")
+    })
     return of("testing")
     // return this.TestcovService.testcoverageStartGet({})
   }

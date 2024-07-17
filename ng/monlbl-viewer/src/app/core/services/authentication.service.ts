@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DefaultService, MonitorService, PlatformUserOutput } from 'src/app/generated';
+import { DefaultService, MonitorService, PlatformUserOutput, CoverageService } from 'src/app/generated';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,8 @@ export class AuthenticationService {
   constructor(
       private router: Router,
       private defaultService: DefaultService,
-      private monitorService: MonitorService
+      private monitorService: MonitorService,
+      private coverageService: CoverageService
   ) {
       const json = localStorage.getItem('user');
       this.userSubject = new BehaviorSubject<PlatformUserOutput | null>(json ? JSON.parse(json) : null);
@@ -32,6 +33,7 @@ export class AuthenticationService {
       localStorage.setItem('user', JSON.stringify(user));
       this.userSubject.next(user);
       this.monitorService.defaultHeaders = this.monitorService.defaultHeaders.set('Authorization',`Basic ${authdata}`);
+      this.coverageService.defaultHeaders = this.coverageService.defaultHeaders.set('Authorization',`Basic ${authdata}`)
       return user;
     }));
   }
@@ -41,6 +43,7 @@ export class AuthenticationService {
       localStorage.removeItem('user');
       this.defaultService.defaultHeaders = this.defaultService.defaultHeaders.delete('Authorization');
       this.monitorService.defaultHeaders = this.monitorService.defaultHeaders.delete('Authorization');
+      this.coverageService.defaultHeaders = this.coverageService.defaultHeaders.delete('Authorization')
       this.userSubject.next(null);
       this.router.navigate(['/login']);
   }
