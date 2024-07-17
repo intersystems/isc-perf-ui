@@ -5,7 +5,7 @@ Property routine As %String;
 
 Property line As %String;
 
-Property code As %String;
+Property code As %String(MAXLEN = 1024);
 
 Property RtnLineCount As %Integer;
 

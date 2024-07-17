@@ -35,6 +35,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { CoverageResultsDisplayComponent } from './core/components/coverage-results-display/coverage-results-display.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MatSelectModule } from '@angular/material/select';
     LauncherComponent,
     MultiDropdownComponent,
     TestCoverageLauncherComponent,
+    CoverageResultsDisplayComponent,
   ],
   imports: [
     BrowserModule,

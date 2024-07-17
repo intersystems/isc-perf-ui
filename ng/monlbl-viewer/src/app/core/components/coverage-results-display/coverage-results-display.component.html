@@ -1,0 +1,21 @@
+<mat-form-field class = "RoutineForm" *ngIf="covpaths$ | async as covpaths">
+    <mat-label>Select Routine + Test Path</mat-label>
+    <mat-select (selectionChange)="onPathChange($event.value)">
+      <mat-option class="wrap-option" *ngFor="let path of covpaths" [value]="path">
+        {{ path.routine }} - {{ path.testpath }}
+      </mat-option>
+    </mat-select>
+</mat-form-field>
+  
+<div *ngIf="results$ | async as results">
+    <div *ngIf="results.length > 0; else noResults">
+      <ul>
+        <li *ngFor="let result of results">
+          {{ result.RtnLineCount }} - {{ result.code }}
+        </li>
+      </ul>
+    </div>
+    <ng-template #noResults>
+      <p>No results found.</p>
+    </ng-template>
+</div>

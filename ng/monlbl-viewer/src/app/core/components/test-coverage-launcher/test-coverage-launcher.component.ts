@@ -29,10 +29,7 @@ export class TestCoverageLauncherComponent {
       console.log("hello world?");
       console.log(this.dataForm.value);
       this.covRestService.Start(this.dataForm.value).subscribe(() => {
-        this.covRestService.GetResults("TestCoverage.Data.CodeUnit.CLS", "all tests").subscribe((results) => {
-          console.log("Results received:", results);
-          // Update your component state here with the results
-        });
+        console.log("Start process completed")
       });
       this.dataForm.reset();
     }
