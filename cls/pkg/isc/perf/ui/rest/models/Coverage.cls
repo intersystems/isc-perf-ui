@@ -43,8 +43,9 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     while 'stream.AtEnd {
         Set tLine = stream.ReadLine()
         do output.%Push(tLine)
-        Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = tLine
+        //Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = tLine
     }
+    Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = "finished the call successfully"
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 
