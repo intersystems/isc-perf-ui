@@ -3,6 +3,8 @@ import { Observable, of } from 'rxjs';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { map, switchMap } from 'rxjs/operators';
 import { CoverageRoutinePathOutput } from 'src/app/generated';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-coverage-results-display',
@@ -14,7 +16,7 @@ export class CoverageResultsDisplayComponent {
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
 
-  constructor(private covRestService: CoverageRestService) {}
+  constructor(private covRestService: CoverageRestService, private router: Router) {}
 
   ngOnInit() {
     // Listen for when the Start process is completed
@@ -27,9 +29,8 @@ export class CoverageResultsDisplayComponent {
   }
 
   onPathChange(selectedPath: CoverageRoutinePathOutput) {
-    this.selectedPath = selectedPath;
-    this.results$ = this.covRestService.GetResults(selectedPath.routine, selectedPath.testpath).pipe(
-      map((response: any) => response.results)
-    );
+    if (selectedPath) {
+      this.router.navigate(['/result-detail', selectedPath.routine, selectedPath.testpath]);
+    }
   }
 }

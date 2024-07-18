@@ -37,6 +37,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { CoverageResultsDisplayComponent } from './core/components/coverage-results-display/coverage-results-display.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CoverageResultDetailComponent } from './core/components/coverage-result-detail/coverage-result-detail.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MultiDropdownComponent,
     TestCoverageLauncherComponent,
     CoverageResultsDisplayComponent,
+    CoverageResultDetailComponent,
   ],
   imports: [
     BrowserModule,

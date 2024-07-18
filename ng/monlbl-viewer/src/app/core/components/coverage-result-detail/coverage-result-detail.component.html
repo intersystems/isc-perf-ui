@@ -1,0 +1,12 @@
+  <div *ngIf="results$ | async as results">
+    <div *ngIf="results.length > 0; else noResults">
+      <ul>
+        <li *ngFor="let result of results">
+          {{ result.RtnLineCount }} - {{ result.code }}
+        </li>
+      </ul>
+    </div>
+    <ng-template #noResults>
+      <p>No results found.</p>
+    </ng-template>
+</div>
