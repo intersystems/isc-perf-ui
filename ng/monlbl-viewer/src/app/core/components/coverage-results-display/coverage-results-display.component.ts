@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { map, switchMap } from 'rxjs/operators';
 import { CoverageRoutinePathOutput } from 'src/app/generated';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./coverage-results-display.component.css']
 })
 export class CoverageResultsDisplayComponent {
-  covpaths$: Observable<any[]> = of([]);
+  covpaths$: Observable<CoverageRoutinePathOutput[]> = this.covRestService.getCovpathsObservable();
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
 
@@ -20,11 +20,11 @@ export class CoverageResultsDisplayComponent {
 
   ngOnInit() {
     // Listen for when the Start process is completed
-    this.covRestService.getStartCompletedObservable().pipe(
-      switchMap(() => this.covRestService.GetRoutines()),
-      map((response: any) => response.covpaths)
-    ).subscribe(covpaths => {
-      this.covpaths$ = of(covpaths);
+    // Listen for when the Start process is completed
+    this.covRestService.getStartCompletedObservable().subscribe(startCompleted => {
+      if (startCompleted) {
+        this.covRestService.GetRoutines().subscribe();
+      }
     });
   }
 

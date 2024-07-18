@@ -75,10 +75,14 @@ export class CoverageResultDetailComponent implements OnInit {
           return results;
         }
         if (this.sort === "") {
-
+          this.sort = "line";
+          this.descending = -1;
+        }
+        else {
+          this.descending = 1;
         }
         return [...results].sort((first, second) => {
-          return (second as any)[this.sort] - (first as any)[this.sort];
+          return ((second as any)[this.sort] - (first as any)[this.sort]) * this.descending;
         });
       })
     ).subscribe(sortedResults => {
