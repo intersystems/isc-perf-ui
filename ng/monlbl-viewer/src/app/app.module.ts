@@ -36,6 +36,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { CoverageResultsDisplayComponent } from './core/components/coverage-results-display/coverage-results-display.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { CoverageResultsDisplayComponent } from './core/components/coverage-resu
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

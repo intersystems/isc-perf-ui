@@ -11,3 +11,11 @@
   td {
     padding-right: 8px;
   }
+
+  .spinner-container {
+    margin-left: 10px; /* Adjust the space between button and spinner */
+  }
+
+  .flex-box {
+    display: flex;
+  }
