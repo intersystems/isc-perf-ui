@@ -1,0 +1,63 @@
+.code {
+    white-space: pre;
+    display: grid;
+    overflow-x: auto;
+    overflow-y: scroll;
+    max-height: 75vh;
+  }
+  
+  .header {
+    position: sticky;
+    cursor: pointer;
+    top: 0;
+    background-color: #c9cccf;
+    z-index: 5;
+  }
+  
+  .grid-item {
+    grid-column-start: auto;
+    grid-column-end: auto;
+    grid-row-start: auto;
+    grid-row-end: auto;
+  }
+  
+  .bold {
+    font-weight: bold;
+  }
+  
+  .code-line {
+    margin-left: 2em;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .code-line::before {
+    content: attr(data-linenumber);
+    cursor: pointer;
+    width: 0.5em;
+    left: -2em;
+    position: relative;
+    opacity: 0.6;
+    display: inline-block;
+    z-index: 2;
+  }
+  
+  .green-rectangle {
+    position: absolute;
+    left: -1.5em;
+    width: 5px;
+    height: 100%;
+    background-color: green;
+  }
+  
+  .red-rectangle {
+    position: absolute;
+    left: -1.5em;
+    width: 5px;
+    height: 100%;
+    background-color: red;
+  }
+  
+  .back-button-container {
+    margin-bottom: 20px; /* Adjust as needed */
+  }

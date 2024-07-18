@@ -1,12 +1,33 @@
-  <div *ngIf="results$ | async as results">
-    <div *ngIf="results.length > 0; else noResults">
-      <ul>
-        <li *ngFor="let result of results">
-          {{ result.RtnLineCount }} - {{ result.code }}
-        </li>
-      </ul>
-    </div>
-    <ng-template #noResults>
-      <p>No results found.</p>
-    </ng-template>
+<div class="back-button-container">
+  <button mat-icon-button color="primary"  (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
 </div>
+
+
+<ng-container *ngIf="results$ | async as results">
+  <div *ngIf="results.length > 0; else noResults" class="code" [style]="computeGridStyle()">
+    <ng-container *ngFor="let metric of ['TIME', 'TotalTime', 'RtnLineCount']; let i = index">
+      <span class="grid-item header" [class.bold]="this.sort === metric" (click)="toggleSort(metric)">{{metric}}</span>
+    </ng-container>
+    <span class="grid-item header" style="padding-left: 2em;">Code</span>
+    <ng-container *ngFor="let result of results; let lineNumber = index">
+      <ng-container *ngFor="let metric of ['TIME', 'TotalTime', 'RtnLineCount']; let i = index">
+        <span class="grid-item">{{result[metric]}}</span>
+      </ng-container>
+      <span [id]="'line' + result.line" [innerHTML]='result.code' class="grid-item code-line" 
+            [attr.data-linenumber]="result.line" 
+            (click)="viewInContext(result.line)">
+        <span [class.green-rectangle]="result.RtnLineCount > 0" 
+              [class.red-rectangle]="result.RtnLineCount === 0"></span>
+      </span>
+    </ng-container>
+  </div>
+  <div *ngIf="!results.length">
+    <em>No metrics recorded for this routine.</em>
+  </div>
+</ng-container>
+
+<ng-template #noResults>
+  <p>No results found.</p>
+</ng-template>
