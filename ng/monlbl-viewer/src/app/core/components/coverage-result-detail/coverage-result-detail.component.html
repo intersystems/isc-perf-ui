@@ -1,26 +1,44 @@
 <div class="back-button-container">
-  <button mat-icon-button color="primary"  (click)="goBack()">
+  <button mat-icon-button color="primary" (click)="goBack()">
     <mat-icon>arrow_back</mat-icon>
   </button>
 </div>
 
 <ng-container *ngIf="results$ | async as results">
-  <div *ngIf="results.length > 0; else noResults" class="code" [style]="computeGridStyle()">
-    <ng-container *ngFor="let metric of ['TIME', 'TotalTime', 'RtnLineCount']; let i = index">
-      <span class="grid-item header" [class.bold]="this.sort === metric" (click)="toggleSort(metric)">{{metric}}</span>
-    </ng-container>
-    <span class="grid-item header" style="padding-left: 2em;">Code</span>
-    <ng-container *ngFor="let result of results; let lineNumber = index">
-      <ng-container *ngFor="let metric of ['TIME', 'TotalTime', 'RtnLineCount']; let i = index">
-        <span class="grid-item">{{result[metric]}}</span>
+  <div *ngIf="results.length > 0; else noResults">
+    <table mat-table [dataSource]="results" class="mat-elevation-z8">
+      <!-- Metric Columns -->
+      <ng-container matColumnDef="TIME">
+        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('TIME')" [class.bold]="this.sort === 'TIME'"> TIME </th>
+        <td mat-cell *matCellDef="let result"> {{result.TIME}} </td>
       </ng-container>
-      <span [id]="'line' + result.line" [innerHTML]='result.code' class="grid-item code-line" 
-            [attr.data-linenumber]="result.line" 
-            (click)="viewInContext(result.line)">
-        <span [class.green-rectangle]="result.RtnLineCount > 0" 
-              [class.red-rectangle]="result.RtnLineCount === 0"></span>
-      </span>
-    </ng-container>
+
+      <ng-container matColumnDef="TotalTime">
+        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('TotalTime')" [class.bold]="this.sort === 'TotalTime'"> TotalTime </th>
+        <td mat-cell *matCellDef="let result"> {{result.TotalTime}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="RtnLineCount">
+        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('RtnLineCount')" [class.bold]="this.sort === 'RtnLineCount'"> RtnLineCount </th>
+        <td mat-cell *matCellDef="let result"> {{result.RtnLineCount}} </td>
+      </ng-container>
+
+      <!-- Code Column -->
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef> Code </th>
+        <td mat-cell *matCellDef="let result">
+          <span [id]="'line' + result.line" [innerHTML]='result.code' class="code-line" 
+                [attr.data-linenumber]="result.line" 
+                (click)="viewInContext(result.line)">
+            <span [class.green-rectangle]="result.RtnLineCount > 0" 
+                  [class.red-rectangle]="result.RtnLineCount === 0"></span>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </div>
   <div *ngIf="!results.length">
     <em>No metrics recorded for this routine.</em>

@@ -38,7 +38,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { CoverageResultsDisplayComponent } from './core/components/coverage-results-display/coverage-results-display.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CoverageResultDetailComponent } from './core/components/coverage-result-detail/coverage-result-detail.component';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTable, MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatButtonModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

@@ -20,7 +20,7 @@ export class TestCoverageLauncherComponent {
       CoverageClasses: '',
       CoverageRoutines: '',
       PidList: '',
-      Timing: 0,
+      Timing: 1,
     });
     isLoading$ = new BehaviorSubject<boolean>(false);
     timingsList: Number[] = [0, 1];

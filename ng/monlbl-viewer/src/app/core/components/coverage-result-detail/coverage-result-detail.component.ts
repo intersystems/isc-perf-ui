@@ -16,6 +16,7 @@ export class CoverageResultDetailComponent implements OnInit {
   results$: Observable<any> = of([]);
   sort: string = "";
   descending: number = 1; 
+  displayedColumns: string[] = ['TIME', 'TotalTime', 'RtnLineCount', 'code'];
 
   constructor(
     private route: ActivatedRoute,
@@ -36,11 +37,6 @@ export class CoverageResultDetailComponent implements OnInit {
     });
   }
 
-  computeGridStyle() {
-    return {
-      'grid-template-columns': '100px 150px 100px 1fr',
-    };
-  }
   goBack(): void {
     this.location.back();
   }
