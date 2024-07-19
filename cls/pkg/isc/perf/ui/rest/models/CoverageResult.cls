@@ -3,7 +3,7 @@ Class pkg.isc.perf.ui.rest.models.CoverageResult Extends (%RegisteredObject, %JS
 
 Property routine As %String;
 
-Property line As %String;
+Property line As %Integer;
 
 Property code As %String(MAXLEN = 1024);
 

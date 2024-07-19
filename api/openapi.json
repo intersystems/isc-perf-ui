@@ -100,7 +100,7 @@
             "type":"string"
           },
           "line":{
-            "type":"string"
+            "type":"number"
           },
           "routine":{
             "type":"string"

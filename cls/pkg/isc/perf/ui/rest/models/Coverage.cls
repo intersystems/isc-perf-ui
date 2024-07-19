@@ -20,10 +20,7 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 
 ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
-    kill ^IRIS.TEMPCG
-    set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = "we're here!"
     Set ^UnitTestRoot = pConfig.UnitTestRoot
-    Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = pConfig.UnitTestRoot
     Set ^UnitTestRoot = "C:\InterSystems\TestCoverage\internal\testing\unit_tests\UnitTest\"
     Kill tCoverageParams
     Set tCoverageParams("Timing") = pConfig.Timing
@@ -35,17 +32,15 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     do ##class(TestCoverage.Utils).Clear() 
     set buffer = ##class(%pkg.isc.json.util.buffer).%New()
     do buffer.BeginCaptureOutput()
-    Merge ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = tCoverageParams
     $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,,.tCoverageParams)) 
     set stream = ##class(%Stream.TmpCharacter).%New()
     do buffer.EndCaptureOutput(.stream)
-    set output = []
-    while 'stream.AtEnd {
-        Set tLine = stream.ReadLine()
-        do output.%Push(tLine)
-        //Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = tLine
-    }
-    Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = "finished the call successfully"
+    #; set output = []
+    #; while 'stream.AtEnd {
+    #;     Set tLine = stream.ReadLine()
+    #;     do output.%Push(tLine)
+    #;     //Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = tLine
+    #; }
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 

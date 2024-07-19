@@ -4,7 +4,6 @@
   </button>
 </div>
 
-
 <ng-container *ngIf="results$ | async as results">
   <div *ngIf="results.length > 0; else noResults" class="code" [style]="computeGridStyle()">
     <ng-container *ngFor="let metric of ['TIME', 'TotalTime', 'RtnLineCount']; let i = index">

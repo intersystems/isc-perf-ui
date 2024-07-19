@@ -74,15 +74,39 @@ export class CoverageResultDetailComponent implements OnInit {
         if (!results) {
           return results;
         }
-        if (this.sort === "") {
-          this.sort = "line";
-          this.descending = -1;
-        }
-        else {
-          this.descending = 1;
-        }
         return [...results].sort((first, second) => {
-          return ((second as any)[this.sort] - (first as any)[this.sort]) * this.descending;
+
+          let firstValue = null; 
+          let secondValue = null; 
+          if (this.sort === "TIME" || this.sort === "TotalTime") {
+            firstValue = first.hasOwnProperty(this.sort) ? parseFloat((first as any)[this.sort]) : null;
+            secondValue = second.hasOwnProperty(this.sort) ? parseFloat((second as any)[this.sort]) : null;
+          }
+          else {
+            firstValue = (first as any)[this.sort];
+            secondValue = (second as any)[this.sort];
+          }
+            
+          // Convert strings to numbers for TIME and TotalTime columns
+          if (this.sort === "TIME" || this.sort === "TotalTime") {
+            firstValue = firstValue !== null ? parseFloat(firstValue) : null;
+            secondValue = secondValue !== null ? parseFloat(secondValue) : null;
+          }
+          // Handle null values
+          if (firstValue === null) {
+            if (secondValue === null) {
+              return 0;
+            }
+            else {
+              return 1; 
+            }
+          }
+          else if (secondValue === null) {
+            return -1; 
+          }
+  
+          const compare = firstValue < secondValue ? 1 : firstValue > secondValue ? -1 : 0;
+          return compare * this.descending;
         });
       })
     ).subscribe(sortedResults => {
@@ -92,11 +116,13 @@ export class CoverageResultDetailComponent implements OnInit {
 
   toggleSort(metric: string) {
     if (this.sort === metric) {
-      this.sort = "";
+      this.sort = "line";
+      this.descending = -1;
       this.applySort();
       return;
     }
     this.sort = metric;
+    this.descending = 1; 
     this.applySort();
   }
 }
