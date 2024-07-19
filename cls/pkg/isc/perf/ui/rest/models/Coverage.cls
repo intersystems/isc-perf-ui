@@ -67,7 +67,8 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     }
     // get the lines of code first and then create all the CoverageResult objects 
     // not sure how to iterate through the result though, might want to try it out in local iris first
-    
+    set codeStream = ##class(%Stream.GlobalCharacter).%New()
+
     set sql = "SELECT Hash->CodeUnit_Lines->Lines FROM TestCoverage_Data.Coverage WHERE ID = ? "
     set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
     If (resultSet.%SQLCODE < 0) {
@@ -78,8 +79,38 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
         $$$ThrowOnError(tSC)
         set tLine = resultSet.%GetData(1)
         do response.results.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageResult).%New(routine, tLineNumber, tLine))
+        do codeStream.WriteLine(tLine)
         set tLineNumber = tLineNumber + 1
     }
+
+    // get the colored versions of each line (this is copy pasted over from LineByLineMonitorStatus
+    // can't really make it a shared function because it needs to access its own results instance 
+    set coloredStream = ##class(%Stream.GlobalCharacter).%New()
+    set colorer = ##class(%Library.SyntaxColor).%New()
+    set language = "MAC"
+    set flags = "PFES"
+    set tGood = colorer.Color(codeStream,coloredStream,language,flags,,,,.coloringErrors,.errorEnv,.coloringWarnings)
+    // Merge ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = coloringErrors
+    if tGood {
+			for lineNumber=1:1 {
+				set coloredLine = coloredStream.ReadLine(,.sc)
+				$$$ThrowOnError(sc)
+				if (coloredStream.AtEnd) {
+					quit
+				}
+				
+				// Sometimes there are random extra lines inserted. Detect these by looking for a colored line length shorter
+				// than the non-colored line.
+				set rawLine = response.results.GetAt(lineNumber).line
+				if ($length(coloredLine) < $length(rawLine)) && $increment(lineNumber,-1) {
+					continue
+				}
+				
+				// Remove line breaks
+				set coloredLine = $replace(coloredLine,"<BR>","")
+				set response.results.GetAt(lineNumber).coloredLine = coloredLine
+			}
+		}
     
     // get the executability of each line of code
     set sql = "SELECT Hash->ExecutableLines FROM TestCoverage_Data.Coverage WHERE ID = ? "

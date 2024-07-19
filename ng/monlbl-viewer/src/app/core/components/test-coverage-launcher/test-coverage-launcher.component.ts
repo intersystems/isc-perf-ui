@@ -28,8 +28,6 @@ export class TestCoverageLauncherComponent {
   CoverageLevels: Number[] = [0, 1, 2, 3];
 
   onSubmit() {
-    console.log("hello world?");
-    console.log(this.dataForm.value);
     this.isLoading$.next(true); // Show the spinner
     this.covRestService.Start(this.dataForm.value).subscribe({
       next: () => {

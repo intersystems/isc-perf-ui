@@ -23,7 +23,7 @@ Method %OnNew(routine As %String = "") As %Status [ Private, ServerOnly = 1 ]
 	quit $$$OK
 }
 
-Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boolean = 0) [ Private ]
+Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boolean = 0)
 {
 	if (color) {
 		set codeStream = ##class(%Stream.GlobalCharacter).%New()
@@ -38,6 +38,7 @@ Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boo
 		set result.line = $piece(qHandle,"^",2)-1
 		set result.code = $text(@("+"_(result.line)_"^"_routine))
 		if (color) {
+			set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = result.code
 			do codeStream.WriteLine(result.code)
 		}
 		set metrics = $listget(Row)
@@ -74,6 +75,7 @@ Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boo
 				// Remove line breaks
 				set coloredLine = $replace(coloredLine,"<BR>","")
 				set ..results.GetAt(lineNumber).coloredLine = coloredLine
+				set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = coloredLine
 			}
 		}
 	}

@@ -7,6 +7,8 @@ Property line As %Integer;
 
 Property code As %String(MAXLEN = 1024);
 
+Property coloredLine As %String(MAXLEN = 1024);
+
 Property Executable As %Boolean;
 
 Property RtnLineCount As %Integer;

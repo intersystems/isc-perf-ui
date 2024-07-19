@@ -44,6 +44,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { TestCoverageHeaderComponent } from './core/components/test-coverage-header/test-coverage-header.component';
 import { ParameterExplanationsComponent } from './core/components/parameter-explanations/parameter-explanations.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatIconModule,
     MatTableModule,
     MatSortModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

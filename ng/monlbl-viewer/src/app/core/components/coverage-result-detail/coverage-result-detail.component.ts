@@ -7,6 +7,9 @@ import { CoverageResultOutput } from 'src/app/generated';
 import { Location } from '@angular/common';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-coverage-result-detail',
@@ -24,7 +27,9 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private covRestService: CoverageRestService,
-    private location: Location
+    private location: Location,
+    private _liveAnnouncer: LiveAnnouncer, 
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -58,9 +63,13 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
-      console.log(`Sorted ${sortState.direction}ending`);
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      console.log('Sorting cleared');
+      this._liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+  getSafeHtml(html: string) {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 }

@@ -34,7 +34,6 @@ export class CoverageResultsDisplayComponent {
   ngAfterViewInit() {
     // Open the dropdown when covpaths$ emits its value
     this.covpaths$.subscribe(() => {
-      console.log("Opening the dropdown")
       setTimeout(() => this.routineSelect.open(), 0);
     });
   }

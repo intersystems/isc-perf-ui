@@ -21,13 +21,13 @@
   </ng-container>
 
   <ng-container matColumnDef="RtnLineCount">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>RtnLineCount</th>
-    <td mat-cell *matCellDef="let element" 
-        [ngClass]="{'green-background': element.Executable && element.RtnLineCount > 0, 'red-background': element.Executable && element.RtnLineCount === 0}">
-      {{element.RtnLineCount}}
-    </td>
-  </ng-container>
-  
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>RtnLineCount</th>
+  <td mat-cell *matCellDef="let element" 
+      [ngClass]="{'green-background': element.Executable && element.RtnLineCount > 0, 'red-background': element.Executable && element.RtnLineCount === 0}">
+    {{element.RtnLineCount}}
+  </td>
+</ng-container>
+
 
   <ng-container matColumnDef="line">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Line</th>
@@ -37,7 +37,7 @@
   <ng-container matColumnDef="code">
     <th mat-header-cell *matHeaderCellDef>Code</th>
     <td mat-cell *matCellDef="let element" class="code-column">
-      <span [innerHTML]='element.code' class="code-line"></span>
+      <span [innerHTML]='getSafeHtml(element.coloredLine)' class="code-line"></span>
     </td>
   </ng-container>
 

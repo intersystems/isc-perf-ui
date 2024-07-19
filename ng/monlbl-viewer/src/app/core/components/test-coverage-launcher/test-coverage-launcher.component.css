@@ -29,3 +29,19 @@ td {
 .flex-child:first-child {
   margin-right: 20px;
 }
+
+.error-container {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-left: 5px;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
