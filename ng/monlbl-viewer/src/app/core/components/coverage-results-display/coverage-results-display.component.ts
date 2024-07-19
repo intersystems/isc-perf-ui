@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { map, switchMap } from 'rxjs/operators';
 import { CoverageRoutinePathOutput } from 'src/app/generated';
 import { Router } from '@angular/router';
+import { MatSelect } from '@angular/material/select';
+
 
 
 @Component({
@@ -12,6 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./coverage-results-display.component.css']
 })
 export class CoverageResultsDisplayComponent {
+  @ViewChild('routineSelect') routineSelect!: MatSelect;
   covpaths$: Observable<CoverageRoutinePathOutput[]> = this.covRestService.getCovpathsObservable();
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
@@ -25,6 +28,14 @@ export class CoverageResultsDisplayComponent {
       if (startCompleted) {
         this.covRestService.GetRoutines().subscribe();
       }
+    });
+  }
+
+  ngAfterViewInit() {
+    // Open the dropdown when covpaths$ emits its value
+    this.covpaths$.subscribe(() => {
+      console.log("Opening the dropdown")
+      setTimeout(() => this.routineSelect.open(), 0);
     });
   }
 

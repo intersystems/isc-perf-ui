@@ -41,6 +41,9 @@ import { CoverageResultDetailComponent } from './core/components/coverage-result
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { TestCoverageHeaderComponent } from './core/components/test-coverage-header/test-coverage-header.component';
+import { ParameterExplanationsComponent } from './core/components/parameter-explanations/parameter-explanations.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,8 @@ import { MatSortModule } from '@angular/material/sort';
     TestCoverageLauncherComponent,
     CoverageResultsDisplayComponent,
     CoverageResultDetailComponent,
+    TestCoverageHeaderComponent,
+    ParameterExplanationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +91,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatProgressSpinnerModule,
     MatIconModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatDividerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

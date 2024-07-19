@@ -1,6 +1,6 @@
 <mat-form-field class = "RoutineForm" *ngIf="covpaths$ | async as covpaths">
     <mat-label>Select Routine + Test Path</mat-label>
-    <mat-select (selectionChange)="onPathChange($event.value)">
+    <mat-select #routineSelect (selectionChange)="onPathChange($event.value)">
       <mat-option class="wrap-option" *ngFor="let path of covpaths" [value]="path">
         {{ path.routine }} - {{ path.testpath }}
       </mat-option>

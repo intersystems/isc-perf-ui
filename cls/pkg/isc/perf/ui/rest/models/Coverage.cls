@@ -21,7 +21,6 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
     Set ^UnitTestRoot = pConfig.UnitTestRoot
-    Set ^UnitTestRoot = "C:\InterSystems\TestCoverage\internal\testing\unit_tests\UnitTest\"
     Kill tCoverageParams
     Set tCoverageParams("Timing") = pConfig.Timing
     Set tCoverageParams("CoverageClasses") = $LISTFROMSTRING(pConfig.CoverageClasses)
