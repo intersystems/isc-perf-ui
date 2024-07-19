@@ -12,6 +12,7 @@
 
 
 export interface CoverageResultOutput { 
+    Executable?: boolean;
     RtnLineCount?: number;
     TIME?: string;
     TotalTime?: string;

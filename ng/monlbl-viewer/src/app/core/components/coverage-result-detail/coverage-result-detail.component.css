@@ -1,23 +1,32 @@
-/* coverage-result-detail.component.css */
-.code {
+.full-width-table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  background-color: #e0e0e0;
+}
+
+.line-column {
+  text-align: right;
+  color: #9e9e9e;
+}
+
+.centered-column {
+  text-align: center;
+}
+
+.code-column {
   white-space: pre;
-  overflow-x: auto;
-  overflow-y: scroll;
-  max-height: 75vh;
 }
 
-.header {
-  cursor: pointer;
-  background-color: #c9cccf;
+.green-background {
+  background-color: lightgreen;
 }
 
-.grid-item {
-  padding: 8px;
+.red-background {
+  background-color: lightcoral;
 }
 
-.bold {
-  font-weight: bold;
-}
 
 .code-line {
   margin-left: 2em;
@@ -30,26 +39,10 @@
   cursor: pointer;
   width: 0.5em;
   left: -2em;
-  position: absolute;
+  position: relative;
   opacity: 0.6;
   display: inline-block;
   z-index: 2;
-}
-
-.green-rectangle {
-  position: absolute;
-  left: -1.5em;
-  width: 5px;
-  height: 100%;
-  background-color: green;
-}
-
-.red-rectangle {
-  position: absolute;
-  left: -1.5em;
-  width: 5px;
-  height: 100%;
-  background-color: red;
 }
 
 .back-button-container {

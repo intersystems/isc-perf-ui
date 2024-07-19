@@ -82,6 +82,22 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
         set tLineNumber = tLineNumber + 1
     }
     
+    // get the executability of each line of code
+    set sql = "SELECT Hash->ExecutableLines FROM TestCoverage_Data.Coverage WHERE ID = ? "
+    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
+    If (resultSet.%SQLCODE < 0) {
+        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
+    }
+    while resultSet.%Next(.tSC) {
+        $$$ThrowOnError(tSC)
+        set tExecutableLines = resultSet.%GetData(1)
+    }
+    for i=1:1:tLineNumber-1 {
+        set tLineResult = response.results.GetAt(i)
+        set tLineResult.Executable = $BIT(tExecutableLines, i)
+    }
+
+
     // get the Rtnline data for this routine / testpath combination
     set sql = "SELECT RtnLine, element_key FROM TestCoverage_Data.Coverage_RtnLine WHERE Coverage = ?"
     set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
@@ -91,8 +107,8 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     while resultSet.%Next(.tSC) {
         $$$ThrowOnError(tSC)
         set tRtnLine = resultSet.%GetData(1)
-        set tLineNumber = resultSet.%GetData(2)
-        set tLineResult = response.results.GetAt(tLineNumber)
+        set tLineNum = resultSet.%GetData(2)
+        set tLineResult = response.results.GetAt(tLineNum)
         set tLineResult.RtnLineCount = tLineResult.RtnLineCount + tRtnLine
     }
 
@@ -105,8 +121,8 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     while resultSet.%Next(.tSC) {
         $$$ThrowOnError(tSC)
         set tRtnLine = resultSet.%GetData(1)
-        set tLineNumber = resultSet.%GetData(2)
-        set tLineResult = response.results.GetAt(tLineNumber)
+        set tLineNum = resultSet.%GetData(2)
+        set tLineResult = response.results.GetAt(tLineNum)
         set tLineResult.TIME = tLineResult.TIME + tRtnLine
     }
 
@@ -118,8 +134,8 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     while resultSet.%Next(.tSC) {
         $$$ThrowOnError(tSC)
         set tRtnLine = resultSet.%GetData(1)
-        set tLineNumber = resultSet.%GetData(2)
-        set tLineResult = response.results.GetAt(tLineNumber)
+        set tLineNum = resultSet.%GetData(2)
+        set tLineResult = response.results.GetAt(tLineNum)
         set tLineResult.TotalTime = tLineResult.TotalTime + tRtnLine
     }
     

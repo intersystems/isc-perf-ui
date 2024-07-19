@@ -7,6 +7,8 @@ Property line As %Integer;
 
 Property code As %String(MAXLEN = 1024);
 
+Property Executable As %Boolean;
+
 Property RtnLineCount As %Integer;
 
 Property TIME As %String;
@@ -15,11 +17,12 @@ Property TIME As %String;
 
 Property TotalTime As %String;
 
-Method %OnNew(pRoutine, pLine, pCode, pRtnLineCount = 0, pTIME = "", pTotalTime = "") As %Status
+Method %OnNew(pRoutine, pLine, pCode, pExecutable = 0, pRtnLineCount = 0, pTIME = "", pTotalTime = "") As %Status
 {
     set ..routine = pRoutine
     set ..line = pLine 
     set ..code = pCode
+    set ..Executable = pExecutable
     set ..RtnLineCount = pRtnLineCount
     set ..TIME = pTIME
     set ..TotalTime = pTotalTime

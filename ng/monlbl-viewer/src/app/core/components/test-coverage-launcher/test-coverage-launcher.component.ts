@@ -15,7 +15,7 @@ export class TestCoverageLauncherComponent {
     
   }
     dataForm = this.formBuilder.group({
-      UnitTestRoot: '',
+      UnitTestRoot: '"C:\\InterSystems\\TestCoverage\\internal\\testing\\unit_tests\\UnitTest\\',
       CoverageLevel: 1,
       CoverageClasses: '',
       CoverageRoutines: '',

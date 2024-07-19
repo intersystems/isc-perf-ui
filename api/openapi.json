@@ -84,6 +84,9 @@
       },
       "coverage-result_output":{
         "properties":{
+          "Executable":{
+            "type":"boolean"
+          },
           "RtnLineCount":{
             "type":"number"
           },

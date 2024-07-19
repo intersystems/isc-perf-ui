@@ -4,47 +4,43 @@
   </button>
 </div>
 
-<ng-container *ngIf="results$ | async as results">
-  <div *ngIf="results.length > 0; else noResults">
-    <table mat-table [dataSource]="results" class="mat-elevation-z8">
-      <!-- Metric Columns -->
-      <ng-container matColumnDef="TIME">
-        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('TIME')" [class.bold]="this.sort === 'TIME'"> TIME </th>
-        <td mat-cell *matCellDef="let result"> {{result.TIME}} </td>
-      </ng-container>
+<p>Click on a column header to sort by that column.</p>
 
-      <ng-container matColumnDef="TotalTime">
-        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('TotalTime')" [class.bold]="this.sort === 'TotalTime'"> TotalTime </th>
-        <td mat-cell *matCellDef="let result"> {{result.TotalTime}} </td>
-      </ng-container>
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8 full-width-table">
 
-      <ng-container matColumnDef="RtnLineCount">
-        <th mat-header-cell *matHeaderCellDef (click)="toggleSort('RtnLineCount')" [class.bold]="this.sort === 'RtnLineCount'"> RtnLineCount </th>
-        <td mat-cell *matCellDef="let result"> {{result.RtnLineCount}} </td>
-      </ng-container>
+  
 
-      <!-- Code Column -->
-      <ng-container matColumnDef="code">
-        <th mat-header-cell *matHeaderCellDef> Code </th>
-        <td mat-cell *matCellDef="let result">
-          <span [id]="'line' + result.line" [innerHTML]='result.code' class="code-line" 
-                [attr.data-linenumber]="result.line" 
-                (click)="viewInContext(result.line)">
-            <span [class.green-rectangle]="result.RtnLineCount > 0" 
-                  [class.red-rectangle]="result.RtnLineCount === 0"></span>
-          </span>
-        </td>
-      </ng-container>
+  <ng-container matColumnDef="TIME">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>TIME</th>
+    <td mat-cell *matCellDef="let element" class="centered-column">{{element.TIME}}</td>
+  </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
-  <div *ngIf="!results.length">
-    <em>No metrics recorded for this routine.</em>
-  </div>
-</ng-container>
+  <ng-container matColumnDef="TotalTime">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>TotalTime</th>
+    <td mat-cell *matCellDef="let element" class="centered-column">{{element.TotalTime}}</td>
+  </ng-container>
 
-<ng-template #noResults>
-  <p>No results found.</p>
-</ng-template>
+  <ng-container matColumnDef="RtnLineCount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>RtnLineCount</th>
+    <td mat-cell *matCellDef="let element" 
+        [ngClass]="{'green-background': element.Executable && element.RtnLineCount > 0, 'red-background': element.Executable && element.RtnLineCount === 0}">
+      {{element.RtnLineCount}}
+    </td>
+  </ng-container>
+  
+
+  <ng-container matColumnDef="line">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Line</th>
+    <td mat-cell *matCellDef="let element" class="line-column">{{element.line}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef>Code</th>
+    <td mat-cell *matCellDef="let element" class="code-column">
+      <span [innerHTML]='element.code' class="code-line"></span>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
