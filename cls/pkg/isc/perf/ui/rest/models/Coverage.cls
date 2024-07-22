@@ -22,6 +22,8 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 
 ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
+    #; Set tMsg = "Example Error"
+	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     Set ^UnitTestRoot = pConfig.UnitTestRoot
     Kill tCoverageParams
     Set tCoverageParams("Timing") = pConfig.Timing
@@ -58,6 +60,8 @@ ClassMethod GetPythonColoredLine(pLine As %String) As %String [ Language = pytho
 /// Highlight a line of Python code and return the HTML with inline styles.
 ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg.isc.perf.ui.rest.models.CoverageResults
 {
+    #; Set tMsg = "Example Error"
+	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     set tName = $Piece(routine, ".", 1, *-1)
     set tType = $Piece(routine, ".", *)
     set tType = $ZCONVERT(tType, "U")

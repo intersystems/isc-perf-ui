@@ -2,13 +2,14 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import { CoverageResultOutput } from 'src/app/generated';
 import { Location } from '@angular/common';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
     private covRestService: CoverageRestService,
     private location: Location,
     private _liveAnnouncer: LiveAnnouncer, 
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -37,12 +39,19 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
       switchMap(params => {
         const routine = params.get('routine');
         const testpath = params.get('testpath');
-        return this.covRestService.GetResults(routine!, testpath!);
+        return this.covRestService.GetResults(routine!, testpath!).pipe(
+          catchError((error: any) => {
+            const errorMsg = error.message ? error.message : 'An unknown error occurred';
+            this.snackBar.open(errorMsg, 'Close', { duration: 5000 });
+            // Return an empty array or any default value in case of error
+            return of({ results: [] });
+          })
+        );
       }),
       map((response: any) => response.results)
     ).subscribe(results => {
       this.dataSource.data = results;
-      console.log(results)
+      console.log(results);
     });
   }
 

@@ -46,5 +46,9 @@
     <div *ngIf="isLoading$ | async" class="spinner-container">
       <mat-spinner [diameter]="24"></mat-spinner>
     </div>
+    <div *ngIf="hasError$ | async" class="error-container">
+      <mat-icon color="warn">error</mat-icon>
+      <span class="error-message">{{ errorMessage$ | async }}</span>
+    </div>
   </div>
 </form>

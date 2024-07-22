@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subject, tap, map, Observable} from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject, catchError, throwError, tap, map, Observable} from 'rxjs';
 import { CoverageService,  CoverageResultsOutput,  CoverageRoutinePathsOutput, CoverageRoutinePathOutput } from 'src/app/generated';
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,11 @@ export class CoverageRestService {
     return this.covService.coverageStartPost({ CoverageConfigInput: pConfig }, 'body').pipe(
       tap(status => {
         this.startCompletedSubject.next(true);
+      }),
+      catchError((error) => {
+        console.log(error)
+      
+        return throwError(() => new Error(error.message));
       })
     );
   }
