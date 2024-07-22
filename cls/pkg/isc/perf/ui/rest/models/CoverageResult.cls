@@ -19,11 +19,12 @@ Property TIME As %String;
 
 Property TotalTime As %String;
 
-Method %OnNew(pRoutine, pLine, pCode, pExecutable = 0, pRtnLineCount = 0, pTIME = "", pTotalTime = "") As %Status
+Method %OnNew(pRoutine, pLine, pCode, pColoredLine = "", pExecutable = 0, pRtnLineCount = 0, pTIME = "", pTotalTime = "") As %Status
 {
     set ..routine = pRoutine
     set ..line = pLine 
     set ..code = pCode
+    set ..coloredLine = pColoredLine
     set ..Executable = pExecutable
     set ..RtnLineCount = pRtnLineCount
     set ..TIME = pTIME

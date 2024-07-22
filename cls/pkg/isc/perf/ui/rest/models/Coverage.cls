@@ -1,3 +1,5 @@
+Include %occInclude
+
 Class pkg.isc.perf.ui.rest.models.Coverage Extends (%RegisteredObject, %pkg.isc.rest.model.resource)
 {
 
@@ -34,30 +36,44 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,,.tCoverageParams)) 
     set stream = ##class(%Stream.TmpCharacter).%New()
     do buffer.EndCaptureOutput(.stream)
-    #; set output = []
-    #; while 'stream.AtEnd {
-    #;     Set tLine = stream.ReadLine()
-    #;     do output.%Push(tLine)
-    #;     //Set ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = tLine
-    #; }
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 
+ClassMethod GetPythonColoredLine(pLine As %String) As %String [ Language = python ]
+{
+    from pygments import highlight
+    from pygments.lexers import PythonLexer
+    from pygments.formatters import HtmlFormatter
+    # Use PythonLexer to tokenize the input code
+    lexer = PythonLexer()
+    
+    # Use HtmlFormatter with inline styles
+    formatter = HtmlFormatter(style='colorful', noclasses=True, nowrap=True)
+    
+    # Highlight the code and get the result as an HTML string
+    highlighted_code = highlight(pLine, lexer, formatter)
+    return highlighted_code
+}
+
+/// Highlight a line of Python code and return the HTML with inline styles.
 ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg.isc.perf.ui.rest.models.CoverageResults
 {
-  
     set tName = $Piece(routine, ".", 1, *-1)
     set tType = $Piece(routine, ".", *)
-    set tType = $ZCONVERT(tType, "U") 
+    set tType = $ZCONVERT(tType, "U")
     if ((tType '= "PY") && (tType '= "CLS") && (tType '= "INT")) {
         // this should never come up: the routine is selected from a dropdown
          return $$$ERROR($$$GeneralError,"File type not supported")
     }
-    set response = ##class(pkg.isc.perf.ui.rest.models.CoverageResults).%New()
+    do ##class(TestCoverage.Data.CodeUnit).GetCurrentByName(routine, , .tCodeUnit, )
+    set tHash = tCodeUnit.Hash 
+
+    set response = ##class(pkg.isc.perf.ui.rest.models.CoverageResults).%New() // the response that we'll return from this call
+    
+    
     // first, figure out which coverage id this corresponds to 
     &sql(SELECT ID INTO :tCoverageID FROM TestCoverage_Data.Coverage 
-    WHERE Hash->Name = :tName 
-    AND Hash->Type = :tType 
+    WHERE Hash = :tHash
     AND TestPath = :testpath)
     If (SQLCODE < 0) {
 		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
@@ -65,110 +81,71 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     ElseIf (SQLCODE = 100) {
         return response 
     }
-    // get the lines of code first and then create all the CoverageResult objects 
-    // not sure how to iterate through the result though, might want to try it out in local iris first
+    set tCoverage = ##class(TestCoverage.Data.Coverage).%OpenId(tCoverageID)
+
+
+    // Create all the CoverageResult objects for each line, getting the information from tCodeUnit and tCoverage
     set codeStream = ##class(%Stream.GlobalCharacter).%New()
+    set tObjsLines = "" 
+    for tLineNumber = 1:1:tCodeUnit.Lines.Count() {
+        set tLine = tCodeUnit.Lines.GetAt(tLineNumber)
+        set tExecutable = $Bit(tCodeUnit.ExecutableLines, tLineNumber) 
+        set tRtnLine = tCoverage.RtnLine.GetAt(tLineNumber)
+        set tTime = tCoverage.Time.GetAt(tLineNumber)
+        set tTotalTime = tCoverage.TotalTime.GetAt(tLineNumber)
+        set tColoredLine = tLine _ " "
 
-    set sql = "SELECT Hash->CodeUnit_Lines->Lines FROM TestCoverage_Data.Coverage WHERE ID = ? "
-    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
-    If (resultSet.%SQLCODE < 0) {
-        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
-    }
-    set tLineNumber = 1
-    while resultSet.%Next(.tSC) {
-        $$$ThrowOnError(tSC)
-        set tLine = resultSet.%GetData(1)
-        do response.results.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageResult).%New(routine, tLineNumber, tLine))
-        do codeStream.WriteLine(tLine)
-        set tLineNumber = tLineNumber + 1
-    }
-
-    // get the colored versions of each line (this is copy pasted over from LineByLineMonitorStatus
-    // can't really make it a shared function because it needs to access its own results instance 
-    set coloredStream = ##class(%Stream.GlobalCharacter).%New()
-    set colorer = ##class(%Library.SyntaxColor).%New()
-    set language = "MAC"
-    set flags = "PFES"
-    set tGood = colorer.Color(codeStream,coloredStream,language,flags,,,,.coloringErrors,.errorEnv,.coloringWarnings)
-    // Merge ^IRIS.TEMPCG($i(^IRIS.TEMPCG)) = coloringErrors
-    if tGood {
-			for lineNumber=1:1 {
-				set coloredLine = coloredStream.ReadLine(,.sc)
-				$$$ThrowOnError(sc)
-				if (coloredStream.AtEnd) {
-					quit
-				}
-				
-				// Sometimes there are random extra lines inserted. Detect these by looking for a colored line length shorter
-				// than the non-colored line.
-				set rawLine = response.results.GetAt(lineNumber).line
-				if ($length(coloredLine) < $length(rawLine)) && $increment(lineNumber,-1) {
-					continue
-				}
-				
-				// Remove line breaks
-				set coloredLine = $replace(coloredLine,"<BR>","")
-				set response.results.GetAt(lineNumber).coloredLine = coloredLine
-			}
-		}
-    
-    // get the executability of each line of code
-    set sql = "SELECT Hash->ExecutableLines FROM TestCoverage_Data.Coverage WHERE ID = ? "
-    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
-    If (resultSet.%SQLCODE < 0) {
-        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
-    }
-    while resultSet.%Next(.tSC) {
-        $$$ThrowOnError(tSC)
-        set tExecutableLines = resultSet.%GetData(1)
-    }
-    for i=1:1:tLineNumber-1 {
-        set tLineResult = response.results.GetAt(i)
-        set tLineResult.Executable = $BIT(tExecutableLines, i)
+        if (tCodeUnit.LineIsPython.GetAt(tLineNumber)) {
+            set tColoredLine = ..GetPythonColoredLine(tLine)
+        } ElseIf ($$$isWINDOWS) {//  ##class(%Library.SyntaxColor).%New()  only works if it's a windows machine; otherwise we'll include the non colored line
+            
+            // there's a lot of statements that the objectscript colorer doesn't seem to handle very well; this just ignores a subset of them
+            set tStrippedLine = $zstrip(tLine, "<>W")
+            set nonEmpty = (tStrippedLine '= "")
+            set notStartBracket = (tStrippedLine '= "{")
+            set notEndBracket = (tStrippedLine '= "}")
+            set notInclude = ($ZCONVERT($extract(tStrippedLine, 1, 7), "U") '= "INCLUDE")
+            set notClassDef = ($ZCONVERT($extract(tStrippedLine, 1, 5), "U") '= "CLASS")
+            set notQuit = ($ZCONVERT($extract(tStrippedLine, 1, 4), "U") '= "QUIT")
+            if (nonEmpty && notStartBracket && notEndBracket && notInclude && notClassDef && notQuit)
+            {
+                do codeStream.WriteLine(tLine)
+                set tObjsLines = tObjsLines _ $ListBuild(tLineNumber)
+            }
+        }
+        do response.results.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageResult).%New(routine, tLineNumber, tLine, tColoredLine ,tExecutable, tRtnLine, tTime, tTotalTime))
     }
 
+    if ($$$isWINDOWS) {
+        // get the colored versions of each objectscript line 
+        // can't really make it a shared function because it needs to access its own results instance 
+        set coloredStream = ##class(%Stream.GlobalCharacter).%New()
+        set colorer = ##class(%Library.SyntaxColor).%New()
+        set language = "MAC"
+        set flags = "PFES"
+        set tGood = colorer.Color(codeStream,coloredStream,language,flags,,,,.coloringErrors,.errorEnv,.coloringWarnings)
+        if tGood {
+            set tPointer = 0
+            While $ListNext(tObjsLines, tPointer, lineNumber) {
+                set coloredLine = coloredStream.ReadLine(,.sc)
+                $$$ThrowOnError(sc)
+                if (coloredStream.AtEnd) {
+                    quit
+                }
+                
+                // Sometimes there are random extra lines inserted. Detect these by looking for a colored line length shorter
+                // than the non-colored line.
+                set rawLine = response.results.GetAt(lineNumber).line
+                if ($length(coloredLine) < $length(rawLine)) && $increment(lineNumber,-1) {
+                    continue
+                }
+                // Remove line breaks
+                set coloredLine = $replace(coloredLine,"<BR>","")
+                set response.results.GetAt(lineNumber).coloredLine = coloredLine
+            }
+        }
+    }
 
-    // get the Rtnline data for this routine / testpath combination
-    set sql = "SELECT RtnLine, element_key FROM TestCoverage_Data.Coverage_RtnLine WHERE Coverage = ?"
-    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
-    If (resultSet.%SQLCODE < 0) {
-        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
-    }
-    while resultSet.%Next(.tSC) {
-        $$$ThrowOnError(tSC)
-        set tRtnLine = resultSet.%GetData(1)
-        set tLineNum = resultSet.%GetData(2)
-        set tLineResult = response.results.GetAt(tLineNum)
-        set tLineResult.RtnLineCount = tLineResult.RtnLineCount + tRtnLine
-    }
-
-    // now do the same for _TIME and _TOTALTIME (if they don't exist, this will just skip over the loops) 
-    set sql = "SELECT _TIME, element_key FROM TestCoverage_Data.Coverage__TIME WHERE Coverage = ?"
-    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
-    If (resultSet.%SQLCODE < 0) {
-        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
-    }
-    while resultSet.%Next(.tSC) {
-        $$$ThrowOnError(tSC)
-        set tRtnLine = resultSet.%GetData(1)
-        set tLineNum = resultSet.%GetData(2)
-        set tLineResult = response.results.GetAt(tLineNum)
-        set tLineResult.TIME = tLineResult.TIME + tRtnLine
-    }
-
-    set sql = "SELECT TotalTime, element_key FROM TestCoverage_Data.Coverage_TotalTime WHERE Coverage = ?"
-    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tCoverageID)
-    If (resultSet.%SQLCODE < 0) {
-        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
-    }
-    while resultSet.%Next(.tSC) {
-        $$$ThrowOnError(tSC)
-        set tRtnLine = resultSet.%GetData(1)
-        set tLineNum = resultSet.%GetData(2)
-        set tLineResult = response.results.GetAt(tLineNum)
-        set tLineResult.TotalTime = tLineResult.TotalTime + tRtnLine
-    }
-    
     quit response
 }
 
