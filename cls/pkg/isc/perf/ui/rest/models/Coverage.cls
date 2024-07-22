@@ -35,7 +35,8 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     do ##class(TestCoverage.Utils).Clear() 
     set buffer = ##class(%pkg.isc.json.util.buffer).%New()
     do buffer.BeginCaptureOutput()
-    $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,,.tCoverageParams)) 
+
+    $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
     set stream = ##class(%Stream.TmpCharacter).%New()
     do buffer.EndCaptureOutput(.stream)
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
@@ -65,10 +66,13 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     set tName = $Piece(routine, ".", 1, *-1)
     set tType = $Piece(routine, ".", *)
     set tType = $ZCONVERT(tType, "U")
-    if ((tType '= "PY") && (tType '= "CLS") && (tType '= "INT")) {
+    if ((tType '= "PY") && (tType '= "CLS") && (tType '= "INT") && (tType '= "MAC")) {
         // this should never come up: the routine is selected from a dropdown
-         return $$$ERROR($$$GeneralError,"File type not supported")
+        Set tMsg = "File type not supported"
+	    $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     }
+
+    
     do ##class(TestCoverage.Data.CodeUnit).GetCurrentByName(routine, , .tCodeUnit, )
     set tHash = tCodeUnit.Hash 
 
@@ -87,6 +91,7 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     }
     set tCoverage = ##class(TestCoverage.Data.Coverage).%OpenId(tCoverageID)
 
+    
 
     // Create all the CoverageResult objects for each line, getting the information from tCodeUnit and tCoverage
     set codeStream = ##class(%Stream.GlobalCharacter).%New()

@@ -17,8 +17,6 @@ export class CoverageRestService {
         this.startCompletedSubject.next(true);
       }),
       catchError((error) => {
-        console.log(error)
-      
         return throwError(() => new Error(error.message));
       })
     );
