@@ -1,5 +1,8 @@
 .example-form {
   width: 100%;
+  margin: 10px;
+  padding: 10px;
+  padding-right: 40px; 
 }
 
 .example-full-width {

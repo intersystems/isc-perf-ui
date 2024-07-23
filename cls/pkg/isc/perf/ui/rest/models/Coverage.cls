@@ -137,25 +137,15 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
         set tRtnLine = tCoverage.RtnLine.GetAt(tLineNumber)
         set tTime = tCoverage.Time.GetAt(tLineNumber)
         set tTotalTime = tCoverage.TotalTime.GetAt(tLineNumber)
-        set tColoredLine = tLine _ " "
-
-        if (tCodeUnit.LineIsPython.GetAt(tLineNumber)) {
+        set tColoredLine = tLine
+        If ($ZSTRIP(tLine, "<>W") = "") {
+            set tColoredLine = "<span></span>" // otherwise, the coloredLine attribute doesn't get passed at all
+        }
+        ElseIf (tCodeUnit.LineIsPython.GetAt(tLineNumber)) {
             set tColoredLine = ..GetPythonColoredLine(tLine)
         } ElseIf ($$$isWINDOWS) {//  ##class(%Library.SyntaxColor).%New()  only works if it's a windows machine; otherwise we'll include the non colored line
-            
-            // there's a lot of statements that the objectscript colorer doesn't seem to handle very well; this just ignores a subset of them
-            set tStrippedLine = $zstrip(tLine, "<>W")
-            set nonEmpty = (tStrippedLine '= "")
-            set notStartBracket = (tStrippedLine '= "{")
-            set notEndBracket = (tStrippedLine '= "}")
-            set notInclude = ($ZCONVERT($extract(tStrippedLine, 1, 7), "U") '= "INCLUDE")
-            set notClassDef = ($ZCONVERT($extract(tStrippedLine, 1, 5), "U") '= "CLASS")
-            set notQuit = ($ZCONVERT($extract(tStrippedLine, 1, 4), "U") '= "QUIT")
-            if (nonEmpty && notStartBracket && notEndBracket && notInclude && notClassDef && notQuit)
-            {
-                do codeStream.WriteLine(tLine)
-                set tObjsLines = tObjsLines _ $ListBuild(tLineNumber)
-            }
+            do codeStream.WriteLine(tLine)
+            set tObjsLines = tObjsLines _ $ListBuild(tLineNumber)
         }
         do response.results.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageResult).%New(routine, tLineNumber, tLine, tColoredLine ,tExecutable, tRtnLine, tTime, tTotalTime))
     }
@@ -183,9 +173,17 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
                 if ($length(coloredLine) < $length(rawLine)) && $increment(lineNumber,-1) {
                     continue
                 }
-                // Remove line breaks
-                set coloredLine = $replace(coloredLine,"<BR>","")
-                set response.results.GetAt(lineNumber).coloredLine = coloredLine
+
+                if (coloredLine [ "COS_00") {
+                    // this means that there was an error from the syntax colorer for this line
+                    set response.results.GetAt(lineNumber).coloredLine = response.results.GetAt(lineNumber).code
+                } else {
+                    // Remove line breaks
+                    set coloredLine = $replace(coloredLine,"<BR>","")
+                    set response.results.GetAt(lineNumber).coloredLine = coloredLine
+                }
+
+                
             }
         }
     }
