@@ -22,6 +22,41 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 
 ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
+    // Validate UnitTestRoot
+    If pConfig.UnitTestRoot '= "" {
+        Set pathRegex = "^(?:[a-zA-Z]:(?:\\|\/)|\/)?(?:[\w\s.-]+(?:\\|\/))*([\w\s.-]+(?:\\|\/))?$"
+        If '$match(pConfig.UnitTestRoot, pathRegex) {
+            Set tMsg = "Invalid file path for UnitTestRoot."
+            $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
+        }
+    }
+
+    // Validate CoverageClasses
+    If pConfig.CoverageClasses '= "" {
+        Set classesRegex = "^(\s*[\w.]+(?<!\.cls)\s*,)*\s*[\w.]+(?<!\.cls)\s*$"
+        If '$match(pConfig.CoverageClasses, classesRegex) {
+            Set tMsg = "Invalid CoverageClasses format. Must be a comma-separated list not ending in .cls."
+            $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
+        }
+    }
+
+    // Validate CoverageRoutines
+    If pConfig.CoverageRoutines '= "" {
+        Set routinesRegex = "^(\s*[\w.]+(?<!\.mac)\s*,)*\s*[\w.]+(?<!\.mac)\s*$"
+        If '$match(pConfig.CoverageRoutines, routinesRegex) {
+            Set tMsg = "Invalid CoverageRoutines format. Must be a comma-separated list not ending in .mac."
+            $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
+        }
+    }
+
+    // Validate PidList
+    If pConfig.PidList '= "" {
+        Set pidRegex = "^(Interop|[0-9]+)(\s*,\s*[0-9]+)*$"
+        If '$match(pConfig.PidList, pidRegex) {
+            Set tMsg = "Invalid PidList format. Must start with Interop or be a comma-separated list of numbers."
+            $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
+        }
+    }
     #; Set tMsg = "Example Error"
 	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     Set ^UnitTestRoot = pConfig.UnitTestRoot
