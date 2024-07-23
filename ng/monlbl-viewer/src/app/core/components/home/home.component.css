@@ -7,10 +7,10 @@
     flex: 1;
 }  
 
-.flex-child:first-child {
-    margin-right: 20px;
-} 
-
 mat-divider {
     margin: 20px 0;
+}
+
+.right-side {
+    margin-right: 20px;
 }
