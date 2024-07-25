@@ -43,6 +43,13 @@
           <Attribute Name="PasswordAuthEnabled">1</Attribute>
           <Attribute Name="UnauthenticatedEnabled">0</Attribute>
         </Resource>
+        <!-- <Resource Name="/csp/testcoverage-viewer/pkg.isc.perf.ui.socket.WebSocket.cls" ProcessorClass="CSPApplication" Generated="true">
+          <Attribute Name="Directory">${cspdir}${namespace}/testcoverage-viewer</Attribute>
+          <Attribute Name="Url">/csp/${namespace}/testcoverage-viewer</Attribute>
+          <Attribute Name="ServeFiles">1</Attribute>
+          <Attribute Name="Recurse">1</Attribute>
+          <Attribute Name="ServeFilesTimeout">0</Attribute>
+        </Resource> -->
         <Resource Name="/api/openapi.json" ProcessorClass="pkg.isc.ipm.js.openApiProcessor">
           <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.Handler</Attribute>
           <Attribute Name="Url">/csp/${namespace}/monlbl-viewer/api</Attribute>

@@ -26,4 +26,17 @@ ClassMethod Login(skipheader As %Boolean = 1) As %Status [ ProcedureBlock = 0 ]
 	quit sc
 }
 
+ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue As %Boolean) As %Status
+{
+	#dim %request As %CSP.Request
+	#dim %response As %CSP.Response
+	#dim %session As %CSP.Session
+	if (pUrl = "/socket") {
+		set pContinue = 0
+		set %response.ServerSideRedirect = "../../pkg.isc.perf.ui.socket.WebSocket.cls?session="_%session.SessionId
+		quit $$$OK
+	}
+	quit ##super(pUrl,pMethod,.pContinue)
+}
+
 }

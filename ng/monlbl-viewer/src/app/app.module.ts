@@ -46,6 +46,7 @@ import { ParameterExplanationsComponent } from './core/components/parameter-expl
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,4 +103,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }
