@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { map, switchMap } from 'rxjs/operators';
-import { CoverageRoutinePathOutput } from 'src/app/generated';
+import { CoverageRoutinePathsOutput, CoverageRoutinePathOutput  } from 'src/app/generated';
 import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 
@@ -15,7 +15,7 @@ import { MatSelect } from '@angular/material/select';
 })
 export class CoverageResultsDisplayComponent {
   @ViewChild('routineSelect') routineSelect!: MatSelect;
-  covpaths$: Observable<CoverageRoutinePathOutput[]> = this.covRestService.getCovpathsObservable();
+  covpaths$: Observable<CoverageRoutinePathsOutput | null> = this.covRestService.getCovpathsObservable();
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
 

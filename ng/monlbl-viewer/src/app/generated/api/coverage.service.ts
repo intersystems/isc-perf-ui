@@ -110,7 +110,7 @@ export class CoverageService {
     }
 
     /**
-     * Performs the results action.
+     * Highlight a line of Python code and return the HTML with inline styles.
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

@@ -36,8 +36,8 @@ export class TestCoverageLauncherComponent {
   ];
   ngOnInit() {
     this.dataForm = this.formBuilder.group({
-      UnitTestRoot: ['C:\\InterSystems\\TestCoverage\\internal\\testing\\unit_tests\\UnitTest\\', [Validators.required, this.validatePath]],
-      CoverageLevel: [1, Validators.required],
+      UnitTestRoot: ['C:\\Users\\cge\\OneDrive - InterSystems Corporation\\Documents\\Training\\', [Validators.required, this.validatePath]],
+      CoverageLevel: [0, Validators.required],
       CoverageClasses: ['', this.validateCoverageClasses],
       CoverageRoutines: ['', this.validateCoverageRoutines],
       PidList: ['', this.validatePidList],

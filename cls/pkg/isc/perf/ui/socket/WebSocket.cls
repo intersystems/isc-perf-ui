@@ -4,6 +4,7 @@ Class pkg.isc.perf.ui.socket.WebSocket Extends %CSP.WebSocket
 Method OnPreServer() As %Status
 {
     #dim %request As %CSP.Request
+	set ^mtempcg($i(^mtempcg)) = "preserver" 
     Set ..SharedConnection = 1
     // populate the persistent class
     Quit $$$OK
@@ -11,11 +12,9 @@ Method OnPreServer() As %Status
 
 Method Server() As %Status
 {
-    For {
-        set tWS = ..%New()
-		do tWS.OpenServer(..WebSocketID)
-		do tWS.Write("Hello World")
-    }
+	set ^mtempcg($i(^mtempcg)) = "server"
+	do ..Write("Hello World")
+	Quit $$$OK
 }
 
 ClassMethod HandleException(pException As %Exception.AbstractException, pSocketID As %String = "")

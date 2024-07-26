@@ -33,7 +33,7 @@ ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue A
 	#dim %session As %CSP.Session
 	if (pUrl = "/socket") {
 		set pContinue = 0
-		set %response.ServerSideRedirect = "../../pkg.isc.perf.ui.socket.WebSocket.cls?session="_%session.SessionId
+		set %response.ServerSideRedirect = "../../socket/pkg.isc.perf.ui.socket.WebSocket.cls?session="_%session.SessionId
 		quit $$$OK
 	}
 	quit ##super(pUrl,pMethod,.pContinue)

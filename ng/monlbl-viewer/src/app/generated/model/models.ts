@@ -4,6 +4,7 @@ export * from './buildDocumentationGet200ResponseBuildParametersUserContext';
 export * from './buildDocumentationGet200ResponseBuildProgress';
 export * from './buildDocumentationPost200Response';
 export * from './coverageConfigInput';
+export * from './coverageMethodResultOutput';
 export * from './coverageResultOutput';
 export * from './coverageResultsOutput';
 export * from './coverageRoutinePathOutput';

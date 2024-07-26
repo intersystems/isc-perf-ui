@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CoverageResultOutput } from './coverageResultOutput';
-import { CoverageMethodResultOutput } from './coverageMethodResultOutput';
 
 
-export interface CoverageResultsOutput { 
-    CoveragePercent?: number;
-    MethodResults?: Array<CoverageMethodResultOutput>;
+export interface CoverageMethodResultOutput { 
+    Complexity?: number;
+    Name?: string;
     _id: string;
-    results?: Array<CoverageResultOutput>;
 }
 

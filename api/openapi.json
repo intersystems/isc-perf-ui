@@ -82,6 +82,24 @@
         "type":"object",
         "writeOnly":true
       },
+      "coverage-method-result_output":{
+        "properties":{
+          "Complexity":{
+            "type":"number"
+          },
+          "Name":{
+            "type":"string"
+          },
+          "_id":{
+            "type":"string"
+          }
+        },
+        "readOnly":true,
+        "required":[
+          "_id"
+        ],
+        "type":"object"
+      },
       "coverage-result_output":{
         "properties":{
           "Executable":{
@@ -102,6 +120,9 @@
           "code":{
             "type":"string"
           },
+          "coloredLine":{
+            "type":"string"
+          },
           "line":{
             "type":"number"
           },
@@ -117,6 +138,15 @@
       },
       "coverage-results_output":{
         "properties":{
+          "CoveragePercent":{
+            "type":"number"
+          },
+          "MethodResults":{
+            "items":{
+              "$ref":"#/components/schemas/coverage-method-result_output"
+            },
+            "type":"array"
+          },
           "_id":{
             "type":"string"
           },
@@ -153,6 +183,9 @@
       },
       "coverage-routine-paths_output":{
         "properties":{
+          "CoveragePercent":{
+            "type":"number"
+          },
           "_id":{
             "type":"string"
           },
@@ -521,7 +554,7 @@
     },
     "/coverage/$results":{
       "get":{
-        "description":"Performs the results action.",
+        "description":"Highlight a line of Python code and return the HTML with inline styles.",
         "parameters":[
           {
             "in":"query",

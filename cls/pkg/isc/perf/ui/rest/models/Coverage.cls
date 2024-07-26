@@ -126,7 +126,6 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     }
     set tCoverage = ##class(TestCoverage.Data.Coverage).%OpenId(tCoverageID)
 
-    
 
     // Create all the CoverageResult objects for each line, getting the information from tCodeUnit and tCoverage
     set codeStream = ##class(%Stream.GlobalCharacter).%New()
@@ -182,23 +181,42 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
                     set coloredLine = $replace(coloredLine,"<BR>","")
                     set response.results.GetAt(lineNumber).coloredLine = coloredLine
                 }
-
-                
             }
         }
     }
 
+    set sql = "SELECT Name, Complexity FROM TestCoverage_Data_CodeSubUnit.Method WHERE Parent = ? "
+    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tHash)
+    If (resultSet.%SQLCODE < 0) {
+        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
+    }
+    while resultSet.%Next(.tSC) {
+        $$$ThrowOnError(tSC)
+        set tName = resultSet.%GetData(1)
+        set tComplexity = resultSet.%GetData(2)
+        do response.MethodResults.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageMethodResult).%New(tName, tComplexity))
+    }
     quit response
 }
 
 ClassMethod GetRoutinePaths() As pkg.isc.perf.ui.rest.models.CoverageRoutinePaths
 {
+    set response = ##class(pkg.isc.perf.ui.rest.models.CoverageRoutinePaths).%New()
+
+    // next, get the aggregate coverage statistic and store that 
+    &sql(SELECT CoveredLines, ExecutableLines INTO :tCoveredLines, :tExecutableLines FROM TestCoverage_Data_Aggregate.ByRun)
+    If (SQLCODE < 0) {
+		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
+    }
+    set response.CoveragePercent = $Number((tCoveredLines / tExecutableLines) * 100, 2)
+
+
     set sql = "SELECT Hash->Name, Hash->Type, TestPath FROM TestCoverage_Data.Coverage"
     set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
     If (resultSet.%SQLCODE < 0) {
         Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
     }
-    set response = ##class(pkg.isc.perf.ui.rest.models.CoverageRoutinePaths).%New()
+   
     while resultSet.%Next(.tSC) {
         $$$ThrowOnError(tSC)
         set tName = resultSet.%GetData(1)

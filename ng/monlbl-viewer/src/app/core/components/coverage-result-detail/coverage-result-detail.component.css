@@ -27,7 +27,6 @@ th.mat-header-cell {
   background-color: lightcoral;
 }
 
-
 .code-line {
   margin-left: 2em;
   cursor: pointer;
@@ -47,4 +46,20 @@ th.mat-header-cell {
 
 .back-button-container {
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.methods-table-container {
+  margin: auto; 
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+  text-align: center;
+}
+
+.complexity-legend {
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: left;
 }

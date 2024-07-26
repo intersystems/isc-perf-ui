@@ -2,14 +2,39 @@
   <button mat-icon-button color="primary" (click)="goBack()">
     <mat-icon>arrow_back</mat-icon>
   </button>
+  <button mat-raised-button color="accent" (click)="toggleMethodsTable()">
+    {{ showMethodsTable ? 'Hide Methods' : 'Show Methods' }}
+  </button>
+</div>
+
+<!-- Methods Table -->
+<div *ngIf="showMethodsTable" class="methods-table-container">
+  <p class="complexity-legend">
+    <strong>Complexity Legend:</strong><br>
+    1 - 10: Simple procedure, little risk.<br>
+    11 - 20: More complex, moderate risk.<br>
+    21 - 50: Complex, high risk.<br>
+    > 50: Untestable code, very high risk.
+  </p>
+  <table mat-table [dataSource]="methodDataSource" class="mat-elevation-z8 full-width-table">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let method">{{ method.Name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="complexity">
+      <th mat-header-cell *matHeaderCellDef>Complexity</th>
+      <td mat-cell *matCellDef="let method">{{ method.Complexity }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="methodColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: methodColumns;"></tr>
+  </table>
 </div>
 
 <p>Click on a column header to sort by that column.</p>
 
 <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8 full-width-table">
-
-  
-
   <ng-container matColumnDef="TIME">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>TIME</th>
     <td mat-cell *matCellDef="let element" class="centered-column">{{element.TIME}}</td>
@@ -21,13 +46,12 @@
   </ng-container>
 
   <ng-container matColumnDef="RtnLineCount">
-  <th mat-header-cell *matHeaderCellDef mat-sort-header>RtnLineCount</th>
-  <td mat-cell *matCellDef="let element" 
-      [ngClass]="{'green-background': element.Executable && element.RtnLineCount > 0, 'red-background': element.Executable && element.RtnLineCount === 0}">
-    {{element.RtnLineCount}}
-  </td>
-</ng-container>
-
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>RtnLineCount</th>
+    <td mat-cell *matCellDef="let element" 
+        [ngClass]="{'green-background': element.Executable && element.RtnLineCount > 0, 'red-background': element.Executable && element.RtnLineCount === 0}">
+      {{element.RtnLineCount}}
+    </td>
+  </ng-container>
 
   <ng-container matColumnDef="line">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Line</th>

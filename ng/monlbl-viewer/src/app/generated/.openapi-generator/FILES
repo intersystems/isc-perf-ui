@@ -16,6 +16,7 @@ model/buildDocumentationGet200ResponseBuildParametersUserContext.ts
 model/buildDocumentationGet200ResponseBuildProgress.ts
 model/buildDocumentationPost200Response.ts
 model/coverageConfigInput.ts
+model/coverageMethodResultOutput.ts
 model/coverageResultOutput.ts
 model/coverageResultsOutput.ts
 model/coverageRoutinePathOutput.ts

@@ -18,6 +18,7 @@ export interface CoverageResultOutput {
     TotalTime?: string;
     _id: string;
     code?: string;
+    coloredLine?: string;
     line?: number;
     routine?: string;
 }
