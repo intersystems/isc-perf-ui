@@ -5,6 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { CoverageRoutinePathsOutput, CoverageRoutinePathOutput  } from 'src/app/generated';
 import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
+import { WebsocketService } from '../../services/websocket.service';
 
 
 
@@ -19,7 +20,7 @@ export class CoverageResultsDisplayComponent {
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
 
-  constructor(private covRestService: CoverageRestService, private router: Router) {}
+  constructor(private covRestService: CoverageRestService, private router: Router, private websocketService: WebsocketService) {}
 
   ngOnInit() {
     // Listen for when the Start process is completed

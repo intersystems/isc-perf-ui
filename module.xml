@@ -36,6 +36,8 @@
           <Attribute Name="Recurse">1</Attribute>
           <Attribute Name="ServeFilesTimeout">0</Attribute>
           <Attribute Name="CookiePath">/csp/${namespace}/monlbl-viewer</Attribute>
+          <Attribute Name="PasswordAuthEnabled">1</Attribute>
+          <Attribute Name="UnauthenticatedEnabled">0</Attribute>
         </Resource>
         <Resource Name="/csp/monlbl-viewer/api" ProcessorClass="CSPApplication" Generated="true">
           <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.Handler</Attribute>
@@ -50,9 +52,11 @@
         <Attribute Name="Directory">${cspdir}${namespace}/monlbl-viewer/socket</Attribute>
         <Attribute Name="Url">/csp/${namespace}/monlbl-viewer/socket</Attribute>
         <Attribute Name="CookiePath">/csp/${namespace}/monlbl-viewer</Attribute>
-        <Attribute Name="PasswordAuthEnabled">0</Attribute>
+        <Attribute Name="PasswordAuthEnabled">1</Attribute>
+        <Attribute Name="UnauthenticatedEnabled">0</Attribute>
+        <!-- <Attribute Name="PasswordAuthEnabled">0</Attribute>
         <Attribute Name="UnauthenticatedEnabled">1</Attribute>
-        <Attribute Name="MatchRoles">:%All</Attribute>
+        <Attribute Name="MatchRoles">:%All</Attribute> -->
         </Resource>
         <Resource Name="/api/openapi.json" ProcessorClass="pkg.isc.ipm.js.openApiProcessor">
           <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.Handler</Attribute>

@@ -4,7 +4,7 @@ Class pkg.isc.perf.ui.socket.WebSocket Extends %CSP.WebSocket
 Method OnPreServer() As %Status
 {
     #dim %request As %CSP.Request
-	set ^mtempcg($i(^mtempcg)) = "preserver" 
+	//set ^mtempcg($i(^mtempcg)) = "preserver" 
     Set ..SharedConnection = 1
     // populate the persistent class
     Quit $$$OK
@@ -12,8 +12,9 @@ Method OnPreServer() As %Status
 
 Method Server() As %Status
 {
-	set ^mtempcg($i(^mtempcg)) = "server"
-	do ..Write("Hello World")
+	//set ^mtempcg($i(^mtempcg)) = "server"
+	set msg = {"message": "Hello World"}
+	do ..Write(msg.%ToJSON())
 	Quit $$$OK
 }
 
