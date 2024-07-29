@@ -14,7 +14,6 @@ import { CoverageMethodResultOutput } from './coverageMethodResultOutput';
 
 
 export interface CoverageResultsOutput { 
-    CoveragePercent?: number;
     MethodResults?: Array<CoverageMethodResultOutput>;
     _id: string;
     results?: Array<CoverageResultOutput>;

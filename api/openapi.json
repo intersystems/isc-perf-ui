@@ -138,9 +138,6 @@
       },
       "coverage-results_output":{
         "properties":{
-          "CoveragePercent":{
-            "type":"number"
-          },
           "MethodResults":{
             "items":{
               "$ref":"#/components/schemas/coverage-method-result_output"
@@ -177,7 +174,9 @@
         },
         "readOnly":true,
         "required":[
-          "_id"
+          "_id",
+          "routine",
+          "testpath"
         ],
         "type":"object"
       },
@@ -218,6 +217,11 @@
           "status"
         ],
         "type":"object"
+      },
+      "integer_input":{
+        "example":0,
+        "type":"number",
+        "writeOnly":true
       },
       "line-by-line-monitor-config_input":{
         "properties":{
@@ -558,8 +562,16 @@
         "parameters":[
           {
             "in":"query",
+            "name":"RunID",
+            "required":true,
+            "schema":{
+              "$ref":"#/components/schemas/integer_input"
+            }
+          },
+          {
+            "in":"query",
             "name":"routine",
-            "required":false,
+            "required":true,
             "schema":{
               "$ref":"#/components/schemas/string_input"
             }
@@ -567,7 +579,7 @@
           {
             "in":"query",
             "name":"testpath",
-            "required":false,
+            "required":true,
             "schema":{
               "$ref":"#/components/schemas/string_input"
             }
@@ -626,6 +638,16 @@
     "/coverage/$routinepaths":{
       "get":{
         "description":"Performs the routinepaths action.",
+        "parameters":[
+          {
+            "in":"query",
+            "name":"RunID",
+            "required":true,
+            "schema":{
+              "$ref":"#/components/schemas/integer_input"
+            }
+          }
+        ],
         "responses":{
           "200":{
             "content":{

@@ -12,10 +12,12 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
     <argument target="pConfig" name="config" required="true" source="body" />
 </action> 
 <action name="results" target="class" call="GetResults" method="GET">
-    <argument target="routine" name="routine" source="query" />
-    <argument target="testpath" name="testpath" source="query" />
+    <argument target="routine" name="routine" source="query" required="true" />
+    <argument target="testpath" name="testpath" source="query"  required="true"/>
+    <argument target="RunID" name="RunID" source="query"  required="true"/>
 </action>
 <action name="routinepaths" target="class" call="GetRoutinePaths" method="GET">
+<argument target="RunID" name="RunID" source="query"  required="true"/>
 </action> 
 </actions>
 }
@@ -67,15 +69,7 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     set tCoverageRoutines = $LISTFROMSTRING(pConfig.CoverageRoutines)
     set tProcessIDs = $LISTFROMSTRING(pConfig.PidList)
     set tCoverageDetail = pConfig.CoverageLevel
-
     Job ..CoverageCall(tUnitTestRoot, tTiming, tCoverageClasses, tCoverageRoutines, tProcessIDs, tCoverageDetail)
-    #; do ##class(TestCoverage.Utils).Clear() 
-    #; set buffer = ##class(%pkg.isc.json.util.buffer).%New()
-    #; do buffer.BeginCaptureOutput()
-
-    #; $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
-    #; set stream = ##class(%Stream.TmpCharacter).%New()
-    #; do buffer.EndCaptureOutput(.stream)
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 
@@ -88,15 +82,21 @@ ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverage
     set tCoverageParams("ProcessIDs") = pProcessIDs
     set tCoverageParams("CoverageDetail") = pCoverageDetail
     set ^UnitTestRoot = pUnitTestRoot
-    do ##class(TestCoverage.Utils).Clear() 
     set buffer = ##class(%pkg.isc.json.util.buffer).%New()
     do buffer.BeginCaptureOutput()
     $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
     set stream = ##class(%Stream.TmpCharacter).%New()
     do buffer.EndCaptureOutput(.stream)
-    set msg = {"message": "Finished RunTest"}
-    do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
 
+    // figure out which run id this went into
+    &sql(SELECT MAX(ID) INTO :tRunID FROM TestCoverage_Data.Run)
+    If (SQLCODE < 0) {
+		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
+    }
+
+    set msg = {"message": "Finished RunTest"}
+    do msg.%Set("RunID", tRunID)
+    do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
     Quit $$$OK
 }
 
@@ -117,7 +117,7 @@ ClassMethod GetPythonColoredLine(pLine As %String) As %String [ Language = pytho
 }
 
 /// Highlight a line of Python code and return the HTML with inline styles.
-ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg.isc.perf.ui.rest.models.CoverageResults
+ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID As %Integer) As pkg.isc.perf.ui.rest.models.CoverageResults
 {
     #; Set tMsg = "Example Error"
 	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
@@ -140,7 +140,8 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     // first, figure out which coverage id this corresponds to 
     &sql(SELECT ID INTO :tCoverageID FROM TestCoverage_Data.Coverage 
     WHERE Hash = :tHash
-    AND TestPath = :testpath)
+    AND TestPath = :testpath
+    AND Run = :RunID)
     If (SQLCODE < 0) {
 		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
     }
@@ -222,20 +223,20 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "") As pkg
     quit response
 }
 
-ClassMethod GetRoutinePaths() As pkg.isc.perf.ui.rest.models.CoverageRoutinePaths
+ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.CoverageRoutinePaths
 {
     set response = ##class(pkg.isc.perf.ui.rest.models.CoverageRoutinePaths).%New()
 
     // next, get the aggregate coverage statistic and store that 
-    &sql(SELECT CoveredLines, ExecutableLines INTO :tCoveredLines, :tExecutableLines FROM TestCoverage_Data_Aggregate.ByRun)
+    &sql(SELECT CoveredLines, ExecutableLines INTO :tCoveredLines, :tExecutableLines FROM TestCoverage_Data_Aggregate.ByRun WHERE Run = :RunID)
     If (SQLCODE < 0) {
 		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
     }
     set response.CoveragePercent = $Number((tCoveredLines / tExecutableLines) * 100, 2)
 
 
-    set sql = "SELECT Hash->Name, Hash->Type, TestPath FROM TestCoverage_Data.Coverage"
-    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
+    set sql = "SELECT Hash->Name, Hash->Type, TestPath FROM TestCoverage_Data.Coverage WHERE Run = ? "
+    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, RunID)
     If (resultSet.%SQLCODE < 0) {
         Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
     }

@@ -34,7 +34,7 @@ Method Server() As %Status
 				$$$ThrowOnError(tSC)
 			}
 		} Else {
-			set ^mtempcg($i(^mtempcg)) = "not erroring"
+			//set ^mtempcg($i(^mtempcg)) = "not erroring"
 		}
 	}
 	Quit $$$OK
@@ -105,7 +105,6 @@ ClassMethod HandleException(pException As %Exception.AbstractException, pSocketI
 
 Method OnPostServer() As %Status
 {
-	set ^mtempcg($i(^mtempcg)) = "I will be surprised if this actually gets called"
 	set tSC = $$$OK
 	try {
 		do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)

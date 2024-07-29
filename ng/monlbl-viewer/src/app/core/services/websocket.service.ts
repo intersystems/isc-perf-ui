@@ -2,14 +2,15 @@ import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
+import { WebSocketMessage } from '../interfaces/web-socket-message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
   webSocketSubject$!: WebSocketSubject<any>;
-  private messageReceivedSubject = new BehaviorSubject<boolean>(false); // Initialize with false
-  // messages$: ReplaySubject<MessageType> = new ReplaySubject<MessageType>();
+
+  private messageReceivedSubject = new BehaviorSubject<WebSocketMessage | null>(null); // Use the interface
 
   constructor(private authService: AuthenticationService) {
       this.webSocketSubject$ = webSocket({
@@ -20,17 +21,16 @@ export class WebsocketService {
         error: err => console.log(err),
         complete: () => this.Cleanup()
       })
-      console.log("new websocket connection created")
   }
 
-  private handleMessage(message: any): void {
+  private handleMessage(message: WebSocketMessage): void {
     console.log(message);
-    if (message.message === "Finished RunTest") {
-      // Set the subject to true when the specific message is received
-      this.messageReceivedSubject.next(true);
+    if (message.message === "Finished RunTest" && message.RunID !== undefined) {
+      // Notify with the message and RunID
+      this.messageReceivedSubject.next(message);
     }
   }
-  
+
   getMessageReceivedObservable() {
     return this.messageReceivedSubject.asObservable();
   }

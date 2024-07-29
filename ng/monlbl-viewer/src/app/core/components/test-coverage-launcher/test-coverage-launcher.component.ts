@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidationErrors, FormGroup } from '@angular/forms';
 import { CoverageRestService } from '../../services/coverage-rest.service';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil, skip, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebsocketService } from '../../services/websocket.service';
 
@@ -19,11 +19,11 @@ export class TestCoverageLauncherComponent {
     private websocketService: WebsocketService
   ) {}
 
-  isLoading$ = new BehaviorSubject<boolean>(false);
   hasError$ = new BehaviorSubject<boolean>(false);
   errorMessage$ = new BehaviorSubject<string>('');
   dataForm!: FormGroup
   private destroy$ = new Subject<void>();
+  isLoading$: Observable<boolean> = this.covRestService.getIsLoadingObservable()
 
   timingsList = [
     { value: 1, viewValue: '1: include timing data' },
@@ -76,33 +76,45 @@ export class TestCoverageLauncherComponent {
   }
 
   onSubmit() {
-    if (this.dataForm.invalid) {
+    // Check if a request is already in progress
+    
+    if (this.covRestService.getIsLoading()) {
+      // Display an error message
+      this.hasError$.next(true);
+      this.errorMessage$.next('Please wait for the current tests to finish before submitting again.');
+  
+      this.snackBar.open('Please wait for the current tests to finish before submitting again.', 'Close', { 
+        duration: 5000,
+        panelClass: ['error-snackbar']
+      });
+      // Set a timeout to hide the error after 5 seconds
+      setTimeout(() => {
+        this.hasError$.next(false);
+        this.errorMessage$.next('');
+      }, 5000);
+
       return;
     }
 
-    this.isLoading$.next(true); // Show the spinner
+    if (this.dataForm.invalid) {
+      return;
+    }
+    console.log("Showing the spinner here");
     this.hasError$.next(false);
     this.errorMessage$.next('');
     
     this.covRestService.Start(this.dataForm.value).subscribe({
       next: () => {
-        // this.isLoading$.next(false); // Hide the spinner in the old implementation where I wait for RunTest to finish here
-        // this.dataForm.reset();
+        console.log("TestCoverage started successfully")
+        // Results will be handled in the WebSocket subscription
       },
       error: (error) => {
-        this.isLoading$.next(false); // Hide the spinner on error
         this.hasError$.next(true);
 
         this.snackBar.open(error.message, 'Close', { 
           duration: 5000,
-          panelClass: ['error-snackbar']
+          panelClass: ['error-sfnackbar']
         });
-      }
-    });
-
-    this.websocketService.getMessageReceivedObservable().subscribe(startCompleted => {
-      if (startCompleted) {
-        this.isLoading$.next(false);
       }
     });
   }

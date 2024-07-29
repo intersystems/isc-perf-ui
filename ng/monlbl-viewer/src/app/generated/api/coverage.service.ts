@@ -35,8 +35,13 @@ import { Configuration }                                     from '../configurat
 
 
 export interface CoverageResultsGetRequestParams {
-    routine?: string;
-    testpath?: string;
+    RunID: number;
+    routine: string;
+    testpath: string;
+}
+
+export interface CoverageRoutinepathsGetRequestParams {
+    RunID: number;
 }
 
 export interface CoverageStartPostRequestParams {
@@ -119,10 +124,24 @@ export class CoverageService {
     public coverageResultsGet(requestParameters?: CoverageResultsGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageResultsOutput>>;
     public coverageResultsGet(requestParameters?: CoverageResultsGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageResultsOutput>>;
     public coverageResultsGet(requestParameters?: CoverageResultsGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+        const RunID = requestParameters?.RunID;
+        if (RunID === null || RunID === undefined) {
+            throw new Error('Required parameter RunID was null or undefined when calling coverageResultsGet.');
+        }
         const routine = requestParameters?.routine;
+        if (routine === null || routine === undefined) {
+            throw new Error('Required parameter routine was null or undefined when calling coverageResultsGet.');
+        }
         const testpath = requestParameters?.testpath;
+        if (testpath === null || testpath === undefined) {
+            throw new Error('Required parameter testpath was null or undefined when calling coverageResultsGet.');
+        }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (RunID !== undefined && RunID !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>RunID, 'RunID');
+        }
         if (routine !== undefined && routine !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>routine, 'routine');
@@ -180,13 +199,24 @@ export class CoverageService {
 
     /**
      * Performs the routinepaths action.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public coverageRoutinepathsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageRoutinePathsOutput>;
-    public coverageRoutinepathsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageRoutinePathsOutput>>;
-    public coverageRoutinepathsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageRoutinePathsOutput>>;
-    public coverageRoutinepathsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+    public coverageRoutinepathsGet(requestParameters?: CoverageRoutinepathsGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageRoutinePathsOutput>;
+    public coverageRoutinepathsGet(requestParameters?: CoverageRoutinepathsGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageRoutinePathsOutput>>;
+    public coverageRoutinepathsGet(requestParameters?: CoverageRoutinepathsGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageRoutinePathsOutput>>;
+    public coverageRoutinepathsGet(requestParameters?: CoverageRoutinepathsGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+        const RunID = requestParameters?.RunID;
+        if (RunID === null || RunID === undefined) {
+            throw new Error('Required parameter RunID was null or undefined when calling coverageRoutinepathsGet.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (RunID !== undefined && RunID !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>RunID, 'RunID');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -224,6 +254,7 @@ export class CoverageService {
         return this.httpClient.request<CoverageRoutinePathsOutput>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

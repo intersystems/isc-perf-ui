@@ -6,8 +6,7 @@ import { CoverageRoutinePathsOutput, CoverageRoutinePathOutput  } from 'src/app/
 import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { WebsocketService } from '../../services/websocket.service';
-
-
+import { WebSocketMessage } from '../../interfaces/web-socket-message';
 
 @Component({
   selector: 'app-coverage-results-display',
@@ -19,14 +18,17 @@ export class CoverageResultsDisplayComponent {
   covpaths$: Observable<CoverageRoutinePathsOutput | null> = this.covRestService.getCovpathsObservable();
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
+  //isLoading$: Observable<boolean> = this.covRestService.getIsLoadingObservable(); 
+  
   
   constructor(private covRestService: CoverageRestService, private router: Router, private websocketService: WebsocketService) {}
 
   ngOnInit() {
     // Listen for when the WebSocket message is received
-    this.websocketService.getMessageReceivedObservable().subscribe(startCompleted => {
-      if (startCompleted) {
-        this.covRestService.GetRoutines().subscribe();
+    this.websocketService.getMessageReceivedObservable().subscribe((message: WebSocketMessage | null) => {
+      if (message && message.RunID && this.covRestService.getIsLoading()) {
+        console.log("call to get routines");
+        this.covRestService.GetRoutines(message.RunID).subscribe();
       }
     });
   }
@@ -46,6 +48,7 @@ export class CoverageResultsDisplayComponent {
    }
 
   onPathChange(selectedPath: CoverageRoutinePathOutput) {
+    console.log("path change", selectedPath.routine, selectedPath.testpath)
     if (selectedPath) {
       this.router.navigate(['/result-detail', selectedPath.routine, selectedPath.testpath]);
     }

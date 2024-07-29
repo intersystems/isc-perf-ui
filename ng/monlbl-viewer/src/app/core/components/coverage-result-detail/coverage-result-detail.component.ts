@@ -53,7 +53,6 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
         }),
         map((response: any) => {
           this.methodDataSource.data = response.MethodResults || [];
-          console.log(response)
           return response.results;
         })
       )
