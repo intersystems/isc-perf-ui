@@ -57,6 +57,8 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
         }
     }
+
+    do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast({"message": "from within the rest call"})
     #; Set tMsg = "Example Error"
 	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     Set ^UnitTestRoot = pConfig.UnitTestRoot
@@ -75,6 +77,12 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     set stream = ##class(%Stream.TmpCharacter).%New()
     do buffer.EndCaptureOutput(.stream)
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
+}
+
+ClassMethod TestCoverageCall(ByRef pCoverageParams) As %Status
+{
+
+    Quit $$$OK
 }
 
 ClassMethod GetPythonColoredLine(pLine As %String) As %String [ Language = python ]

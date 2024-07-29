@@ -6,9 +6,8 @@ import { AuthenticationService } from './authentication.service';
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketService implements OnDestroy {
+export class WebsocketService {
   webSocketSubject$!: WebSocketSubject<any>;
-  subs: Subscription[] = new Array();
 
   // messages$: ReplaySubject<MessageType> = new ReplaySubject<MessageType>();
 
@@ -16,47 +15,29 @@ export class WebsocketService implements OnDestroy {
       this.webSocketSubject$ = webSocket({
         url: this.buildUrl()
       });
-      this.subs.push(this.webSocketSubject$.subscribe(
-        msg => this.handleMessage(msg), // Called whenever there is a message from the server
-        err => console.log(err), // Called if WebSocket API signals some kind of error
-        () => console.log('connection closed') // Called when connection is closed (for whatever reason)
-      ));
+      this.webSocketSubject$.subscribe({
+        next: msg => this.handleMessage(msg),
+        error: err => console.log(err),
+        complete: () => this.Cleanup()
+      })
+      console.log("new websocket connection created")
   }
-
-  // getNotifications(): Subject<string> {
-  //   const subject = new Subject<string>();
-  //   this.subs.push(this.messages$.subscribe(message => {
-  //     if ((message != null) && (message.notification)) {
-  //       subject.next(message.notification);
-  //     }
-  //   }));
-  //   return subject;
-  // }
-
-  // getMessageType<T extends MessageType>(type: new(source: any) => T): ReplaySubject<T> {
-  //   const subject = new ReplaySubject<T>();
-  //   this.subs.push(this.messages$.subscribe(message => {
-  //     if (message != null) {
-  //       const realMessage = new type(message);
-  //       if (realMessage.isValid()) {
-  //         subject.next(realMessage);
-  //       }
-  //     }
-  //   }));
-  //   return subject;
-  // }
-
-  // sendMessage(message: MessageType): void {
-  //   this.webSocketSubject$.next(message);
-  // }
 
   private handleMessage(message: any): void {
     console.log(message)
   }
-
-  ngOnDestroy(): void {
+  
+  
+  Cleanup(): void {
+    localStorage.setItem("destroyed_webservice", new Date().toISOString());
+    this.webSocketSubject$.complete()
+    console.log(this.webSocketSubject$)
     this.webSocketSubject$.unsubscribe();
-    this.subs.forEach((s) => s.unsubscribe());
+    
+  }
+
+  Check(): void {
+    console.log(this.webSocketSubject$);
   }
 
   private buildUrl(): string {
@@ -69,7 +50,6 @@ export class WebsocketService implements OnDestroy {
     }
     url = url.replace('http', 'ws');
     url += 'socket/pkg.isc.perf.ui.socket.WebSocket.cls';
-    console.log(url);
     return url;
   }
 }

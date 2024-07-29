@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, HostListener  } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { map, switchMap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class CoverageResultsDisplayComponent {
   covpaths$: Observable<CoverageRoutinePathsOutput | null> = this.covRestService.getCovpathsObservable();
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
-
+  
   constructor(private covRestService: CoverageRestService, private router: Router, private websocketService: WebsocketService) {}
 
   ngOnInit() {
@@ -39,9 +39,24 @@ export class CoverageResultsDisplayComponent {
     });
   }
 
+
+   // Listen for the beforeunload event
+   @HostListener('window:beforeunload', ['$event'])
+   beforeUnloadHandler(event: Event) {
+     this.websocketService.Cleanup();
+   }
+
   onPathChange(selectedPath: CoverageRoutinePathOutput) {
     if (selectedPath) {
       this.router.navigate(['/result-detail', selectedPath.routine, selectedPath.testpath]);
     }
   }
+
+  cleanupWebSocket(): void {
+    this.websocketService.Cleanup();
+  }
+  checkWebSocket(): void {
+    this.websocketService.Check();
+  }
+
 }

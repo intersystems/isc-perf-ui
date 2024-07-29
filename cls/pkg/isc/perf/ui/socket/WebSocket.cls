@@ -6,16 +6,62 @@ Method OnPreServer() As %Status
     #dim %request As %CSP.Request
 	//set ^mtempcg($i(^mtempcg)) = "preserver" 
     Set ..SharedConnection = 1
-    // populate the persistent class
-    Quit $$$OK
+	Do ##class(pkg.isc.perf.ui.socket.SocketConnection).Init(..WebSocketID)    
+	Quit $$$OK
 }
 
 Method Server() As %Status
 {
-	//set ^mtempcg($i(^mtempcg)) = "server"
-	set msg = {"message": "Hello World"}
-	do ..Write(msg.%ToJSON())
+	set msg = {"message": "Goodbye World"}
+	do ..BroadCast(msg)
+	For i = 1:1 {
+		set tData = ..Read(, .tSC, 1)
+		If ($$$ISERR(tSC)){
+			If ($$$GETERRORCODE(tSC) = $$$CSPWebSocketTimeout) {
+				
+			} 
+			ElseIf ($$$GETERRORCODE(tSC) = $$$CSPWebSocketClosed){
+				// Client closed WebSocket.
+				set ^mtempcg($i(^mtempcg)) = "closing websocket code"
+				set tSC = $$$OK
+				try {
+					do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
+				} catch e { 
+					set tSC = e.AsStatus()
+				} 
+				do ..EndServer()
+				Quit
+			} Else {
+				$$$ThrowOnError(tSC)
+			}
+		} Else {
+			set ^mtempcg($i(^mtempcg)) = "not erroring"
+		}
+	}
 	Quit $$$OK
+}
+
+ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
+{
+	set tSC = $$$OK 
+	try {
+		Set tQuery = "select SocketID from pkg_isc_perf_ui_socket.SocketConnection"
+		Set tListeners = ##class(%SQL.Statement).%ExecDirect(,tQuery)
+		If (tListeners.%SQLCODE < 0) {
+			Throw ##class(%Exception.SQL).CreateFromSQLCODE(tListeners.%SQLCODE,tListeners.%Message)
+		}
+		While tListeners.%Next(.tSC) {
+			$$$ThrowOnError(tSC)
+			Set tWS = ..%New()
+			If tWS.OpenServer(tListeners.%Get("SocketID")) {
+				Do tWS.Write(pMessage.%ToJSON())
+			}
+		}
+		$$$ThrowOnError(tSC)
+	} catch e {
+		set tSC = e.AsStatus() 
+	}
+	quit tSC
 }
 
 ClassMethod HandleException(pException As %Exception.AbstractException, pSocketID As %String = "")
@@ -56,6 +102,18 @@ ClassMethod HandleException(pException As %Exception.AbstractException, pSocketI
 		Set pException.InnerException = e2
 		Do pException.Log()
 	}
+}
+
+Method OnPostServer() As %Status
+{
+	set ^mtempcg($i(^mtempcg)) = "I will be surprised if this actually gets called"
+	set tSC = $$$OK
+	try {
+		do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
+	} catch e { 
+		set tSC = e.AsStatus()
+	} 
+	quit tSC
 }
 
 }
