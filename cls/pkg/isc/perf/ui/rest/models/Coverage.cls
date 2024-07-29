@@ -58,29 +58,44 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
         }
     }
 
-    do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast({"message": "from within the rest call"})
     #; Set tMsg = "Example Error"
 	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
-    Set ^UnitTestRoot = pConfig.UnitTestRoot
+    Set tUnitTestRoot = pConfig.UnitTestRoot
     Kill tCoverageParams
-    Set tCoverageParams("Timing") = pConfig.Timing
-    Set tCoverageParams("CoverageClasses") = $LISTFROMSTRING(pConfig.CoverageClasses)
-    Set tCoverageParams("CoverageRoutines") = $LISTFROMSTRING(pConfig.CoverageRoutines)
-    Set tCoverageParams("ProcessIDs") = $LISTFROMSTRING(pConfig.PidList)
-    Set tCoverageParams("CoverageDetail") = pConfig.CoverageLevel
+    set tTiming = pConfig.Timing
+    set tCoverageClasses = $LISTFROMSTRING(pConfig.CoverageClasses)
+    set tCoverageRoutines = $LISTFROMSTRING(pConfig.CoverageRoutines)
+    set tProcessIDs = $LISTFROMSTRING(pConfig.PidList)
+    set tCoverageDetail = pConfig.CoverageLevel
 
-    do ##class(TestCoverage.Utils).Clear() 
-    set buffer = ##class(%pkg.isc.json.util.buffer).%New()
-    do buffer.BeginCaptureOutput()
+    Job ..CoverageCall(tUnitTestRoot, tTiming, tCoverageClasses, tCoverageRoutines, tProcessIDs, tCoverageDetail)
+    #; do ##class(TestCoverage.Utils).Clear() 
+    #; set buffer = ##class(%pkg.isc.json.util.buffer).%New()
+    #; do buffer.BeginCaptureOutput()
 
-    $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
-    set stream = ##class(%Stream.TmpCharacter).%New()
-    do buffer.EndCaptureOutput(.stream)
+    #; $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
+    #; set stream = ##class(%Stream.TmpCharacter).%New()
+    #; do buffer.EndCaptureOutput(.stream)
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 
-ClassMethod TestCoverageCall(ByRef pCoverageParams) As %Status
+ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverageClasses As %List, pCoverageRoutines As %List, pProcessIDs As %List, pCoverageDetail As %String) As %Status
 {
+    kill tCoverageParams
+    set tCoverageParams("Timing") = pTiming
+    set tCoverageParams("CoverageClasses") = pCoverageClasses
+    set tCoverageParams("CoverageRoutines") = pCoverageRoutines
+    set tCoverageParams("ProcessIDs") = pProcessIDs
+    set tCoverageParams("CoverageDetail") = pCoverageDetail
+    set ^UnitTestRoot = pUnitTestRoot
+    do ##class(TestCoverage.Utils).Clear() 
+    set buffer = ##class(%pkg.isc.json.util.buffer).%New()
+    do buffer.BeginCaptureOutput()
+    $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
+    set stream = ##class(%Stream.TmpCharacter).%New()
+    do buffer.EndCaptureOutput(.stream)
+    set msg = {"message": "Finished RunTest"}
+    do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
 
     Quit $$$OK
 }

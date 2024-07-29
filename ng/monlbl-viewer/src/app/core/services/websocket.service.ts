@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { Subscription, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { AuthenticationService } from './authentication.service';
 })
 export class WebsocketService {
   webSocketSubject$!: WebSocketSubject<any>;
-
+  private messageReceivedSubject = new BehaviorSubject<boolean>(false); // Initialize with false
   // messages$: ReplaySubject<MessageType> = new ReplaySubject<MessageType>();
 
   constructor(private authService: AuthenticationService) {
@@ -24,14 +24,19 @@ export class WebsocketService {
   }
 
   private handleMessage(message: any): void {
-    console.log(message)
+    console.log(message);
+    if (message.message === "Finished RunTest") {
+      // Set the subject to true when the specific message is received
+      this.messageReceivedSubject.next(true);
+    }
   }
   
+  getMessageReceivedObservable() {
+    return this.messageReceivedSubject.asObservable();
+  }
   
   Cleanup(): void {
-    localStorage.setItem("destroyed_webservice", new Date().toISOString());
     this.webSocketSubject$.complete()
-    console.log(this.webSocketSubject$)
     this.webSocketSubject$.unsubscribe();
     
   }

@@ -3,6 +3,7 @@ import { FormBuilder, Validators, AbstractControl, ValidationErrors, FormGroup }
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { WebsocketService } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-test-coverage-launcher',
@@ -14,7 +15,8 @@ export class TestCoverageLauncherComponent {
   constructor(
     private formBuilder: FormBuilder,
     private covRestService: CoverageRestService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private websocketService: WebsocketService
   ) {}
 
   isLoading$ = new BehaviorSubject<boolean>(false);
@@ -81,9 +83,10 @@ export class TestCoverageLauncherComponent {
     this.isLoading$.next(true); // Show the spinner
     this.hasError$.next(false);
     this.errorMessage$.next('');
+    
     this.covRestService.Start(this.dataForm.value).subscribe({
       next: () => {
-        this.isLoading$.next(false); // Hide the spinner
+        // this.isLoading$.next(false); // Hide the spinner in the old implementation where I wait for RunTest to finish here
         // this.dataForm.reset();
       },
       error: (error) => {
@@ -94,6 +97,12 @@ export class TestCoverageLauncherComponent {
           duration: 5000,
           panelClass: ['error-snackbar']
         });
+      }
+    });
+
+    this.websocketService.getMessageReceivedObservable().subscribe(startCompleted => {
+      if (startCompleted) {
+        this.isLoading$.next(false);
       }
     });
   }

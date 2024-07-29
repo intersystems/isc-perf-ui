@@ -23,9 +23,8 @@ export class CoverageResultsDisplayComponent {
   constructor(private covRestService: CoverageRestService, private router: Router, private websocketService: WebsocketService) {}
 
   ngOnInit() {
-    // Listen for when the Start process is completed
-    // Listen for when the Start process is completed
-    this.covRestService.getStartCompletedObservable().subscribe(startCompleted => {
+    // Listen for when the WebSocket message is received
+    this.websocketService.getMessageReceivedObservable().subscribe(startCompleted => {
       if (startCompleted) {
         this.covRestService.GetRoutines().subscribe();
       }

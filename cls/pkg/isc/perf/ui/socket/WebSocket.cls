@@ -22,7 +22,6 @@ Method Server() As %Status
 			} 
 			ElseIf ($$$GETERRORCODE(tSC) = $$$CSPWebSocketClosed){
 				// Client closed WebSocket.
-				set ^mtempcg($i(^mtempcg)) = "closing websocket code"
 				set tSC = $$$OK
 				try {
 					do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
