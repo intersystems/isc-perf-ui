@@ -9,6 +9,7 @@ export class CoverageRestService {
   private covpathsSubject = new BehaviorSubject<CoverageRoutinePathsOutput | null>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false); // Add the isLoading subject
   private isLoading = false; 
+  private firstLoad = true; // if the page hasn't had results yet, we'll listen to the first broadcast if there is one
   private RunID = 0; // the RunID of the RunTest that this websocket is listening to 
 
   constructor(protected covService: CoverageService ) { }
@@ -35,10 +36,10 @@ export class CoverageRestService {
   GetRoutines(RunID: number): Observable<CoverageRoutinePathsOutput> {
     return this.covService.coverageRoutinepathsGet({RunID: RunID}).pipe(
       tap((response: any) => {
-        console.log(response)
         this.covpathsSubject.next(response);
         this.isLoadingSubject.next(false); // Set loading state to false after fetching routines
         this.isLoading = false; 
+        this.firstLoad = false; 
         this.RunID = RunID; // safe to update this here, since we know we're replacing the data
       })
     );
@@ -58,6 +59,9 @@ export class CoverageRestService {
   }
   getIsLoading(): boolean {
     return this.isLoading;
+  }
+  getFirstLoad(): Boolean {
+    return this.firstLoad;
   }
   
 }

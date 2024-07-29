@@ -26,8 +26,7 @@ export class CoverageResultsDisplayComponent {
   ngOnInit() {
     // Listen for when the WebSocket message is received
     this.websocketService.getMessageReceivedObservable().subscribe((message: WebSocketMessage | null) => {
-      if (message && message.RunID && this.covRestService.getIsLoading()) {
-        console.log("call to get routines");
+      if (message && message.RunID && (this.covRestService.getFirstLoad() || this.covRestService.getIsLoading())) {
         this.covRestService.GetRoutines(message.RunID).subscribe();
       }
     });
@@ -48,7 +47,6 @@ export class CoverageResultsDisplayComponent {
    }
 
   onPathChange(selectedPath: CoverageRoutinePathOutput) {
-    console.log("path change", selectedPath.routine, selectedPath.testpath)
     if (selectedPath) {
       this.router.navigate(['/result-detail', selectedPath.routine, selectedPath.testpath]);
     }
