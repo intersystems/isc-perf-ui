@@ -99,13 +99,11 @@ export class TestCoverageLauncherComponent {
     if (this.dataForm.invalid) {
       return;
     }
-    console.log("Showing the spinner here");
     this.hasError$.next(false);
     this.errorMessage$.next('');
     
     this.covRestService.Start(this.dataForm.value).subscribe({
       next: () => {
-        console.log("TestCoverage started successfully")
         // Results will be handled in the WebSocket subscription
       },
       error: (error) => {

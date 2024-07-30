@@ -9,6 +9,25 @@ a { cursor: pointer }
 @import '../node_modules/@fortawesome/fontawesome-free/scss/brands.scss';
  
 @import '../node_modules/mdb-angular-ui-kit/assets/scss/mdb.scss';
+@import 'node_modules/@angular/material/theming';
+@include mat-core();
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@include mat-core();
+
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink, A200, A100, A400);
+$warn: mat-palette($mat-red);
+
+$theme: mat-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  ),
+  typography: mat-typography-config(),
+));
+
+@include angular-material-theme($theme);

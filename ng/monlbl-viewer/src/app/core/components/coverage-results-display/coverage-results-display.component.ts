@@ -34,9 +34,13 @@ export class CoverageResultsDisplayComponent {
 
   ngAfterViewInit() {
     // Open the dropdown when covpaths$ emits its value
-    this.covpaths$.subscribe(() => {
-      setTimeout(() => this.routineSelect.open(), 0);
-    });
+    this.covpaths$.subscribe((value) => {
+      setTimeout(() => {
+        if (value !== null) {
+          this.routineSelect.open()
+        }
+      }, 0);
+  });
   }
 
 
@@ -52,11 +56,8 @@ export class CoverageResultsDisplayComponent {
     }
   }
 
-  cleanupWebSocket(): void {
-    this.websocketService.Cleanup();
-  }
-  checkWebSocket(): void {
-    this.websocketService.Check();
+  clearResults(): void {
+    this.covRestService.Clear();
   }
 
 }

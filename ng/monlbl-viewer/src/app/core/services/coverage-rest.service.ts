@@ -45,14 +45,19 @@ export class CoverageRestService {
     );
   }
 
+  Clear(): void {
+    console.log("do we get here at least")
+    this.covService.coverageClearPost().subscribe(); 
+    this.covpathsSubject.next(null);
+    return 
+  }
+
   // getStartCompletedObservable(): Observable<boolean> {
   //   return this.startCompletedSubject.asObservable();
   // }
 
-  getCovpathsObservable(): Observable<CoverageRoutinePathsOutput> {
-    return this.covpathsSubject.asObservable().pipe(
-      filter((covpaths): covpaths is CoverageRoutinePathsOutput => covpaths !== null)
-    );
+  getCovpathsObservable(): Observable<CoverageRoutinePathsOutput | null> {
+    return this.covpathsSubject.asObservable()
   }
   getIsLoadingObservable(): Observable<boolean> { // Getter for isLoading observable for the spinner
     return this.isLoadingSubject.asObservable();

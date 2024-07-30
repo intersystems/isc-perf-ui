@@ -45,6 +45,7 @@ import { TestCoverageHeaderComponent } from './core/components/test-coverage-hea
 import { ParameterExplanationsComponent } from './core/components/parameter-explanations/parameter-explanations.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -95,7 +96,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTableModule,
     MatSortModule,
     MatDividerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCardModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

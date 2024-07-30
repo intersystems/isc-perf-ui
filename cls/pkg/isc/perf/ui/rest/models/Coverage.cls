@@ -19,6 +19,7 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 <action name="routinepaths" target="class" call="GetRoutinePaths" method="GET">
 <argument target="RunID" name="RunID" source="query"  required="true"/>
 </action> 
+<action name="clear" target="class" call="ClearResults" method="POST"></action>
 </actions>
 }
 
@@ -251,6 +252,12 @@ ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Co
         do response.covpaths.Insert(path)
     }
     return response
+}
+
+ClassMethod ClearResults() As pkg.isc.perf.ui.rest.models.CoverageStatus
+{
+    do ##class(TestCoverage.Utils).Clear() 
+    Quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 
 /// Checks the user's permission for a particular operation on a particular record. 

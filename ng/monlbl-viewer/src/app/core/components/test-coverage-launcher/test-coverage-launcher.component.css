@@ -1,16 +1,14 @@
-.example-form {
-  width: 100%;
-  margin: 10px;
-  padding: 10px;
-  padding-right: 40px; 
+.form-card {
+  margin: 20px;
+  padding: 20px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .example-full-width {
   width: 100%;
-}
-
-td {
-  padding-right: 8px;
+  margin-bottom: 20px;
 }
 
 .spinner-container {
@@ -19,32 +17,5 @@ td {
 
 .flex-box {
   display: flex;
-}
-
-.flex-container {
-  display: flex;
-}
-
-.flex-child {
-  flex: 1;
-}
-
-.flex-child:first-child {
-  margin-right: 20px;
-}
-
-.error-container {
-  display: flex;
   align-items: center;
-  margin-left: 10px;
-}
-
-.error-message {
-  color: red;
-  margin-left: 5px;
-}
-
-.error-snackbar {
-  background-color: #f44336;
-  color: white;
 }
