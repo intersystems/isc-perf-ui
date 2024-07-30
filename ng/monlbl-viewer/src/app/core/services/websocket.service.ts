@@ -24,7 +24,7 @@ export class WebsocketService {
   }
 
   private handleMessage(message: WebSocketMessage): void {
-    if (message.message === "Finished RunTest" && message.RunID !== undefined) {
+    if (message.type = "RunTestFinish") {
       // Notify with the message and RunID
       this.messageReceivedSubject.next(message);
     }

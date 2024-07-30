@@ -1,4 +1,5 @@
 export interface WebSocketMessage {
     message: string;
-  RunID: number;
+    RunID?: number;
+    type: string;
 }

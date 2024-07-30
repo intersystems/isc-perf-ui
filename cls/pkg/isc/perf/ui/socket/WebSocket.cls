@@ -12,8 +12,6 @@ Method OnPreServer() As %Status
 
 Method Server() As %Status
 {
-	set msg = {"message": "Goodbye World"}
-	do ..BroadCast(msg)
 	For i = 1:1 {
 		set tData = ..Read(, .tSC, 1)
 		If ($$$ISERR(tSC)){
@@ -61,6 +59,14 @@ ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
 		set tSC = e.AsStatus() 
 	}
 	quit tSC
+}
+
+ClassMethod TestCovBroadcastWrapper(pMessage As %String) As %Status
+{
+	set tMessage = {}
+	do tMessage.%Set("message", pMessage)
+	do tMessage.%Set("type", "LogOutput")
+	quit ..BroadCast(tMessage)
 }
 
 ClassMethod HandleException(pException As %Exception.AbstractException, pSocketID As %String = "")

@@ -95,7 +95,7 @@ ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverage
 		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
     }
 
-    set msg = {"message": "Finished RunTest"}
+    set msg = {"message": "Finished RunTest", "type": "RunTestFinish"}
     do msg.%Set("RunID", tRunID)
     do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
     Quit $$$OK
