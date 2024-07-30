@@ -8,7 +8,7 @@ import { WebsocketService } from '../../services/websocket.service';
 @Component({
   selector: 'app-test-coverage-launcher',
   templateUrl: './test-coverage-launcher.component.html',
-  styleUrls: ['./test-coverage-launcher.component.css']
+  styleUrls: ['./test-coverage-launcher.component.scss']
 })
 export class TestCoverageLauncherComponent {
 

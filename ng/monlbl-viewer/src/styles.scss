@@ -10,17 +10,19 @@ a { cursor: pointer }
  
 @import '../node_modules/mdb-angular-ui-kit/assets/scss/mdb.scss';
 @import 'node_modules/@angular/material/theming';
-@include mat-core();
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+// Include the common styles for Angular Material.
 @include mat-core();
 
+// Define your custom palettes and themes.
 $primary: mat-palette($mat-indigo);
 $accent: mat-palette($mat-pink, A200, A100, A400);
 $warn: mat-palette($mat-red);
 
+// Create a theme instance.
 $theme: mat-light-theme((
   color: (
     primary: $primary,
@@ -30,4 +32,17 @@ $theme: mat-light-theme((
   typography: mat-typography-config(),
 ));
 
+// Include the Angular Material theme styles.
 @include angular-material-theme($theme);
+
+mat-card {
+    margin-bottom: 20px;
+    background-color: #fafafa;
+    padding: 16px;
+}
+  
+mat-card-header {
+    color: mat-color($primary);
+    margin-bottom: 30px;
+}
+  

@@ -5,7 +5,7 @@ import { CodeService } from '../../services/code.service';
 @Component({
   selector: 'app-code',
   templateUrl: './code.component.html',
-  styleUrls: ['./code.component.css']
+  styleUrls: ['./code.component.scss']
 })
 export class CodeComponent {
   code: Subject<any> = new Subject();

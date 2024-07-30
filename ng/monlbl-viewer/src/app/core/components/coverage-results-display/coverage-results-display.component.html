@@ -1,28 +1,26 @@
-<div class="spacing">
-  <!-- Display overall coverage percentage -->
-  <mat-card>
-    <h3>Overall coverage: {{ (covpaths$ | async)?.CoveragePercent ?? 'N/A' }}</h3>
+<!-- Display overall coverage percentage -->
+<mat-card>
+  <h3>Overall coverage: {{ (covpaths$ | async)?.CoveragePercent ?? 'N/A' }}</h3>
 
-    <!-- Dropdown for selecting routine + test path -->
-    <mat-form-field class="RoutineForm" appearance="fill">
-      <mat-label>Select Routine + Test Path</mat-label>
-      <mat-select #routineSelect (selectionChange)="onPathChange($event.value)">
-        <ng-container *ngIf="covpaths$ | async as covpaths; else loading">
-          <ng-container *ngIf="covpaths.covpaths && covpaths.covpaths.length > 0; else noData">
-            <mat-option class="wrap-option" *ngFor="let path of covpaths.covpaths" [value]="path">
-              {{ path.routine }} - {{ path.testpath }}
-            </mat-option>
-          </ng-container>
-          <ng-template #noData>
-            <mat-option disabled>No data available</mat-option>
-          </ng-template>
+  <!-- Dropdown for selecting routine + test path -->
+  <mat-form-field class="RoutineForm" appearance="fill">
+    <mat-label>Select Routine + Test Path</mat-label>
+    <mat-select #routineSelect (selectionChange)="onPathChange($event.value)">
+      <ng-container *ngIf="covpaths$ | async as covpaths; else loading">
+        <ng-container *ngIf="covpaths.covpaths && covpaths.covpaths.length > 0; else noData">
+          <mat-option class="wrap-option" *ngFor="let path of covpaths.covpaths" [value]="path">
+            {{ path.routine }} - {{ path.testpath }}
+          </mat-option>
         </ng-container>
-        <ng-template #loading>
-          <mat-option disabled>Loading data...</mat-option>
+        <ng-template #noData>
+          <mat-option disabled>No data available</mat-option>
         </ng-template>
-      </mat-select>
-    </mat-form-field>
+      </ng-container>
+      <ng-template #loading>
+        <mat-option disabled>Loading data...</mat-option>
+      </ng-template>
+    </mat-select>
+  </mat-form-field>
 
-    <button mat-raised-button color="warn" (click)="clearResults()">Clear All Results</button>
-  </mat-card>
-</div>
+  <button mat-raised-button color="warn" (click)="clearResults()">Clear All Results</button>
+</mat-card>

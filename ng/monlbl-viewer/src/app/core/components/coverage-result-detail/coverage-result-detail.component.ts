@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-coverage-result-detail',
   templateUrl: './coverage-result-detail.component.html',
-  styleUrls: ['./coverage-result-detail.component.css']
+  styleUrls: ['./coverage-result-detail.component.scss']
 })
 export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['TIME', 'TotalTime', 'RtnLineCount', 'line', 'code'];

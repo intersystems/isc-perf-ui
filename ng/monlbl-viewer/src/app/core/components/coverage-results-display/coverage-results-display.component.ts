@@ -11,7 +11,7 @@ import { WebSocketMessage } from '../../interfaces/web-socket-message';
 @Component({
   selector: 'app-coverage-results-display',
   templateUrl: './coverage-results-display.component.html',
-  styleUrls: ['./coverage-results-display.component.css']
+  styleUrls: ['./coverage-results-display.component.scss']
 })
 export class CoverageResultsDisplayComponent {
   @ViewChild('routineSelect') routineSelect!: MatSelect;

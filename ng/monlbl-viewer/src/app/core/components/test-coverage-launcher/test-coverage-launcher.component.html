@@ -1,60 +1,77 @@
-<form class="example-form" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
-  <mat-card class="form-card">
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>UnitTestRoot</mat-label>
-      <input matInput formControlName="UnitTestRoot" placeholder="Enter UnitTestRoot">
-      <mat-error *ngIf="dataForm.get('UnitTestRoot')?.hasError('invalidPath')">
-        Invalid directory path.
-      </mat-error>
-    </mat-form-field>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="h3-size">TestCoverage Parameters</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="example-form" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="example-full-width">
+        <mat-label>UnitTestRoot</mat-label>
+        <input matInput formControlName="UnitTestRoot" />
+        <mat-error *ngIf="dataForm.get('UnitTestRoot')?.hasError('invalidPath')">
+          Invalid directory path.
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Coverage Level</mat-label>
-      <mat-select formControlName="CoverageLevel">
-        <mat-option *ngFor="let level of CoverageLevels" [value]="level.value">{{ level.viewValue }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Coverage Level</mat-label>
+        <mat-select formControlName="CoverageLevel">
+          <mat-option *ngFor="let level of CoverageLevels" [value]="level.value">
+            {{ level.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Coverage Classes</mat-label>
-      <textarea matInput placeholder="Bank.Person,Bank.Account (or blank to use coverage.list)" formControlName="CoverageClasses"></textarea>
-      <mat-error *ngIf="dataForm.get('CoverageClasses')?.hasError('invalidCoverageClasses')">
-        Must be empty or a comma-separated list of .cls files without the .cls
-      </mat-error>
-    </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Coverage Classes</mat-label>
+        <textarea
+          matInput
+          placeholder="Bank.Person,Bank.Account (or blank to use coverage.list)"
+          formControlName="CoverageClasses"
+        ></textarea>
+        <mat-error *ngIf="dataForm.get('CoverageClasses')?.hasError('invalidCoverageClasses')">
+          Must be empty or a comma-separated list of .cls files without the .cls
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Coverage Routines</mat-label>
-      <textarea matInput placeholder="Bank.MyRoutine,Bank.MySecondRoutine (or blank to use coverage.list)" formControlName="CoverageRoutines"></textarea>
-      <mat-error *ngIf="dataForm.get('CoverageRoutines')?.hasError('invalidCoverageRoutines')">
-        Must be empty or a comma-separated list of .mac files without the .mac
-      </mat-error>
-    </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Coverage Routines</mat-label>
+        <textarea
+          matInput
+          placeholder="Bank.MyRoutine,Bank.MySecondRoutine (or blank to use coverage.list)"
+          formControlName="CoverageRoutines"
+        ></textarea>
+        <mat-error *ngIf="dataForm.get('CoverageRoutines')?.hasError('invalidCoverageRoutines')">
+          Must be empty or a comma-separated list of .mac files without the .mac
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>PidList</mat-label>
-      <textarea matInput placeholder="" formControlName="PidList"></textarea>
-      <mat-error *ngIf="dataForm.get('PidList')?.hasError('invalidPidList')">
-        Must be empty or a comma-separated list of numbers, with the first value possibly being 'Interop'.
-      </mat-error>
-    </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>PidList</mat-label>
+        <textarea matInput placeholder="" formControlName="PidList"></textarea>
+        <mat-error *ngIf="dataForm.get('PidList')?.hasError('invalidPidList')">
+          Must be empty or a comma-separated list of numbers, with the first value possibly being 'Interop'.
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Timing</mat-label>
-      <mat-select formControlName="Timing">
-        <mat-option *ngFor="let timing of timingsList" [value]="timing.value">{{ timing.viewValue }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Timing</mat-label>
+        <mat-select formControlName="Timing">
+          <mat-option *ngFor="let timing of timingsList" [value]="timing.value">
+            {{ timing.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <div class="flex-box">
-      <button type="submit" mat-raised-button color="primary">Submit</button>
-      <div *ngIf="isLoading$ | async" class="spinner-container">
-        <mat-spinner [diameter]="24"></mat-spinner>
+      <div class="flex-box">
+        <button type="submit" mat-raised-button color="primary">Submit</button>
+        <div *ngIf="isLoading$ | async" class="spinner-container">
+          <mat-spinner [diameter]="24"></mat-spinner>
+        </div>
+        <div *ngIf="hasError$ | async" class="error-container">
+          <mat-icon color="warn">error</mat-icon>
+          <span class="error-message">{{ errorMessage$ | async }}</span>
+        </div>
       </div>
-      <div *ngIf="hasError$ | async" class="error-container">
-        <mat-icon color="warn">error</mat-icon>
-        <span class="error-message">{{ errorMessage$ | async }}</span>
-      </div>
-    </div>
-  </mat-card>
-</form>
+    </form>
+  </mat-card-content>
+</mat-card>
