@@ -1,0 +1,25 @@
+<button type="submit" mat-stroked-button (click)="clearValues()">Clear log</button>
+<ng-container *ngIf="logs | async as logs">
+  <ng-container *ngFor="let log of logs">
+    <div [ngClass]="{
+      'method': log.method,
+      'class': !log.method && log.class,
+      'suite': !log.method && !log.class && log.suite
+    }">
+    <span>{{log.message}}</span>
+      <ng-container *ngIf="log.method; else classCheck">
+        <span>{{ log.method }}</span>
+      </ng-container>
+      <ng-template #classCheck>
+        <ng-container *ngIf="log.class; else suiteCheck">
+          <span>{{ log.class }}</span>
+        </ng-container>
+        <ng-template #suiteCheck>
+          <ng-container *ngIf="log.suite">
+            <span>{{ log.suite }}</span>
+          </ng-container>
+        </ng-template>
+      </ng-template>
+    </div>
+  </ng-container>
+</ng-container>

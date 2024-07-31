@@ -61,14 +61,6 @@ ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
 	quit tSC
 }
 
-ClassMethod TestCovBroadcastWrapper(pMessage As %String) As %Status
-{
-	set tMessage = {}
-	do tMessage.%Set("message", pMessage)
-	do tMessage.%Set("type", "LogOutput")
-	quit ..BroadCast(tMessage)
-}
-
 ClassMethod HandleException(pException As %Exception.AbstractException, pSocketID As %String = "")
 {
 	Try {

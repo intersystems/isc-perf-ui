@@ -1,7 +1,5 @@
-export interface WebSocketMessage {
+export interface OutputMessage {
     message: string;
-    RunID?: number;
-    type: string;
     suite?: string;
     class?: string;
     method?: string; 

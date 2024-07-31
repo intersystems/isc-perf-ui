@@ -82,6 +82,11 @@ ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverage
     set tCoverageParams("CoverageRoutines") = pCoverageRoutines
     set tCoverageParams("ProcessIDs") = pProcessIDs
     set tCoverageParams("CoverageDetail") = pCoverageDetail
+
+    set tListenerManager = ##class(TestCoverage.Listeners.ListenerManager).%New()
+    do tListenerManager.AddListener(##class(pkg.isc.perf.ui.socket.Listener).%New())
+    set tCoverageParams("ListenerManager") = tListenerManager
+    
     set ^UnitTestRoot = pUnitTestRoot
     set buffer = ##class(%pkg.isc.json.util.buffer).%New()
     do buffer.BeginCaptureOutput()

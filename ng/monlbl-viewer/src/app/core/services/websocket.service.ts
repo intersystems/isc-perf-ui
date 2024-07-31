@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { WebSocketMessage } from '../interfaces/web-socket-message';
 
@@ -11,7 +11,7 @@ export class WebsocketService {
   webSocketSubject$!: WebSocketSubject<any>;
 
   private messageReceivedSubject = new BehaviorSubject<WebSocketMessage | null>(null); // Use the interface
-
+  private outputLogSubject = new ReplaySubject<WebSocketMessage>;
   constructor(private authService: AuthenticationService) {
       this.webSocketSubject$ = webSocket({
         url: this.buildUrl()
@@ -24,10 +24,17 @@ export class WebsocketService {
   }
 
   private handleMessage(message: WebSocketMessage): void {
-    if (message.type = "RunTestFinish") {
+    if (message.type == "RunTestFinish") {
       // Notify with the message and RunID
       this.messageReceivedSubject.next(message);
     }
+    else if (message.type == "TestCoverageOutput") {
+      this.outputLogSubject.next(message);
+    }
+  }
+
+  getOutputLogObservable() {
+    return this.outputLogSubject.asObservable();
   }
 
   getMessageReceivedObservable() {
