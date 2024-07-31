@@ -29,7 +29,7 @@
           <Attribute Name="baseHref">/csp/${namespace}/monlbl-viewer</Attribute>
         </Resource>
         <Resource Name="/ng/monlbl-viewer/dist/monlbl-viewer" ProcessorClass="CSPApplication" Generated="true">
-          <Attribute Name="DispatchClass">pkg.isc.ipm.js.angular.pathLocationHandler</Attribute>
+          <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.StaticFilesHandler</Attribute>
           <Attribute Name="Directory">${cspdir}${namespace}/monlbl-viewer</Attribute>
           <Attribute Name="Url">/csp/${namespace}/monlbl-viewer</Attribute>
           <Attribute Name="ServeFiles">1</Attribute>
@@ -48,7 +48,7 @@
           <Attribute Name="CookiePath">/csp/${namespace}/monlbl-viewer</Attribute>
         </Resource>
         <Resource Name="/ng/monlbl-viewer/dist" ProcessorClass="CSPApplication" Generated="true">
-        <Attribute Name="PermittedClasses">1"pkg.isc.perf.ui.socket.WebSocket"</Attribute>
+        <Attribute Name="PermittedClasses">1"pkg.isc.perf.ui.".E</Attribute>
         <Attribute Name="Directory">${cspdir}${namespace}/monlbl-viewer/socket</Attribute>
         <Attribute Name="Url">/csp/${namespace}/monlbl-viewer/socket</Attribute>
         <Attribute Name="CookiePath">/csp/${namespace}/monlbl-viewer</Attribute>
