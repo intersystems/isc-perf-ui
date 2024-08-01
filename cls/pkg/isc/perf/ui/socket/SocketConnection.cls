@@ -5,6 +5,7 @@ Property SocketID As %String [ Required ];
 
 Index SocketID On SocketID [ IdKey ];
 
+/// create / open the entry for a socketID in the table
 ClassMethod Init(pSocketID As %String)
 {
 	If ..SocketIDExists(pSocketID) {
@@ -16,6 +17,7 @@ ClassMethod Init(pSocketID As %String)
 	$$$ThrowOnError(tInst.%Save(0))
 }
 
+/// delete the socket with the given ID from the table 
 ClassMethod End(pSocketID As %String)
 {
 	$$$ThrowOnError(..SocketIDDelete(pSocketID))

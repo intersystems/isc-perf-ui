@@ -4,8 +4,8 @@ Class pkg.isc.perf.ui.socket.WebSocket Extends %CSP.WebSocket
 Method OnPreServer() As %Status
 {
     #dim %request As %CSP.Request
-	//set ^mtempcg($i(^mtempcg)) = "preserver" 
-    Set ..SharedConnection = 1
+    Set ..SharedConnection = 1 // async websocket connection
+	// store the websocket id in the persistent table
 	Do ##class(pkg.isc.perf.ui.socket.SocketConnection).Init(..WebSocketID)    
 	Quit $$$OK
 }
@@ -13,41 +13,45 @@ Method OnPreServer() As %Status
 Method Server() As %Status
 {
 	For i = 1:1 {
+		// read in from the websocket 
 		Set tData = ..Read(, .tSC, 1)
 		If ($$$ISERR(tSC)){
 			If ($$$GETERRORCODE(tSC) = $$$CSPWebSocketTimeout) {
-				
+				// just happens if there's no messages for a second
 			} 
 			ElseIf ($$$GETERRORCODE(tSC) = $$$CSPWebSocketClosed){
 				// Client closed WebSocket.
 				Set tSC = $$$OK
 				Try {
+					// delete the websocket id from the table
 					Do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
 				} Catch e { 
 					Set tSC = e.AsStatus()
 				} 
+				// end the websocket connection on the server side
 				Do ..EndServer()
 				Quit
 			} Else {
 				$$$ThrowOnError(tSC)
 			}
-		} Else {
-			//set ^mtempcg($i(^mtempcg)) = "not erroring"
-		}
+		} 
 	}
 	Quit $$$OK
 }
 
+/// send a json message to all listening websockets
 ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
 {
 	Set tSC = $$$OK 
 	Try {
-		//set ^mtempcg($i(^mtempcg)) = pMessage.message
+		// get the active socketIDs
 		Set tQuery = "select SocketID from pkg_isc_perf_ui_socket.SocketConnection"
 		Set tListeners = ##class(%SQL.Statement).%ExecDirect(,tQuery)
 		If (tListeners.%SQLCODE < 0) {
 			Throw ##class(%Exception.SQL).CreateFromSQLCODE(tListeners.%SQLCODE,tListeners.%Message)
 		}
+
+		// write to all the websockets
 		While tListeners.%Next(.tSC) {
 			$$$ThrowOnError(tSC)
 			Set tWS = ..%New()
@@ -62,6 +66,7 @@ ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
 	Quit tSC
 }
 
+/// code to log error messages and send them to the UI
 ClassMethod HandleException(pException As %Exception.AbstractException)
 {
 	Try {
@@ -84,6 +89,7 @@ ClassMethod HandleException(pException As %Exception.AbstractException)
 					Set tLog = 1
 				}
 			}
+			// send the message to the UI
 			do ..BroadCast(tErrResponse)
 			
 		} Else {
@@ -100,13 +106,7 @@ ClassMethod HandleException(pException As %Exception.AbstractException)
 
 Method OnPostServer() As %Status
 {
-	Set tSC = $$$OK
-	#; Try {
-	#; 	Do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
-	#; } Catch e { 
-	#; 	Set tSC = e.AsStatus()
-	#; } 
-	Quit tSC
+	Quit $$$OK
 }
 
 }
