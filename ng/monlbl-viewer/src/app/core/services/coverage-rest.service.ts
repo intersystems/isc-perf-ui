@@ -46,7 +46,6 @@ export class CoverageRestService {
   }
 
   Clear(): void {
-    console.log("do we get here at least")
     this.covService.coverageClearPost().subscribe(); 
     this.covpathsSubject.next(null);
     return 

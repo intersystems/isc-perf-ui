@@ -13,20 +13,20 @@ Method OnPreServer() As %Status
 Method Server() As %Status
 {
 	For i = 1:1 {
-		set tData = ..Read(, .tSC, 1)
+		Set tData = ..Read(, .tSC, 1)
 		If ($$$ISERR(tSC)){
 			If ($$$GETERRORCODE(tSC) = $$$CSPWebSocketTimeout) {
 				
 			} 
 			ElseIf ($$$GETERRORCODE(tSC) = $$$CSPWebSocketClosed){
 				// Client closed WebSocket.
-				set tSC = $$$OK
-				try {
-					do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
-				} catch e { 
-					set tSC = e.AsStatus()
+				Set tSC = $$$OK
+				Try {
+					Do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
+				} Catch e { 
+					Set tSC = e.AsStatus()
 				} 
-				do ..EndServer()
+				Do ..EndServer()
 				Quit
 			} Else {
 				$$$ThrowOnError(tSC)
@@ -40,8 +40,9 @@ Method Server() As %Status
 
 ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
 {
-	set tSC = $$$OK 
-	try {
+	Set tSC = $$$OK 
+	Try {
+		//set ^mtempcg($i(^mtempcg)) = pMessage.message
 		Set tQuery = "select SocketID from pkg_isc_perf_ui_socket.SocketConnection"
 		Set tListeners = ##class(%SQL.Statement).%ExecDirect(,tQuery)
 		If (tListeners.%SQLCODE < 0) {
@@ -55,10 +56,10 @@ ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
 			}
 		}
 		$$$ThrowOnError(tSC)
-	} catch e {
-		set tSC = e.AsStatus() 
+	} Catch e {
+		Set tSC = e.AsStatus() 
 	}
-	quit tSC
+	Quit tSC
 }
 
 ClassMethod HandleException(pException As %Exception.AbstractException, pSocketID As %String = "")
@@ -71,14 +72,14 @@ ClassMethod HandleException(pException As %Exception.AbstractException, pSocketI
 				"message":"An internal error occurred and has been logged."
 			}
 			Set tSC = pException.AsStatus()
-			If ($System.Status.GetErrorCodes(tSC) = "5001") {
+			If ($SYSTEM.Status.GetErrorCodes(tSC) = "5001") {
 				// Respond to the sender with an error message containing the message text from the status.
-				Set tErrResponse.message = $Piece($System.Status.GetErrorText(tSC),"#5001: ",2)
+				Set tErrResponse.message = $PIECE($SYSTEM.Status.GetErrorText(tSC),"#5001: ",2)
 			} Else {
 				// Respond to the sender with a generic error message containing (and log the exception).
-				Do $System.Status.DecomposeStatus(tSC,.tErrorList)
+				Do $SYSTEM.Status.DecomposeStatus(tSC,.tErrorList)
 				If (tErrorList(1,"code") = $$$PropertyRequired) {
-					Set tPropName = $Piece($Piece(tErrorList(1,"param",1),"::",2),"(")
+					Set tPropName = $PIECE($PIECE(tErrorList(1,"param",1),"::",2),"(")
 					Set tErrResponse.message = tPropName_" required."
 				} Else {
 					Set tLog = 1
@@ -103,13 +104,13 @@ ClassMethod HandleException(pException As %Exception.AbstractException, pSocketI
 
 Method OnPostServer() As %Status
 {
-	set tSC = $$$OK
-	try {
-		do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
-	} catch e { 
-		set tSC = e.AsStatus()
-	} 
-	quit tSC
+	Set tSC = $$$OK
+	#; Try {
+	#; 	Do ##class(pkg.isc.perf.ui.socket.SocketConnection).End(..WebSocketID)
+	#; } Catch e { 
+	#; 	Set tSC = e.AsStatus()
+	#; } 
+	Quit tSC
 }
 
 }

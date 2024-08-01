@@ -43,7 +43,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { TestCoverageHeaderComponent } from './core/components/test-coverage-header/test-coverage-header.component';
 import { ParameterExplanationsComponent } from './core/components/parameter-explanations/parameter-explanations.component';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { OutputLogComponent } from './core/components/output-log/output-log.component';
@@ -97,7 +96,6 @@ import { OutputLogComponent } from './core/components/output-log/output-log.comp
     MatIconModule,
     MatTableModule,
     MatSortModule,
-    MatDividerModule,
     MatSnackBarModule,
     MatCardModule
   ],

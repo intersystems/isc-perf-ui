@@ -1,4 +1,4 @@
-import { Component, ViewChild, HostListener  } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit, AfterViewInit  } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { map, switchMap } from 'rxjs/operators';
@@ -13,13 +13,12 @@ import { WebSocketMessage } from '../../interfaces/web-socket-message';
   templateUrl: './coverage-results-display.component.html',
   styleUrls: ['./coverage-results-display.component.scss']
 })
-export class CoverageResultsDisplayComponent {
+export class CoverageResultsDisplayComponent implements OnInit, AfterViewInit {
   @ViewChild('routineSelect') routineSelect!: MatSelect;
   covpaths$: Observable<CoverageRoutinePathsOutput | null> = this.covRestService.getCovpathsObservable();
   results$: Observable<any[]> = of([]);
   selectedPath: CoverageRoutinePathOutput | null = null;
-  //isLoading$: Observable<boolean> = this.covRestService.getIsLoadingObservable(); 
-  
+  //isLoading$: Observable<boolean> = this.covRestService.getIsLoadingObservable();   
   
   constructor(private covRestService: CoverageRestService, private router: Router, private websocketService: WebsocketService) {}
 
@@ -42,6 +41,7 @@ export class CoverageResultsDisplayComponent {
       }, 0);
   });
   }
+
 
 
    // Listen for the beforeunload event

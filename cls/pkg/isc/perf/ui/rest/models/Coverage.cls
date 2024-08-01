@@ -86,14 +86,13 @@ ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverage
     set tListenerManager = ##class(TestCoverage.Listeners.ListenerManager).%New()
     do tListenerManager.AddListener(##class(pkg.isc.perf.ui.socket.Listener).%New())
     set tCoverageParams("ListenerManager") = tListenerManager
-    
+
     set ^UnitTestRoot = pUnitTestRoot
     set buffer = ##class(%pkg.isc.json.util.buffer).%New()
     do buffer.BeginCaptureOutput()
     $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
     set stream = ##class(%Stream.TmpCharacter).%New()
     do buffer.EndCaptureOutput(.stream)
-
     // figure out which run id this went into
     &sql(SELECT MAX(ID) INTO :tRunID FROM TestCoverage_Data.Run)
     If (SQLCODE < 0) {
@@ -102,6 +101,7 @@ ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverage
 
     set msg = {"message": "Finished RunTest", "type": "RunTestFinish"}
     do msg.%Set("RunID", tRunID)
+    //set ^mtempcg($i(^mtempcg)) = msg
     do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
     Quit $$$OK
 }
