@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
 import { WebSocketMessage } from '../../interfaces/web-socket-message';
@@ -8,9 +8,9 @@ import { OutputMessage } from '../../interfaces/output-message';
   templateUrl: './output-log.component.html',
   styleUrls: ['./output-log.component.scss']
 })
-export class OutputLogComponent {
-  logs: Subject<OutputMessage[]> = new Subject(); 
-  logValues: OutputMessage[] = []; 
+export class OutputLogComponent implements OnInit {
+  logs: Subject<OutputMessage[]> = new Subject(); // observable containing the outputted unit test progress 
+  logValues: OutputMessage[] = []; // the current value of the observable
 
   constructor(private websocketService: WebsocketService) {}
   ngOnInit() {

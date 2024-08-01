@@ -37,6 +37,7 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
+    // when routed to, make the API call to get the routine and test path combinations
     this.route.paramMap
       .pipe(
         switchMap((params) => {
@@ -52,20 +53,24 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
           );
         }),
         map((response: any) => {
+          // populate the method table
           this.methodDataSource.data = response.MethodResults || [];
           return response.results;
         })
       )
       .subscribe((results) => {
+        // populate the code coverage table
         this.dataSource.data = results;
       });
   }
 
   ngAfterViewInit() {
+    //sorting logic for coverage table
     this.dataSource.sort = this.matSort;
     this.dataSource.sortingDataAccessor = (data: CoverageResultOutput, sortHeaderId: string): string | number => {
       const value = (data as any)[sortHeaderId];
       if (sortHeaderId === 'TIME' || sortHeaderId === 'TotalTime') {
+        // treat non existent times as 0 for sorting
         return value ? parseFloat(value) : 0;
       }
       return value !== null && value !== undefined ? value : '';
@@ -88,6 +93,7 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // Angular tries to sanitize the html instead of displaying it directly for the syntax coloring
   getSafeHtml(html: string) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }

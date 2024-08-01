@@ -1,26 +1,30 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subject, catchError, throwError, tap, map, Observable, filter} from 'rxjs';
-import { CoverageService,  CoverageResultsOutput,  CoverageRoutinePathsOutput, CoverageRoutinePathOutput } from 'src/app/generated';
+import { BehaviorSubject, catchError, throwError, tap, Observable} from 'rxjs';
+import { CoverageService,  CoverageResultsOutput,  CoverageRoutinePathsOutput } from 'src/app/generated';
 @Injectable({
   providedIn: 'root'
 })
 export class CoverageRestService {
-  //private startCompletedSubject = new BehaviorSubject<boolean>(false);
-  private covpathsSubject = new BehaviorSubject<CoverageRoutinePathsOutput | null>(null);
-  private isLoadingSubject = new BehaviorSubject<boolean>(false); // Add the isLoading subject
-  private isLoading = false; 
-  private firstLoad = true; // if the page hasn't had results yet, we'll listen to the first broadcast if there is one
-  private RunID = 0; // the RunID of the RunTest that this websocket is listening to 
 
+
+  private covpathsSubject = new BehaviorSubject<CoverageRoutinePathsOutput | null>(null); // observable of an object with a list of routine+testpaths
+  // will be surfaced in the dropdown in CoverageResultsDisplay
+  
+  private isLoadingSubject = new BehaviorSubject<boolean>(false); // Observable of whether we're currently waiting for a coverage run
+  private isLoading = false; // current value for isLoading
+  //important for knowing whether or not to listen to an incoming websocket message
+ 
+  private firstLoad = true; // if the page hasn't had results yet, we'll listen to the first broadcast if there is one
+  // if you just open a tab and there's a current test running, we'll listen to that test's results
+  
+  private RunID = 0; // the RunID of the RunTest that this websocket is listening to
   constructor(protected covService: CoverageService ) { }
   
+  // wrapper for making the API call to start runtest
   Start(pConfig: any): Observable<any> {
     this.isLoadingSubject.next(true); // Set loading state to true when starting
     this.isLoading = true;
     return this.covService.coverageStartPost({ CoverageConfigInput: pConfig }, 'body').pipe(
-      tap(status => {
-        //this.startCompletedSubject.next(true);
-      }),
       catchError((error) => {
         this.isLoadingSubject.next(false); // Set loading state to false on error
         this.isLoading = false; 
@@ -29,10 +33,12 @@ export class CoverageRestService {
     );
   }
   
-  
+  // wrapper for the API call to get the coverage results for a specific routine and testpath
   GetResults(routine: string, testpath: string): Observable<CoverageResultsOutput> {
     return this.covService.coverageResultsGet({routine: routine, testpath: testpath, RunID: this.RunID});
   }
+
+  //wrapper for the API call to get the 
   GetRoutines(RunID: number): Observable<CoverageRoutinePathsOutput> {
     return this.covService.coverageRoutinepathsGet({RunID: RunID}).pipe(
       tap((response: any) => {

@@ -6,7 +6,7 @@
     <form class="example-form" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="example-full-width">
         <mat-label>UnitTestRoot</mat-label>
-        <input matInput formControlName="UnitTestRoot" />
+        <input matInput formControlName="UnitTestRoot" placeholder="/path/to/dir/" />
         <mat-error *ngIf="dataForm.get('UnitTestRoot')?.hasError('invalidPath')">
           Invalid directory path.
         </mat-error>

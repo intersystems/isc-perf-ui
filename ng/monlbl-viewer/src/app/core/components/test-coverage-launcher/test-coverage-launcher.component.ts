@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidationErrors, FormGroup } from '@angular/forms';
 import { CoverageRestService } from '../../services/coverage-rest.service';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil, skip, Observable } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebsocketService } from '../../services/websocket.service';
 import { WebSocketMessage } from '../../interfaces/web-socket-message';
@@ -20,10 +20,10 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
     private websocketService: WebsocketService
   ) {}
 
-  hasError$ = new BehaviorSubject<boolean>(false);
-  errorMessage$ = new BehaviorSubject<string>('');
-  dataForm!: FormGroup
-  private destroy$ = new Subject<void>();
+  hasError$ = new BehaviorSubject<boolean>(false); // are we displaying an error message
+  errorMessage$ = new BehaviorSubject<string>(''); // what specific error message are we displaying
+  dataForm!: FormGroup 
+  private destroy$ = new Subject<void>(); 
   isLoading$: Observable<boolean> = this.covRestService.getIsLoadingObservable()
 
   timingsList = [
@@ -39,7 +39,7 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
   ];
   ngOnInit() {
     this.dataForm = this.formBuilder.group({
-      UnitTestRoot: ['C:\\Users\\cge\\OneDrive - InterSystems Corporation\\Documents\\Training\\', [Validators.required, this.validatePath]],
+      UnitTestRoot: ['', [Validators.required, this.validatePath]],
       CoverageLevel: [0, Validators.required],
       CoverageClasses: ['', this.validateCoverageClasses],
       CoverageRoutines: ['', this.validateCoverageRoutines],
@@ -55,6 +55,7 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
       PidList: this.validatePidList
     });
 
+    // when we get an error during RunTest, display it and clear the test run results to prevent interference with future runs
     this.websocketService.getErrorReceivedObservable().subscribe((message: WebSocketMessage | null) => {
       if (message) {
         this.showError(message.message + "; clearing all test results")
@@ -62,6 +63,8 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  // wait a little between validating the form to not cause freezing
   applyDebouncedValidation(validationConfig: { [key: string]: (control: AbstractControl) => ValidationErrors | null }) {
     Object.keys(validationConfig).forEach(controlName => {
       const control = this.dataForm.get(controlName);
@@ -85,7 +88,9 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
 
   showError(errorMessage: string) {
     this.hasError$.next(true);
-    this.errorMessage$.next(errorMessage);
+    this.errorMessage$.next(errorMessage); // display the error next to the submit button
+
+    // display the error in a snackbar on the bottom
     this.snackBar.open(errorMessage, 'Close', { 
       duration: 5000,
       panelClass: ['error-snackbar']
@@ -98,7 +103,6 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
   }
   onSubmit() {
     // Check if a request is already in progress
-    
     if (this.covRestService.getIsLoading()) {
       // Display an error message
       this.showError('Please wait for the current tests to finish before submitting again.');
@@ -111,6 +115,7 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
     this.hasError$.next(false);
     this.errorMessage$.next('');
     
+    // make the POST request to start RunTest with the given parameters
     this.covRestService.Start(this.dataForm.value).subscribe({
       next: () => {
         // Results will be handled in the WebSocket subscription
@@ -120,6 +125,8 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  // client side validation for the parameters
 
   validatePath(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
@@ -146,6 +153,7 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
   
   validatePidList(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
+    // This regex checks for a comma-separated list of Interop or numbers
     const pidRegex = /^(Interop|[0-9]+)(\s*,\s*[0-9]+)*$/;
     return pidRegex.test(control.value) ? null : { invalidPidList: true };
   }
