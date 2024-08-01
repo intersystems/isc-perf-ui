@@ -26,4 +26,3 @@ Method %OnNew() As %Status [ Private, ServerOnly = 1 ]
 }
 
 }
-

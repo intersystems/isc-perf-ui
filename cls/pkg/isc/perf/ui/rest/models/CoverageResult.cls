@@ -3,10 +3,13 @@ Class pkg.isc.perf.ui.rest.models.CoverageResult Extends (%RegisteredObject, %JS
 
 Property routine As %String(MAXLEN = 1024);
 
+/// line number
 Property line As %Integer;
 
+/// actual code
 Property code As %String(MAXLEN = 1024);
 
+/// html syntax colored version of code
 Property coloredLine As %String(MAXLEN = 1024);
 
 Property Executable As %Boolean;

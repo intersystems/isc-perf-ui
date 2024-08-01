@@ -23,7 +23,7 @@ Method %OnNew(routine As %String = "") As %Status [ Private, ServerOnly = 1 ]
 	quit $$$OK
 }
 
-Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boolean = 0)
+Method RetrieveRoutineResults(routine As %String, ByRef metricMap, color As %Boolean = 0) [ Private ]
 {
 	if (color) {
 		set codeStream = ##class(%Stream.GlobalCharacter).%New()

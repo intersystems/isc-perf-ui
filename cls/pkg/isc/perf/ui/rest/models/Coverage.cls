@@ -23,6 +23,7 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 </actions>
 }
 
+/// Jobs off the call to RunTest with the user inputted parameters
 ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
     // Validate UnitTestRoot
@@ -60,8 +61,6 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
         }
     }
-    #; Set tMsg = "Example Error"
-	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     Set tUnitTestRoot = pConfig.UnitTestRoot
     Kill tCoverageParams
     set tTiming = pConfig.Timing
@@ -70,52 +69,61 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
     set tProcessIDs = $LISTFROMSTRING(pConfig.PidList)
     set tCoverageDetail = pConfig.CoverageLevel
     Job ..CoverageCall(tUnitTestRoot, tTiming, tCoverageClasses, tCoverageRoutines, tProcessIDs, tCoverageDetail)
+    // the status doesn't actually get used, just has to be a JSON format
     quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 
+/// Runs TestCoverage's RunTest in the background, live broadcasting progress to UI 
 ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverageClasses As %List, pCoverageRoutines As %List, pProcessIDs As %List, pCoverageDetail As %String) As %Status
 {
     set tSC = $$$OK
     try {
+        // set the TestCoverage parameters based on user input
         kill tCoverageParams
         set tCoverageParams("Timing") = pTiming
         set tCoverageParams("CoverageClasses") = pCoverageClasses
         set tCoverageParams("CoverageRoutines") = pCoverageRoutines
         set tCoverageParams("ProcessIDs") = pProcessIDs
         set tCoverageParams("CoverageDetail") = pCoverageDetail
-
+        
+        // create our listener instances in order to broadcast unit test progress to UI
         set tListenerManager = ##class(TestCoverage.Listeners.ListenerManager).%New()
         do tListenerManager.AddListener(##class(pkg.isc.perf.ui.socket.Listener).%New())
         set tCoverageParams("ListenerManager") = tListenerManager
 
         set ^UnitTestRoot = pUnitTestRoot
+        
+        // suppress output
         set buffer = ##class(%pkg.isc.json.util.buffer).%New()
         do buffer.BeginCaptureOutput()
         $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
         set stream = ##class(%Stream.TmpCharacter).%New()
         do buffer.EndCaptureOutput(.stream)
+
         // figure out which run id this went into
         &sql(SELECT MAX(ID) INTO :tRunID FROM TestCoverage_Data.Run)
         If (SQLCODE < 0) {
             Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
         }
-        #; Set tMsg = "Example Error"
-	    #; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
 
+        // divider at the end of the logs
         set msg = {"type": "TestCoverageOutput", "message": "========================="}
         do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
 
+        // broadcast that we finished so that CoverageResultsDisplay knows to GetRoutinePaths
         set msg = {"message": "Finished RunTest", "type": "RunTestFinish"}
         do msg.%Set("RunID", tRunID)
         do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
         
     } catch e {
         Set tSC = e.AsStatus()
+        // broadcast and log the exception
         do ##class(pkg.isc.perf.ui.socket.WebSocket).HandleException(e)
     }
     Quit tSC
 }
 
+/// get the html for the syntax colored line version of a line of python code
 ClassMethod GetPythonColoredLine(pLine As %String) As %String [ Language = python ]
 {
     from pygments import highlight
@@ -132,11 +140,10 @@ ClassMethod GetPythonColoredLine(pLine As %String) As %String [ Language = pytho
     return highlighted_code
 }
 
-/// Highlight a line of Python code and return the HTML with inline styles.
+/// return the coverage results for a given routine, testpath, and run
 ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID As %Integer) As pkg.isc.perf.ui.rest.models.CoverageResults
 {
-    #; Set tMsg = "Example Error"
-	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
+    // get the name and extension type of the routine
     set tName = $Piece(routine, ".", 1, *-1)
     set tType = $Piece(routine, ".", *)
     set tType = $ZCONVERT(tType, "U")
@@ -146,14 +153,14 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
 	    $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     }
 
-    
+    // store the codeunit for the routine we're tracking in tCodeUnit
     do ##class(TestCoverage.Data.CodeUnit).GetCurrentByName(routine, , .tCodeUnit, )
     set tHash = tCodeUnit.Hash 
 
     set response = ##class(pkg.isc.perf.ui.rest.models.CoverageResults).%New() // the response that we'll return from this call
     
     
-    // first, figure out which coverage id this corresponds to 
+    // first, figure out which coverage id this corresponds to (for the covered line data)
     &sql(SELECT ID INTO :tCoverageID FROM TestCoverage_Data.Coverage 
     WHERE Hash = :tHash
     AND TestPath = :testpath
@@ -171,19 +178,19 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
     set codeStream = ##class(%Stream.GlobalCharacter).%New()
     set tObjsLines = "" 
     for tLineNumber = 1:1:tCodeUnit.Lines.Count() {
-        set tLine = tCodeUnit.Lines.GetAt(tLineNumber)
-        set tExecutable = $Bit(tCodeUnit.ExecutableLines, tLineNumber) 
-        set tRtnLine = tCoverage.RtnLine.GetAt(tLineNumber)
-        set tTime = tCoverage.Time.GetAt(tLineNumber)
-        set tTotalTime = tCoverage.TotalTime.GetAt(tLineNumber)
-        set tColoredLine = tLine
-        If ($ZSTRIP(tLine, "<>W") = "") {
+        set tLine = tCodeUnit.Lines.GetAt(tLineNumber) // line code
+        set tExecutable = $Bit(tCodeUnit.ExecutableLines, tLineNumber) // is the line executable
+        set tRtnLine = tCoverage.RtnLine.GetAt(tLineNumber) // # times line is run
+        set tTime = tCoverage.Time.GetAt(tLineNumber) // time metric
+        set tTotalTime = tCoverage.TotalTime.GetAt(tLineNumber) //totaltime metric
+        set tColoredLine = tLine 
+        If ($ZSTRIP(tLine, "<>W") = "") { // empty line
             set tColoredLine = "<span></span>" // otherwise, the coloredLine attribute doesn't get passed at all
         }
         ElseIf (tCodeUnit.LineIsPython.GetAt(tLineNumber)) {
             set tColoredLine = ..GetPythonColoredLine(tLine)
         } ElseIf ($$$isWINDOWS) {//  ##class(%Library.SyntaxColor).%New()  only works if it's a windows machine; otherwise we'll include the non colored line
-            do codeStream.WriteLine(tLine)
+            do codeStream.WriteLine(tLine) // we'll color these lines all together
             set tObjsLines = tObjsLines _ $ListBuild(tLineNumber)
         }
         do response.results.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageResult).%New(routine, tLineNumber, tLine, tColoredLine ,tExecutable, tRtnLine, tTime, tTotalTime))
@@ -191,7 +198,6 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
 
     if ($$$isWINDOWS) {
         // get the colored versions of each objectscript line 
-        // can't really make it a shared function because it needs to access its own results instance 
         set coloredStream = ##class(%Stream.GlobalCharacter).%New()
         set colorer = ##class(%Library.SyntaxColor).%New()
         set language = "MAC"
@@ -225,6 +231,7 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
         }
     }
 
+    // get the method cyclomatic complexities
     set sql = "SELECT Name, Complexity FROM TestCoverage_Data_CodeSubUnit.Method WHERE Parent = ? "
     set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, tHash)
     If (resultSet.%SQLCODE < 0) {
@@ -239,18 +246,19 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
     quit response
 }
 
+/// get all routine + test path combinations for the given run + the aggregate coverage %
 ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.CoverageRoutinePaths
 {
     set response = ##class(pkg.isc.perf.ui.rest.models.CoverageRoutinePaths).%New()
 
-    // next, get the aggregate coverage statistic and store that 
+    // first, get the aggregate coverage statistic and store that 
     &sql(SELECT CoveredLines, ExecutableLines INTO :tCoveredLines, :tExecutableLines FROM TestCoverage_Data_Aggregate.ByRun WHERE Run = :RunID)
     If (SQLCODE < 0) {
 		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
     }
     set response.CoveragePercent = $Number((tCoveredLines / tExecutableLines) * 100, 2)
 
-
+    // get the routine name and test path
     set sql = "SELECT Hash->Name, Hash->Type, TestPath FROM TestCoverage_Data.Coverage WHERE Run = ? "
     set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, RunID)
     If (resultSet.%SQLCODE < 0) {
@@ -269,6 +277,7 @@ ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Co
     return response
 }
 
+/// clears the TestCoverage data tables
 ClassMethod ClearResults() As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
     do ##class(TestCoverage.Utils).Clear() 
@@ -290,15 +299,6 @@ ClassMethod CheckPermission(pID As %String, pOperation As %String, pUserContext 
         quit 0 
     } 
     quit (pOperation [ "ACTION:") && $isobject(pUserContext) && (pUserContext.Username '= "UnknownUser")
-}
-
-ClassMethod ListToListBuild(pList As %Library.AbstractList) As %List
-{
-    set listbuild = "" 
-    for i=1:1:pList.Count() { 
-        set listbuild = listbuild_$listbuild(pList.GetAt(i)) 
-    } 
-    quit listbuild
 }
 
 }

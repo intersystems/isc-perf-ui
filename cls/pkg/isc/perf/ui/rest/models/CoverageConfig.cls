@@ -5,13 +5,10 @@ Property UnitTestRoot As %String(MAXLEN = 1024);
 
 Property PidList As %String(MAXLEN = 1024);
 
+/// timing metric
 Property Timing As %Integer;
 
-// determines the metrics
-
 Property CoverageClasses As %String(MAXLEN = 1024);
-
-// comma separated
 
 Property CoverageRoutines As %String(MAXLEN = 1024);
 
