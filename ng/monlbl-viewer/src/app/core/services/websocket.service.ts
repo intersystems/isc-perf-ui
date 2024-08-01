@@ -12,6 +12,7 @@ export class WebsocketService {
 
   private messageReceivedSubject = new BehaviorSubject<WebSocketMessage | null>(null); // Use the interface
   private outputLogSubject = new ReplaySubject<WebSocketMessage>;
+  private errorSubject = new BehaviorSubject<WebSocketMessage | null>(null); 
   constructor(private authService: AuthenticationService) {
       this.initializeWebSocket();
   }
@@ -23,6 +24,9 @@ export class WebsocketService {
     }
     else if (message.type == "TestCoverageOutput") {
       this.outputLogSubject.next(message);
+    }
+    else if (message.type == "error") {
+      this.errorSubject.next(message);
     }
   }
 
@@ -43,6 +47,9 @@ export class WebsocketService {
 
   getMessageReceivedObservable() {
     return this.messageReceivedSubject.asObservable();
+  }
+  getErrorReceivedObservable() {
+    return this.errorSubject.asObservable();
   }
   
   Cleanup(): void {

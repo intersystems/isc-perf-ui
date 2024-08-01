@@ -62,10 +62,9 @@ ClassMethod BroadCast(pMessage As %DynamicObject) As %Status
 	Quit tSC
 }
 
-ClassMethod HandleException(pException As %Exception.AbstractException, pSocketID As %String = "")
+ClassMethod HandleException(pException As %Exception.AbstractException)
 {
 	Try {
-		Set tLog = (pSocketID '= "")
 		If pException.%IsA("%Exception.StatusException") {
 			Set tErrResponse = {
 				"type":"error",
@@ -85,11 +84,8 @@ ClassMethod HandleException(pException As %Exception.AbstractException, pSocketI
 					Set tLog = 1
 				}
 			}
+			do ..BroadCast(tErrResponse)
 			
-			// Respond to sender with error message.
-			Set tWS = ..%New()
-			$$$ThrowOnError(tWS.OpenServer(pSocketID))
-			$$$ThrowOnError(tWS.Write(tErrResponse.%ToJSON()))
 		} Else {
 			Set tLog = 1
 		}

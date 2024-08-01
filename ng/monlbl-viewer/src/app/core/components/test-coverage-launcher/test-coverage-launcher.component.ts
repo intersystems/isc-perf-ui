@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidationErrors, FormGroup } from '@angular/forms';
 import { CoverageRestService } from '../../services/coverage-rest.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil, skip, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebsocketService } from '../../services/websocket.service';
+import { WebSocketMessage } from '../../interfaces/web-socket-message';
 
 @Component({
   selector: 'app-test-coverage-launcher',
   templateUrl: './test-coverage-launcher.component.html',
   styleUrls: ['./test-coverage-launcher.component.scss']
 })
-export class TestCoverageLauncherComponent {
+export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,6 +54,13 @@ export class TestCoverageLauncherComponent {
       CoverageRoutines: this.validateCoverageRoutines,
       PidList: this.validatePidList
     });
+
+    this.websocketService.getErrorReceivedObservable().subscribe((message: WebSocketMessage | null) => {
+      if (message) {
+        this.showError(message.message + "; clearing all test results")
+        this.covRestService.Clear();
+      }
+    });
   }
   applyDebouncedValidation(validationConfig: { [key: string]: (control: AbstractControl) => ValidationErrors | null }) {
     Object.keys(validationConfig).forEach(controlName => {
@@ -75,24 +83,25 @@ export class TestCoverageLauncherComponent {
     this.destroy$.complete();
   }
 
+  showError(errorMessage: string) {
+    this.hasError$.next(true);
+    this.errorMessage$.next(errorMessage);
+    this.snackBar.open(errorMessage, 'Close', { 
+      duration: 5000,
+      panelClass: ['error-snackbar']
+    });
+    // Set a timeout to hide the error after 5 seconds
+    setTimeout(() => {
+      this.hasError$.next(false);
+      this.errorMessage$.next('');
+    }, 5000);
+  }
   onSubmit() {
     // Check if a request is already in progress
     
     if (this.covRestService.getIsLoading()) {
       // Display an error message
-      this.hasError$.next(true);
-      this.errorMessage$.next('Please wait for the current tests to finish before submitting again.');
-  
-      this.snackBar.open('Please wait for the current tests to finish before submitting again.', 'Close', { 
-        duration: 5000,
-        panelClass: ['error-snackbar']
-      });
-      // Set a timeout to hide the error after 5 seconds
-      setTimeout(() => {
-        this.hasError$.next(false);
-        this.errorMessage$.next('');
-      }, 5000);
-
+      this.showError('Please wait for the current tests to finish before submitting again.');
       return;
     }
 
@@ -107,12 +116,7 @@ export class TestCoverageLauncherComponent {
         // Results will be handled in the WebSocket subscription
       },
       error: (error) => {
-        this.hasError$.next(true);
-
-        this.snackBar.open(error.message, 'Close', { 
-          duration: 5000,
-          panelClass: ['error-sfnackbar']
-        });
+        this.showError(error.message); 
       }
     });
   }

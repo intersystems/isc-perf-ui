@@ -60,7 +60,6 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
         }
     }
-
     #; Set tMsg = "Example Error"
 	#; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
     Set tUnitTestRoot = pConfig.UnitTestRoot
@@ -76,34 +75,45 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
 
 ClassMethod CoverageCall(pUnitTestRoot As %String, pTiming As %String, pCoverageClasses As %List, pCoverageRoutines As %List, pProcessIDs As %List, pCoverageDetail As %String) As %Status
 {
-    kill tCoverageParams
-    set tCoverageParams("Timing") = pTiming
-    set tCoverageParams("CoverageClasses") = pCoverageClasses
-    set tCoverageParams("CoverageRoutines") = pCoverageRoutines
-    set tCoverageParams("ProcessIDs") = pProcessIDs
-    set tCoverageParams("CoverageDetail") = pCoverageDetail
+    set tSC = $$$OK
+    try {
+        kill tCoverageParams
+        set tCoverageParams("Timing") = pTiming
+        set tCoverageParams("CoverageClasses") = pCoverageClasses
+        set tCoverageParams("CoverageRoutines") = pCoverageRoutines
+        set tCoverageParams("ProcessIDs") = pProcessIDs
+        set tCoverageParams("CoverageDetail") = pCoverageDetail
 
-    set tListenerManager = ##class(TestCoverage.Listeners.ListenerManager).%New()
-    do tListenerManager.AddListener(##class(pkg.isc.perf.ui.socket.Listener).%New())
-    set tCoverageParams("ListenerManager") = tListenerManager
+        set tListenerManager = ##class(TestCoverage.Listeners.ListenerManager).%New()
+        do tListenerManager.AddListener(##class(pkg.isc.perf.ui.socket.Listener).%New())
+        set tCoverageParams("ListenerManager") = tListenerManager
 
-    set ^UnitTestRoot = pUnitTestRoot
-    set buffer = ##class(%pkg.isc.json.util.buffer).%New()
-    do buffer.BeginCaptureOutput()
-    $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
-    set stream = ##class(%Stream.TmpCharacter).%New()
-    do buffer.EndCaptureOutput(.stream)
-    // figure out which run id this went into
-    &sql(SELECT MAX(ID) INTO :tRunID FROM TestCoverage_Data.Run)
-    If (SQLCODE < 0) {
-		Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
+        set ^UnitTestRoot = pUnitTestRoot
+        set buffer = ##class(%pkg.isc.json.util.buffer).%New()
+        do buffer.BeginCaptureOutput()
+        $$$ThrowOnError(##class(TestCoverage.Manager).RunTest(,"/nodelete",.tCoverageParams)) 
+        set stream = ##class(%Stream.TmpCharacter).%New()
+        do buffer.EndCaptureOutput(.stream)
+        // figure out which run id this went into
+        &sql(SELECT MAX(ID) INTO :tRunID FROM TestCoverage_Data.Run)
+        If (SQLCODE < 0) {
+            Throw ##class(%Exception.SQL).CreateFromSQLCODE(SQLCODE,%msg)
+        }
+        #; Set tMsg = "Example Error"
+	    #; $$$ThrowStatus($$$ERROR($$$GeneralError,tMsg))
+
+        set msg = {"type": "TestCoverageOutput", "message": "========================="}
+        do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
+
+        set msg = {"message": "Finished RunTest", "type": "RunTestFinish"}
+        do msg.%Set("RunID", tRunID)
+        do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
+        
+    } catch e {
+        Set tSC = e.AsStatus()
+        do ##class(pkg.isc.perf.ui.socket.WebSocket).HandleException(e)
     }
-
-    set msg = {"message": "Finished RunTest", "type": "RunTestFinish"}
-    do msg.%Set("RunID", tRunID)
-    //set ^mtempcg($i(^mtempcg)) = msg
-    do ##class(pkg.isc.perf.ui.socket.WebSocket).BroadCast(msg)
-    Quit $$$OK
+    Quit tSC
 }
 
 ClassMethod GetPythonColoredLine(pLine As %String) As %String [ Language = python ]
