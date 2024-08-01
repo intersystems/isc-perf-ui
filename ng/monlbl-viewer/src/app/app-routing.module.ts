@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/components/home/home.component';
-import { LoginComponent } from './core/components/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { CoverageResultDetailComponent } from './core/components/coverage-result-detail/coverage-result-detail.component';
 import { StatusComponent } from './core/components/status/status.component';
@@ -9,7 +8,6 @@ import { StatusComponent } from './core/components/status/status.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'lblmonitor', component: StatusComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
   { path: 'result-detail/:routine/:testpath', component: CoverageResultDetailComponent},
 
   // otherwise redirect to home

@@ -8,12 +8,10 @@ import { PlatformUserOutput } from './generated';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  user: PlatformUserOutput | null = null;
 
   constructor(
       private authenticationService: AuthenticationService
   ) {
-      this.authenticationService.user.subscribe(x => this.user = x);
   }
 
   logout() {

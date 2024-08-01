@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StatusComponent } from './core/components/status/status.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoginComponent } from './core/components/login/login.component';
 import { HomeComponent } from './core/components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorInterceptor } from './core/error-interceptor';
@@ -52,7 +51,6 @@ import { OutputLogComponent } from './core/components/output-log/output-log.comp
   declarations: [
     AppComponent,
     StatusComponent,
-    LoginComponent,
     HomeComponent,
     CodeComponent,
     RemoveClassDescriptorsPipe,
