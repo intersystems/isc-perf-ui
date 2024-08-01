@@ -3,7 +3,7 @@
   <Document name="isc.perf.ui.ZPM">
     <Module>
       <Name>isc.perf.ui</Name>
-      <Version>1.0.2</Version>
+      <Version>2.0.0</Version>
       <Description>Provides visual representation of %SYS.MONLBL results</Description>
       <Keywords>performance monitor</Keywords>
       <Packaging>module</Packaging>
