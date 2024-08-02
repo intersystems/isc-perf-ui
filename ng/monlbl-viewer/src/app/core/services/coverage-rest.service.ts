@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, throwError, tap, Observable} from 'rxjs';
+import { BehaviorSubject, catchError, throwError, tap, map, Observable} from 'rxjs';
 import { CoverageService,  CoverageResultsOutput,  CoverageRoutinePathsOutput } from 'src/app/generated';
 @Injectable({
   providedIn: 'root'
@@ -40,13 +40,25 @@ export class CoverageRestService {
 
   //wrapper for the API call to get the 
   GetRoutines(RunID: number): Observable<CoverageRoutinePathsOutput> {
-    return this.covService.coverageRoutinepathsGet({RunID: RunID}).pipe(
-      tap((response: any) => {
+    return this.covService.coverageRoutinepathsGet({ RunID: RunID }).pipe(
+      map((response: CoverageRoutinePathsOutput) => {
+        if (response.covpaths) {
+          // Sort the covpaths by routine first and then by testpath
+          response.covpaths.sort((a, b) => {
+            if (a.routine === b.routine) {
+              return a.testpath.localeCompare(b.testpath);
+            }
+            return a.routine.localeCompare(b.routine);
+          });
+        }
+        return response; // Return the sorted response
+      }),
+      tap((response: CoverageRoutinePathsOutput) => {
         this.covpathsSubject.next(response);
         this.isLoadingSubject.next(false); // Set loading state to false after fetching routines
-        this.isLoading = false; 
-        this.firstLoad = false; 
-        this.RunID = RunID; // safe to update this here, since we know we're replacing the data
+        this.isLoading = false;
+        this.firstLoad = false;
+        this.RunID = RunID; // Safe to update this here, since we know we're replacing the data
       })
     );
   }
