@@ -1,75 +1,74 @@
 <mat-card>
-    <mat-card-header>
-      <h3>Historical Results</h3>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field appearance="fill" class="dropdown">
-        <mat-label>Select RunID</mat-label>
-        <mat-select (selectionChange)="onRunIDChange($event.value)">
-          <mat-option *ngFor="let runID of runIDs$ | async" [value]="runID">
-            {{ runID }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-  
-      <table mat-table [dataSource]="tableData" class="mat-elevation-z8">
-        <!-- Routine Column -->
-        <ng-container matColumnDef="Routine">
-          <th mat-header-cell *matHeaderCellDef>Routine</th>
-          <td mat-cell *matCellDef="let element">{{ element.Routine }}</td>
-        </ng-container>
-  
-        <!-- Executable Lines Column -->
-        <ng-container matColumnDef="ExecutableLines">
-          <th mat-header-cell *matHeaderCellDef>Executable Lines</th>
-          <td mat-cell *matCellDef="let element">{{ element.ExecutableLines }}</td>
-        </ng-container>
-  
-        <!-- Lines Covered Column -->
-        <ng-container matColumnDef="LinesCovered">
-          <th mat-header-cell *matHeaderCellDef>Lines Covered</th>
-          <td mat-cell *matCellDef="let element">{{ element.LinesCovered }}</td>
-        </ng-container>
-  
-        <!-- Percent Coverage Column -->
-        <ng-container matColumnDef="PercentCoverage">
-          <th mat-header-cell *matHeaderCellDef>Percent Coverage</th>
-          <td mat-cell *matCellDef="let element">{{ (element.PercentCoverage | number:'1.2-2') }}</td>
-        </ng-container>
-  
-        <!-- Executable Methods Column -->
-        <ng-container matColumnDef="ExecutableMethods">
-          <th mat-header-cell *matHeaderCellDef>Executable Methods</th>
-          <td mat-cell *matCellDef="let element">{{ element.ExecutableMethods }}</td>
-        </ng-container>
-  
-        <!-- Methods Covered Column -->
-        <ng-container matColumnDef="MethodsCovered">
-          <th mat-header-cell *matHeaderCellDef>Methods Covered</th>
-          <td mat-cell *matCellDef="let element">{{ element.MethodsCovered }}</td>
-        </ng-container>
-  
-        <!-- Method Coverage Column -->
-        <ng-container matColumnDef="MethodCoverage">
-          <th mat-header-cell *matHeaderCellDef>Method Coverage</th>
-          <td mat-cell *matCellDef="let element">{{ (element.MethodCoverage | number:'1.2-2') }}</td>
-        </ng-container>
-  
-        <!-- Time Column -->
-        <ng-container matColumnDef="Time">
-          <th mat-header-cell *matHeaderCellDef>Time</th>
-          <td mat-cell *matCellDef="let element">{{ element.Time.trim() !== '0' ? element.Time : '' }}</td>
-        </ng-container>
-  
-        <!-- Total Time Column -->
-        <ng-container matColumnDef="TotalTime">
-          <th mat-header-cell *matHeaderCellDef>Total Time</th>
-          <td mat-cell *matCellDef="let element">{{ element.TotalTime.trim() !== '0' ? element.TotalTime : '' }}</td>
-        </ng-container>
-  
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-  
+  <mat-card-header>
+    <h3>Historical Results</h3>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="fill" class="dropdown">
+      <mat-label>Select RunID</mat-label>
+      <mat-select (selectionChange)="onRunIDChange($event.value)">
+        <mat-option *ngFor="let runID of runIDs$ | async" [value]="runID">
+          {{ runID }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <!-- Routine Column -->
+      <ng-container matColumnDef="Routine">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Routine</th>
+        <td mat-cell *matCellDef="let element">{{ element.Routine }}</td>
+      </ng-container>
+
+      <!-- Executable Lines Column -->
+      <ng-container matColumnDef="ExecutableLines">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Executable Lines</th>
+        <td mat-cell *matCellDef="let element">{{ element.ExecutableLines }}</td>
+      </ng-container>
+
+      <!-- Lines Covered Column -->
+      <ng-container matColumnDef="LinesCovered">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lines Covered</th>
+        <td mat-cell *matCellDef="let element">{{ element.LinesCovered }}</td>
+      </ng-container>
+
+      <!-- Percent Coverage Column -->
+      <ng-container matColumnDef="PercentCoverage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Percent Coverage</th>
+        <td mat-cell *matCellDef="let element">{{ (element.PercentCoverage | number:'1.2-2') }}</td>
+      </ng-container>
+
+      <!-- Executable Methods Column -->
+      <ng-container matColumnDef="ExecutableMethods">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Executable Methods</th>
+        <td mat-cell *matCellDef="let element">{{ element.ExecutableMethods }}</td>
+      </ng-container>
+
+      <!-- Methods Covered Column -->
+      <ng-container matColumnDef="MethodsCovered">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Methods Covered</th>
+        <td mat-cell *matCellDef="let element">{{ element.MethodsCovered }}</td>
+      </ng-container>
+
+      <!-- Method Coverage Column -->
+      <ng-container matColumnDef="MethodCoverage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Method Coverage</th>
+        <td mat-cell *matCellDef="let element">{{ (element.MethodCoverage | number:'1.2-2') }}</td>
+      </ng-container>
+
+      <!-- Time Column -->
+      <ng-container matColumnDef="Time">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+        <td mat-cell *matCellDef="let element">{{ element.Time.trim() !== '0' ? element.Time : '' }}</td>
+      </ng-container>
+
+      <!-- Total Time Column -->
+      <ng-container matColumnDef="TotalTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Time</th>
+        <td mat-cell *matCellDef="let element">{{ element.TotalTime.trim() !== '0' ? element.TotalTime : '' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
