@@ -41,7 +41,7 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
   ];
   ngOnInit() {
     this.dataForm = this.formBuilder.group({
-      UnitTestRoot: ['', [Validators.required, this.validatePath]],
+      UnitTestRoot: ['C:\\Users\\cge\\OneDrive - InterSystems Corporation\\Documents\\Training\\', [Validators.required, this.validatePath]],
       CoverageLevel: [0, Validators.required],
       CoverageClasses: ['', this.validateCoverageClasses],
       CoverageRoutines: ['', this.validateCoverageRoutines],
