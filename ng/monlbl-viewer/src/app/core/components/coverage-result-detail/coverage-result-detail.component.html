@@ -37,13 +37,18 @@
 <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8 full-width-table">
   <ng-container matColumnDef="TIME">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>TIME</th>
-    <td mat-cell *matCellDef="let element" class="centered-column">{{element.TIME}}</td>
+    <td mat-cell *matCellDef="let element" class="centered-column">
+      {{ element.TIME !== '0' ? element.TIME : '' }}
+    </td>
   </ng-container>
-
+  
   <ng-container matColumnDef="TotalTime">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>TotalTime</th>
-    <td mat-cell *matCellDef="let element" class="centered-column">{{element.TotalTime}}</td>
+    <td mat-cell *matCellDef="let element" class="centered-column">
+      {{ element.TotalTime !== '0' ? element.TotalTime : '' }}
+    </td>
   </ng-container>
+  
 
   <ng-container matColumnDef="RtnLineCount">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>RtnLineCount</th>
