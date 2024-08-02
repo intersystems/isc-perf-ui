@@ -21,7 +21,10 @@ model/coverageResultOutput.ts
 model/coverageResultsOutput.ts
 model/coverageRoutinePathOutput.ts
 model/coverageRoutinePathsOutput.ts
+model/coverageRunIDsOutput.ts
 model/coverageStatusOutput.ts
+model/coverageTabularDataOutput.ts
+model/coverageTabularDataRowOutput.ts
 model/jSONError.ts
 model/jSONErrorErrorsInner.ts
 model/lineByLineMonitorConfigInput.ts

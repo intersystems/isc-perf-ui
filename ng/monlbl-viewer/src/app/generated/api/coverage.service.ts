@@ -25,7 +25,11 @@ import { CoverageResultsOutput } from '../model/coverageResultsOutput';
 // @ts-ignore
 import { CoverageRoutinePathsOutput } from '../model/coverageRoutinePathsOutput';
 // @ts-ignore
+import { CoverageRunIDsOutput } from '../model/coverageRunIDsOutput';
+// @ts-ignore
 import { CoverageStatusOutput } from '../model/coverageStatusOutput';
+// @ts-ignore
+import { CoverageTabularDataOutput } from '../model/coverageTabularDataOutput';
 // @ts-ignore
 import { JSONError } from '../model/jSONError';
 
@@ -46,6 +50,10 @@ export interface CoverageRoutinepathsGetRequestParams {
 
 export interface CoverageStartPostRequestParams {
     CoverageConfigInput: CoverageConfigInput;
+}
+
+export interface CoverageTabularGetRequestParams {
+    RunID: number;
 }
 
 
@@ -115,7 +123,7 @@ export class CoverageService {
     }
 
     /**
-     * Performs the clear action.
+     * clears the TestCoverage data tables
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -170,7 +178,7 @@ export class CoverageService {
     }
 
     /**
-     * Highlight a line of Python code and return the HTML with inline styles.
+     * return the coverage results for a given routine, testpath, and run
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -253,7 +261,7 @@ export class CoverageService {
     }
 
     /**
-     * Performs the routinepaths action.
+     * get all routine + test path combinations for the given run + the aggregate coverage %
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -320,7 +328,62 @@ export class CoverageService {
     }
 
     /**
-     * Performs the start action.
+     * Performs the RunIDs action.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public coverageRunIDsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageRunIDsOutput>;
+    public coverageRunIDsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageRunIDsOutput>>;
+    public coverageRunIDsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageRunIDsOutput>>;
+    public coverageRunIDsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json',
+                'default'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/coverage/$RunIDs`;
+        return this.httpClient.request<CoverageRunIDsOutput>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Jobs off the call to RunTest with the user inputted parameters
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -380,6 +443,73 @@ export class CoverageService {
             {
                 context: localVarHttpContext,
                 body: CoverageConfigInput,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Performs the tabular action.
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public coverageTabularGet(requestParameters?: CoverageTabularGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<CoverageTabularDataOutput>;
+    public coverageTabularGet(requestParameters?: CoverageTabularGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpResponse<CoverageTabularDataOutput>>;
+    public coverageTabularGet(requestParameters?: CoverageTabularGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<HttpEvent<CoverageTabularDataOutput>>;
+    public coverageTabularGet(requestParameters?: CoverageTabularGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'default', context?: HttpContext}): Observable<any> {
+        const RunID = requestParameters?.RunID;
+        if (RunID === null || RunID === undefined) {
+            throw new Error('Required parameter RunID was null or undefined when calling coverageTabularGet.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (RunID !== undefined && RunID !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>RunID, 'RunID');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json',
+                'default'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/coverage/$tabular`;
+        return this.httpClient.request<CoverageTabularDataOutput>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -14,21 +14,18 @@ export class OutputLogComponent implements OnInit {
 
   constructor(private websocketService: WebsocketService) {}
   ngOnInit() {
-    // Listen for when the WebSocket message is received
+    // Listen for when the WebSocket message is received 
     this.websocketService.getOutputLogObservable().subscribe((message: WebSocketMessage | null) => {
       if (message) {
         let msg: OutputMessage = {message: message.message}
         if (message.suite) {
            msg.suite = message.suite; 
-           message.message = message.message 
         }
         if (message.class) { 
           msg.class = message.class 
-          message.message =  message.message 
         }
         if (message.method) { 
           msg.method = message.method 
-          message.message = message.message 
         }
         this.logValues.push(msg);
         this.logs.next(this.logValues);

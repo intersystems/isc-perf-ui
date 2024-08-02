@@ -19,6 +19,10 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 <action name="routinepaths" target="class" call="GetRoutinePaths" method="GET">
 <argument target="RunID" name="RunID" source="query"  required="true"/>
 </action> 
+<action name="tabular" target="class" call="GetTabularData" method="GET">
+<argument target="RunID" name="RunID" source="query"  required="true"/>
+</action> 
+<action name="RunIDs" target="class" call="GetRunIDs" method="GET"></action>
 <action name="clear" target="class" call="ClearResults" method="POST"></action>
 </actions>
 }
@@ -273,6 +277,70 @@ ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Co
         set tTestPath = resultSet.%GetData(3)
         set path = ##class(pkg.isc.perf.ui.rest.models.CoverageRoutinePath).%New(tFullName, tTestPath)
         do response.covpaths.Insert(path)
+    }
+    return response
+}
+
+ClassMethod GetTabularData(RunID As %Integer) As pkg.isc.perf.ui.rest.models.CoverageTabularData
+{
+    set response = ##class(pkg.isc.perf.ui.rest.models.CoverageTabularData).%New()
+    set sql = "select 'Overall' As Routine, " _
+				"ROUND(100*CoveredLines/ExecutableLines,2) PercentCoverage, " _
+				"ExecutableLines as ExecutableLines, " _
+				"CoveredLines As LinesCovered, " _ 
+				"CASE ExecutableMethods WHEN 0 THEN NULL ELSE ROUND(100*CoveredMethods/ExecutableMethods,2) END As MethodCoverage, " _ 
+				"ExecutableMethods As ExecutableMethods, " _ 
+				"CoveredMethods As MethodsCovered, " _ 
+                "_TIME, " _  
+                "TotalTime, " _
+				"1 as TopSortOrder " _ 
+			"from TestCoverage_Data_Aggregate.ByRun where ExecutableLines > 0 and Run = ? " _ 
+			"union all " _
+			"select CodeUnit->Name||'.'||CodeUnit->Type, " _ 
+				"ROUND((CoveredLines/ExecutableLines)*100,2), " _
+				"ExecutableLines, " _ 
+				"CoveredLines, " _ 
+				"CASE ExecutableMethods WHEN 0 THEN NULL ELSE ROUND((CoveredMethods/ExecutableMethods)*100,2) END, " _ 
+				"ExecutableMethods, " _ 
+				"CoveredMethods, " _ 
+                "_TIME, " _ 
+                "TotalTime, " _
+				"2 " _ 
+			"from TestCoverage_Data_Aggregate.ByCodeUnit where ExecutableLines > 0 and Run = ? " _ 
+			"order by TopSortOrder,Routine"
+    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, RunID, RunID)
+    If (resultSet.%SQLCODE < 0) {
+        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
+    }
+    
+    while resultSet.%Next(.tSC) {
+        $$$ThrowOnError(tSC)
+        set tRoutine = resultSet.%GetData(1)
+        set tPercentCoverage = resultSet.%GetData(2)
+        set tExecutableLines = resultSet.%GetData(3)
+        set tLinesCovered = resultSet.%GetData(4)
+        set tMethodCoverage = resultSet.%GetData(5)
+        set tExecutableMethods = resultSet.%GetData(6)
+        set tMethodsCovered = resultSet.%GetData(7)
+        set tTime = resultSet.%GetData(8)
+        set tTotalTime = resultSet.%GetData(9)
+        do response.results.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageTabularDataRow).%New(tRoutine, tPercentCoverage, tExecutableLines, tLinesCovered, tMethodCoverage, tExecutableMethods, tMethodsCovered, tTime, tTotalTime))
+    }
+    return response
+}
+
+ClassMethod GetRunIDs() As pkg.isc.perf.ui.rest.models.CoverageRunIDs
+{
+    set response = ##class(pkg.isc.perf.ui.rest.models.CoverageRunIDs).%New()
+    set sql = "SELECT DISTINCT ID From TestCoverage_Data.Run"
+    set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql)
+    If (resultSet.%SQLCODE < 0) {
+        Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
+    }
+    
+    while resultSet.%Next(.tSC) {
+        set tRunID = resultSet.%GetData(1)
+        do response.RunIDs.Insert(tRunID)
     }
     return response
 }

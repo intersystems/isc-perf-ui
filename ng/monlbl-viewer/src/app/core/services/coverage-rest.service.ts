@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, throwError, tap, map, Observable} from 'rxjs';
-import { CoverageService,  CoverageResultsOutput,  CoverageRoutinePathsOutput } from 'src/app/generated';
+import { CoverageService,  CoverageResultsOutput,  CoverageRoutinePathsOutput, CoverageTabularDataOutput, CoverageRunIDsOutput } from 'src/app/generated';
 @Injectable({
   providedIn: 'root'
 })
@@ -62,6 +62,21 @@ export class CoverageRestService {
       })
     );
   }
+
+  //wrapper for the API call to get the tabular class level data for a given Run ID
+  GetClassLevelData(RunID: number): Observable<CoverageTabularDataOutput> {
+    return this.covService.coverageTabularGet({RunID: RunID}).pipe(tap( (response: CoverageTabularDataOutput) => {
+      console.log(response)
+    }))
+  }
+
+  //wrapper for the API call to get the RunIDs
+  GetRunIDs(): Observable<CoverageRunIDsOutput> {
+    return this.covService.coverageRunIDsGet().pipe(tap( (response: CoverageRunIDsOutput) => {
+      console.log(response)
+    }))
+  }
+
 
   Clear(): void {
     this.covService.coverageClearPost().subscribe(); 

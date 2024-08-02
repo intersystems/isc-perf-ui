@@ -44,6 +44,7 @@ import { ParameterExplanationsComponent } from './core/components/parameter-expl
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { OutputLogComponent } from './core/components/output-log/output-log.component';
+import { HistoricalResultsComponent } from './core/components/historical-results/historical-results.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { OutputLogComponent } from './core/components/output-log/output-log.comp
     TestCoverageHeaderComponent,
     ParameterExplanationsComponent,
     OutputLogComponent,
+    HistoricalResultsComponent,
   ],
   imports: [
     BrowserModule,
