@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added 
 - New home tab allowing the user to run and see the results of TestCoverage on their unit tests
+- New historical coverage tab showing class level results for past TestCoverage runs 
 
 ### Changed
 - Authentication now uses standard IRIS Login
