@@ -26,6 +26,7 @@ export class WebsocketService {
   }
 
   private handleMessage(message: WebSocketMessage): void {
+    console.log(message.type)
     if (message.type == "RunTestFinish") {
       // Notify with the message and RunID
       this.messageReceivedSubject.next(message);
@@ -70,7 +71,13 @@ export class WebsocketService {
   // get the url for making the websocket connection
   private buildUrl(): string {
     let url = window.location.href 
+     // Remove everything after "monlbl-viewer/"
+    const targetSegment = 'monlbl-viewer/';
+    const targetIndex = url.indexOf(targetSegment);
 
+    if (targetIndex !== -1) {
+      url = url.substring(0, targetIndex + targetSegment.length);
+    }
     // right now we only use http, not https
     if (url.substr(0, 4) !== 'http') {
       // Need to prepend with the base URL.

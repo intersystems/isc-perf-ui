@@ -38,7 +38,7 @@ export class CoverageRestService {
     return this.covService.coverageResultsGet({routine: routine, testpath: testpath, RunID: this.RunID});
   }
 
-  //wrapper for the API call to get the 
+  //wrapper for the API call to get the routine + test paths
   GetRoutines(RunID: number): Observable<CoverageRoutinePathsOutput> {
     return this.covService.coverageRoutinepathsGet({ RunID: RunID }).pipe(
       map((response: CoverageRoutinePathsOutput) => {

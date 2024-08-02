@@ -6,8 +6,8 @@ import { CoverageResultDetailComponent } from './core/components/coverage-result
 import { StatusComponent } from './core/components/status/status.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'lblmonitor', component: StatusComponent, canActivate: [AuthGuard] },
+  { path: '', component: StatusComponent, canActivate: [AuthGuard] },
+  { path: 'testcoverage', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'result-detail/:routine/:testpath', component: CoverageResultDetailComponent},
 
   // otherwise redirect to home
