@@ -5,6 +5,7 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebsocketService } from '../../services/websocket.service';
 import { WebSocketMessage } from '../../interfaces/web-socket-message';
+import { FormStateService } from '../../services/form-state.service'; // Import the service
 
 @Component({
   selector: 'app-test-coverage-launcher',
@@ -17,7 +18,8 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private covRestService: CoverageRestService,
     private snackBar: MatSnackBar,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private formStateService: FormStateService 
   ) {}
 
   hasError$ = new BehaviorSubject<boolean>(false); // are we displaying an error message
@@ -45,6 +47,17 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
       CoverageRoutines: ['', this.validateCoverageRoutines],
       PidList: ['', this.validatePidList],
       Timing: [1, Validators.required],
+    });
+
+    // Restore form state if it exists
+    const savedData = this.formStateService.getFormData();
+    if (savedData) {
+      this.dataForm.setValue(savedData);
+    }
+
+    // Save form state before navigating away
+    this.dataForm.valueChanges.subscribe(value => {
+      this.formStateService.setFormData(value);
     });
 
     // Apply debounced validation to multiple fields
