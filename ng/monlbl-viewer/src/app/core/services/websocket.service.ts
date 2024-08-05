@@ -40,12 +40,20 @@ export class WebsocketService {
 
   initializeWebSocket() {
     this.webSocketSubject$ = webSocket({
-      url: this.buildUrl()
+      url: this.buildUrl(),
+      openObserver: {
+        next: () => {},
+      },
+      closeObserver: {
+        next: () => {
+          this.initializeWebSocket()
+        }
+      }
     });
     this.webSocketSubject$.subscribe({
       next: msg => this.handleMessage(msg),
       error: err => console.log(err),
-      complete: () => this.Cleanup()
+      complete: () => {}
     });
   }
 
@@ -68,8 +76,6 @@ export class WebsocketService {
   // disconnect the websocket, called when the window closes
   Cleanup(): void {
     this.webSocketSubject$.complete()
-    this.webSocketSubject$.unsubscribe();
-    
   }
 
   // get the url for making the websocket connection
