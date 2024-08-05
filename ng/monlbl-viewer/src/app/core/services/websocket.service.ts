@@ -16,7 +16,7 @@ export class WebsocketService {
   
   //unit test progress messages
   //surfaced live during the RunTest
-  private outputLogSubject = new ReplaySubject<WebSocketMessage>;
+  private outputLogSubject = new ReplaySubject<WebSocketMessage>();
 
   // error messages from the RunTest
   // sent over to the TestCoverageLauncher to surface
@@ -26,7 +26,6 @@ export class WebsocketService {
   }
 
   private handleMessage(message: WebSocketMessage): void {
-    console.log(message.type)
     if (message.type == "RunTestFinish") {
       // Notify with the message and RunID
       this.messageReceivedSubject.next(message);
@@ -59,6 +58,11 @@ export class WebsocketService {
   }
   getErrorReceivedObservable() {
     return this.errorSubject.asObservable();
+  }
+
+  // Reset the log subject when logs are cleared
+  resetLogSubject() {
+    this.outputLogSubject = new ReplaySubject<WebSocketMessage>();
   }
   
   // disconnect the websocket, called when the window closes

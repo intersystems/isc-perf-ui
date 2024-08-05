@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
 import { WebSocketMessage } from '../../interfaces/web-socket-message';
 import { OutputMessage } from '../../interfaces/output-message';
@@ -8,14 +8,19 @@ import { OutputMessage } from '../../interfaces/output-message';
   templateUrl: './output-log.component.html',
   styleUrls: ['./output-log.component.scss']
 })
-export class OutputLogComponent implements OnInit {
-  logs: Subject<OutputMessage[]> = new Subject(); // observable containing the outputted unit test progress 
+export class OutputLogComponent implements OnInit, OnDestroy {
+  logs: BehaviorSubject<OutputMessage[]> = new BehaviorSubject<OutputMessage[]>([]);  // observable containing the outputted unit test progress 
   logValues: OutputMessage[] = []; // the current value of the observable
+  private subscription!: Subscription;
 
   constructor(private websocketService: WebsocketService) {}
   ngOnInit() {
+    this.resubscribe();
+  }
+
+  resubscribe() {
     // Listen for when the WebSocket message is received 
-    this.websocketService.getOutputLogObservable().subscribe((message: WebSocketMessage | null) => {
+    this.subscription = this.websocketService.getOutputLogObservable().subscribe((message: WebSocketMessage | null) => {
       if (message) {
         let msg: OutputMessage = {message: message.message}
         if (message.suite) {
@@ -33,8 +38,16 @@ export class OutputLogComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   clearValues() {
     this.logValues = [];
+    this.websocketService.resetLogSubject();
+    this.resubscribe();
     this.logs.next([]); 
   }
 }

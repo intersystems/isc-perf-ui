@@ -47,7 +47,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>PidList</mat-label>
-        <textarea matInput placeholder="" formControlName="PidList"></textarea>
+        <textarea matInput placeholder="28540,28541" formControlName="PidList"></textarea>
         <mat-error *ngIf="dataForm.get('PidList')?.hasError('invalidPidList')">
           Must be empty or a comma-separated list of numbers, with the first value possibly being 'Interop'.
         </mat-error>
