@@ -97,11 +97,10 @@ When you're done, can click the back button to go back to the launcher page. The
 
 #### Historical Coverage Page 
 
-After clicking on a specific past Run ID, you can view the class-level coverage results (line coverage, method coverage, timing) for all the classes in that run. This is the same data as the main results page from TestCoverage. 
+After clicking on a specific past Run ID, you can view the class-level coverage results (line coverage, method coverage, timing) for all the classes in that run. This is the same data as the main results page from TestCoverage. This table is also sortable by each column. 
 
 ![historical results](docs/images/historical-results.png)
 
-This table is also sortable by each column. 
 
 ## Support
 If you find a bug or would like to request an enhancement, [report an issue](https://github.com/intersystems/isc-perf-ui/issues/new). If you have a question, feel free to post it on the [InterSystems Developer Community](https://community.intersystems.com/).
