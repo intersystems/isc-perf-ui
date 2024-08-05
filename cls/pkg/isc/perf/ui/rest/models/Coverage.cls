@@ -32,7 +32,7 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
 {
     // Validate UnitTestRoot
     If pConfig.UnitTestRoot '= "" {
-        Set pathRegex = "^(?:[a-zA-Z]:(?:\\|\/)|\/)?(?:[\w\s.-]+(?:\\|\/))*([\w\s.-]+(?:\\|\/))?$"
+        Set pathRegex = "^(?:[a-zA-Z]:(?:\\|\/)|\/)?(?:[\w\s.-]+(?:\\|\/))*([\w\s.-]+(?:\\|\/))?\s*$"
         If '$match(pConfig.UnitTestRoot, pathRegex) {
             Set tMsg = "Invalid file path for UnitTestRoot."
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
@@ -59,18 +59,18 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
 
     // Validate PidList
     If pConfig.PidList '= "" {
-        Set pidRegex = "^(Interop|[0-9]+)(\s*,\s*[0-9]+)*$"
+        Set pidRegex = "^(Interop|[0-9]+)(\s*,\s*[0-9]+)*\s*$"
         If '$match(pConfig.PidList, pidRegex) {
             Set tMsg = "Invalid PidList format. Must start with Interop or be a comma-separated list of numbers."
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
         }
     }
-    Set tUnitTestRoot = pConfig.UnitTestRoot
+    Set tUnitTestRoot = $ZSTRIP(pConfig.UnitTestRoot, "<>W")
     Kill tCoverageParams
     set tTiming = pConfig.Timing
-    set tCoverageClasses = $LISTFROMSTRING(pConfig.CoverageClasses)
-    set tCoverageRoutines = $LISTFROMSTRING(pConfig.CoverageRoutines)
-    set tProcessIDs = $LISTFROMSTRING(pConfig.PidList)
+    set tCoverageClasses = $LISTFROMSTRING($zstrip(pConfig.CoverageClasses, "*W"))
+    set tCoverageRoutines = $LISTFROMSTRING($zstrip(pConfig.CoverageRoutines, "*W"))
+    set tProcessIDs = $LISTFROMSTRING($zstrip(pConfig.PidList, "*W"))
     set tCoverageDetail = pConfig.CoverageLevel
     Job ..CoverageCall(tUnitTestRoot, tTiming, tCoverageClasses, tCoverageRoutines, tProcessIDs, tCoverageDetail)
     // the status doesn't actually get used, just has to be a JSON format

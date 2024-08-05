@@ -5,7 +5,7 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WebsocketService } from '../../services/websocket.service';
 import { WebSocketMessage } from '../../interfaces/web-socket-message';
-import { FormStateService } from '../../services/form-state.service'; // Import the service
+import { FormStateService } from '../../services/form-state.service'; 
 
 @Component({
   selector: 'app-test-coverage-launcher',
@@ -93,6 +93,8 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  
   
   ngOnDestroy() {
     this.destroy$.next();
@@ -145,7 +147,7 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
     if (!control.value) return null;
     
     // This regex allows for spaces, dots, and other special characters in folder names
-    const pathRegex = /^(?:[a-zA-Z]:(?:\\|\/)|\/)?(?:[\w\s.-]+(?:\\|\/))*([\w\s.-]+(?:\\|\/))?$/;
+    const pathRegex = /^(?:[a-zA-Z]:(?:\\|\/)|\/)?(?:[\w\s.-]+(?:\\|\/))*([\w\s.-]+(?:\\|\/))?\s*$/;
     
     return pathRegex.test(control.value) ? null : { invalidPath: true };
   }
@@ -167,7 +169,7 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
   validatePidList(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
     // This regex checks for a comma-separated list of Interop or numbers
-    const pidRegex = /^(Interop|[0-9]+)(\s*,\s*[0-9]+)*$/;
+    const pidRegex = /^(Interop|[0-9]+)(\s*,\s*[0-9]+)*\s*$/;
     return pidRegex.test(control.value) ? null : { invalidPidList: true };
   }
 }
