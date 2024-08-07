@@ -26,7 +26,7 @@
           <Attribute Name="Directory">cls</Attribute>
         </Resource>
         <Resource Name="/ng/monlbl-viewer" ProcessorClass="pkg.isc.ipm.js.angular.processor">
-          <Attribute Name="baseHref">/#{$Get(^%SYS(&quot;WebServer&quot;,&quot;URLPrefix&quot;))}/csp/${namespace}/monlbl-viewer</Attribute>
+          <Attribute Name="baseHref">#{$Case($Get(^%SYS("WebServer","URLPrefix")),"":"",:"/"_$Get(^%SYS("WebServer","URLPrefix")))}/csp/${namespace}/monlbl-viewer</Attribute>
         </Resource>
         <Resource Name="/ng/monlbl-viewer/dist/monlbl-viewer" ProcessorClass="CSPApplication" Generated="true">
           <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.StaticFilesHandler</Attribute>
