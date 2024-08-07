@@ -34,6 +34,14 @@ Method Server() As %Status
 			} Else {
 				$$$ThrowOnError(tSC)
 			}
+		}
+		Else {
+			// we got an actual message: this is probably just a ping message then
+			if (tData [ "Testing connection") 
+			{
+				set msg = {"message": "Connection active", "type": "ConnectionTest"}
+       			do ..BroadCast(msg)
+			}
 		} 
 	}
 	Quit $$$OK

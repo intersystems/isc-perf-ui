@@ -24,6 +24,7 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 </action> 
 <action name="RunIDs" target="class" call="GetRunIDs" method="GET"></action>
 <action name="clear" target="class" call="ClearResults" method="POST"></action>
+<action name="active" target="class" call="CheckActive" method="GET"></action>
 </actions>
 }
 
@@ -349,6 +350,11 @@ ClassMethod GetRunIDs() As pkg.isc.perf.ui.rest.models.CoverageRunIDs
 ClassMethod ClearResults() As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
     do ##class(TestCoverage.Utils).Clear() 
+    Quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
+}
+
+ClassMethod CheckActive() As pkg.isc.perf.ui.rest.models.CoverageStatus
+{
     Quit ##class(pkg.isc.perf.ui.rest.models.CoverageStatus).%New()
 }
 

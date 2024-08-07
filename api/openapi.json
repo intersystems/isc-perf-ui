@@ -693,6 +693,59 @@
         ]
       }
     },
+    "/coverage/$active":{
+      "get":{
+        "description":"Performs the active action.",
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-status_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
     "/coverage/$clear":{
       "post":{
         "description":"clears the TestCoverage data tables",
