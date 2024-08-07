@@ -97,4 +97,12 @@ export class CoverageResultDetailComponent implements OnInit, AfterViewInit {
   getSafeHtml(html: string) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
+
+  // New method to get complexity class
+  getComplexityClass(complexity: number): string {
+    if (complexity <= 10) {return 'complexity-score-simple';}
+    else if (complexity <= 20) {return 'complexity-score-moderate';}
+    else if (complexity <= 50) {return 'complexity-score-complex';}
+    else { return 'complexity-score-untestable'; }
+  }
 }
