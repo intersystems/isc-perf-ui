@@ -23,6 +23,12 @@ $table-background: #ffffff;
   background-color: $table-background;
 }
 
+.mat-mdc-header-cell, .mat-mdc-cell {
+  padding: 2px 12px; // 2px top and bottom, 12px left and right
+  line-height: 1.2; // Adjust line-height to be closer to text height
+  border-bottom: 1px solid #ddd;
+}
+
 .mat-mdc-header-cell {
   background-color: $primary-light;
   color: $primary-color;
@@ -33,8 +39,8 @@ $table-background: #ffffff;
 }
 
 .mat-mdc-cell {
-  padding: 12px;
   border-bottom: 1px solid #ddd;
+  vertical-align: middle; // Vertically center the content
 }
 
 .mat-mdc-row:nth-child(even) {
@@ -49,15 +55,18 @@ $table-background: #ffffff;
   text-align: right;
   color: #757575;
   font-weight: 500;
+  line-height: 1.2; // Ensure consistency across different text
 }
 
 .centered-column {
   text-align: center;
+  line-height: 1.2; // Ensure consistency across different text
 }
 
 .code-column {
   white-space: pre;
   font-family: 'Consolas', monospace;
+  line-height: 1.2;
 }
 
 .green-background {
@@ -70,6 +79,7 @@ $table-background: #ffffff;
 
 .code-line {
   margin-left: 2em;
+  line-height: 1.2; // Ensure the text is vertically centered
   cursor: pointer;
   position: relative;
 
@@ -123,7 +133,6 @@ $table-background: #ffffff;
 .complexity-complex { background-color: #f44336; }
 .complexity-untestable { background-color: #9c27b0; }
 
-
 .complexity-score-simple { color: #006400; }
 .complexity-score-moderate { color: #ff9800; }
 .complexity-score-complex { color: #f44336; }
@@ -148,4 +157,13 @@ $table-background: #ffffff;
   .mat-mdc-row:hover {
     background-color: $table-background;
   }
+}
+
+:host ::ng-deep {
+  --mat-table-row-item-container-height: auto;
+}
+
+.code-row {
+  margin-top: 0;
+  margin-bottom: 0;
 }
