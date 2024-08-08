@@ -73,7 +73,7 @@ After you press submit, the call to run TestCoverage will begin, and you'll see 
 
 After the tests have finished running, the dropdown select menu on the right should open with a list of routine + test path combinations, as well as the overall coverage percentage for your code. 
 
-![Routine and test paths](docs/images/Routine-and-path-select.png)
+![Routine and test paths](docs/images/routine-and-path-select.png)
 
 Click on any to be taken to the coverage results page for that routine under that unit test directory. 
 
