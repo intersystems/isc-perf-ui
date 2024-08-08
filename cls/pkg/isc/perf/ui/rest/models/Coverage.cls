@@ -264,7 +264,10 @@ ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Co
     set response.CoveragePercent = $Number((tCoveredLines / tExecutableLines) * 100, 2)
 
     // get the routine name and test path
-    set sql = "SELECT Hash->Name, Hash->Type, TestPath FROM TestCoverage_Data.Coverage WHERE Run = ? "
+    set sql = "SELECT Hash->Name, Hash->Type, TestPath FROM TestCoverage_Data.Coverage " _
+    "WHERE Run = ? " _
+    "AND (Hash->Type = 'CLS' OR Hash->Type = 'MAC') " _
+    "AND Hash->Generated = 0"
     set resultSet = ##class(%SQL.Statement).%ExecDirect(, sql, RunID)
     If (resultSet.%SQLCODE < 0) {
         Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
