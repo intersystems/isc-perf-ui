@@ -1,6 +1,11 @@
 <!-- Display overall coverage percentage -->
 <mat-card>
-  <h3>Overall coverage: {{ (covpaths$ | async)?.CoveragePercent ?? 'N/A' }}</h3>
+  <h3>Overall coverage: 
+    {{ 
+      ((covpaths$ | async)?.CoveragePercent != null) 
+      ? ((covpaths$ | async)?.CoveragePercent + '%') 
+      : 'N/A' 
+    }}</h3>
 
   <!-- Dropdown for selecting routine + test path -->
   <mat-form-field class="RoutineForm" appearance="fill">
