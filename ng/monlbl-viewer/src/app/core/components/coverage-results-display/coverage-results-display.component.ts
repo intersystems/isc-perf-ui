@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { MatSelect } from '@angular/material/select';
 import { WebsocketService } from '../../services/websocket.service';
 import { WebSocketMessage } from '../../interfaces/web-socket-message';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-coverage-results-display',
@@ -17,14 +19,36 @@ export class CoverageResultsDisplayComponent implements OnInit, AfterViewInit {
   covpaths$: Observable<CoverageRoutinePathsOutput | null> = this.covRestService.getCovpathsObservable();
   selectedPath: CoverageRoutinePathOutput | null = null; // which routine + testpath the user selects from the dropdown
   
-  constructor(private covRestService: CoverageRestService, private router: Router, private websocketService: WebsocketService) {}
+  constructor(private covRestService: CoverageRestService, 
+    private router: Router, 
+    private websocketService: WebsocketService,
+    private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     // Listen for when the WebSocket message is received and get the routine + testpaths from the API 
     this.websocketService.getMessageReceivedObservable().subscribe((message: WebSocketMessage | null) => {
       if (message && message.RunID && (this.covRestService.getFirstLoad() || this.covRestService.getIsLoading())) {
-        this.covRestService.GetRoutines(message.RunID).subscribe();
+        this.covRestService.GetRoutines(message.RunID).subscribe({
+          next: () => {
+            // The loading state is set to false in the tap operator of the service method, so no need to set here
+          },
+          error: (error) => {
+            this.showErrorSnackbar(error.message);
+            this.covRestService.setIsLoading(false); // Set loading to false on error
+          },
+          complete: () => {
+            this.covRestService.setIsLoading(false); // Ensure loading is false when complete
+          }
+        });
       }
+    });
+  }
+
+  // Method to show the error snackbar
+  showErrorSnackbar(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 5000,
+      panelClass: ['error-snackbar']
     });
   }
 

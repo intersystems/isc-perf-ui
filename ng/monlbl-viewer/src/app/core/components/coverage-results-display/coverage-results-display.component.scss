@@ -21,3 +21,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
+  // In styles.scss or component's scss file
+.error-snackbar {
+  background-color: #f44336; // Red color for errors
+  color: white;
+}

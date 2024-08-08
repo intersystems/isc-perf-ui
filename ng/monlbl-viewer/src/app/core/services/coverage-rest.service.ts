@@ -75,8 +75,13 @@ export class CoverageRestService {
     return this.covService.coverageRunIDsGet().pipe(tap( (response: CoverageRunIDsOutput) => {
       //console.log(response)
     }))
-  }
+  } 
 
+  // allow components to set the loading state
+  setIsLoading(isLoading: boolean): void {
+    this.isLoading = isLoading;
+    this.isLoadingSubject.next(isLoading);
+  }
 
   Clear(): void {
     this.covService.coverageClearPost().subscribe(); 
