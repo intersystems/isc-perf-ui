@@ -14,6 +14,7 @@ import { CoverageRoutinePathOutput } from './coverageRoutinePathOutput';
 
 export interface CoverageRoutinePathsOutput { 
     CoveragePercent?: number;
+    UnitTestURL?: string;
     _id: string;
     covpaths?: Array<CoverageRoutinePathOutput>;
 }

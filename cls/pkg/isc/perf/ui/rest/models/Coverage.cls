@@ -248,6 +248,7 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
         set tComplexity = resultSet.%GetData(2)
         do response.MethodResults.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageMethodResult).%New(tName, tComplexity))
     }
+
     quit response
 }
 
@@ -282,6 +283,13 @@ ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Co
         set path = ##class(pkg.isc.perf.ui.rest.models.CoverageRoutinePath).%New(tFullName, tTestPath)
         do response.covpaths.Insert(path)
     }
+
+    // get the unit test result url
+    Set tQuery("$NAMESPACE") = $namespace
+    set tCoverageRun = ##class(TestCoverage.Data.Run).%OpenId(RunID)
+	Set tQuery("Index") = tCoverageRun.TestResults.%Id()
+	Set response.UnitTestURL = ##class(%CSP.Page).Link("/csp/sys/%25UnitTest.Portal.Indices.zen",.tQuery)
+    
     return response
 }
 

@@ -185,6 +185,9 @@
           "CoveragePercent":{
             "type":"number"
           },
+          "UnitTestURL":{
+            "type":"string"
+          },
           "_id":{
             "type":"string"
           },

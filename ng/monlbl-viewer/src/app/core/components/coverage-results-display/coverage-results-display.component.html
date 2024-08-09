@@ -6,7 +6,13 @@
       ? ((covpaths$ | async)?.CoveragePercent + '%') 
       : 'N/A' 
     }}</h3>
-
+  <!-- Display Unit Test URL if it exists -->
+  <p *ngIf="(covpaths$ | async)?.UnitTestURL">
+    Unit Test URL: 
+    <a [href]="(covpaths$ | async)?.UnitTestURL" target="_blank" rel="noopener">
+      {{ (covpaths$ | async)?.UnitTestURL }}
+    </a>
+  </p>
   <!-- Dropdown for selecting routine + test path -->
   <mat-form-field class="RoutineForm" appearance="fill">
     <mat-label>Select Routine + Test Path</mat-label>
