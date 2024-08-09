@@ -11,7 +11,26 @@ Beyond its intended use, this project also serves to demonstrate three other pro
 ## Getting Started
 Note: a minimum platform version of InterSystems IRIS 2022.1 is required.
 
-### Installation: ZPM
+### Installation: TestCoverage
+
+If you want to use the TestCoverage pages, you have to set a couple of permissions.
+
+1. On the management portal for your IRIS instance, navigate to **System Administration > Configuration > System Configuration > Local Databases**
+2. Find the row with the database that you're using for this application (it's usually USER). Find the resource in that row (usually %DB_USER). 
+
+3. Then, go to **System Administration > Security > Users** and click on the **CSPSystem User**. Navigate to **Roles** and give the resource that you found earlier to this user. Make sure you return to General and save this change. 
+
+5. Go to **System Administration > Configuration > Web Gateway Management > System Status**. In the second table, click on the close button for the IRIS instance that you're running on. 
+
+### Installation - WebSockets
+
+If you're on Windows, you'll also have to enable WebSockets in IIS.
+
+1. Open the Windows Start menu, type "features" and select **Turn Windows Features on or off**.
+2. Locate **Internet Information Services > World Wide Web Service > Application Development > WebSocket Protocol** and check the box.
+3. Click Close and wait for the features to be enabled.
+
+### Installation: IPM
 
 As a prerequisite, you must have Node.js ^16.14.0 || ^18.10.0 installed and on the PATH. We hope to remove this requirement in the future by publishing the package with UI build artifacts included; IPM and isc.ipm.js support this, but the Open Exchange currently does not (by design).
 
@@ -19,6 +38,8 @@ If you already have the [ObjectScript Package Manager](https://openexchange.inte
 ```
 zpm "install isc.perf.ui"
 ```
+
+If you've done all those steps, you should be properly installed!
 
 ## Notes on Security
 If there is not public read permission on the namespace-default routine database for the namespace in which isc.perf.ui is installed, a role will be created that has read permission on that database and assigned as an application role to /csp/{namespace}/monlbl-viewer/, which provides unauthenticated access to the Angular UI. The REST API requires %Development:USE.
