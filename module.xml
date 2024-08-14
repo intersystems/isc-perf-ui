@@ -54,9 +54,6 @@
         <Attribute Name="CookiePath">/csp/${namespace}/monlbl-viewer</Attribute>
         <Attribute Name="PasswordAuthEnabled">1</Attribute>
         <Attribute Name="UnauthenticatedEnabled">0</Attribute>
-        <!-- <Attribute Name="PasswordAuthEnabled">0</Attribute>
-        <Attribute Name="UnauthenticatedEnabled">1</Attribute>
-        <Attribute Name="MatchRoles">:%All</Attribute> -->
         </Resource>
         <Resource Name="/api/openapi.json" ProcessorClass="pkg.isc.ipm.js.openApiProcessor">
           <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.Handler</Attribute>
