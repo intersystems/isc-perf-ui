@@ -15,14 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Authentication now uses standard IRIS Login
 
-## [Unreleased - 1.0.2]
-
-### Added 
--
-
-### Changed
--
-
 ### Fixed
 - Fixed handling for authentication headers to suppress the browser's credential prompts
 - Fixed export behavior when developing with git-source-control and a modern IPM version
@@ -30,12 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Bumped various dependency versions
-
-### Removed
--
-
-### Deprecated
--
 
 ## [1.0.1] - 2022-06-21
 ### Fixed
