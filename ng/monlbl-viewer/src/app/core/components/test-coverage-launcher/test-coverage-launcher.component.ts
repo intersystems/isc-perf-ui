@@ -43,9 +43,9 @@ export class TestCoverageLauncherComponent implements OnInit, OnDestroy {
     this.dataForm = this.formBuilder.group({
       UnitTestRoot: ['', [Validators.required, this.validatePath]],
       CoverageLevel: [1, Validators.required],
-      CoverageClasses: ['', this.validateCoverageClasses],
-      CoverageRoutines: ['', this.validateCoverageRoutines],
-      PidList: ['', this.validatePidList],
+      CoverageClasses: [null, this.validateCoverageClasses],
+      CoverageRoutines: [null, this.validateCoverageRoutines],
+      PidList: [null, this.validatePidList],
       Timing: [1, Validators.required],
     });
 

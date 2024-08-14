@@ -31,17 +31,18 @@ XData ActionMap [ XMLNamespace = "http://www.intersystems.com/apps/rest/action" 
 /// Jobs off the call to RunTest with the user inputted parameters
 ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) As pkg.isc.perf.ui.rest.models.CoverageStatus
 {
+    Set tUnitTestRoot = $ZSTRIP(pConfig.UnitTestRoot, "<>W")
     // Validate UnitTestRoot
-    If pConfig.UnitTestRoot '= "" {
+    If tUnitTestRoot'= "" {
         Set pathRegex = "^(?:[a-zA-Z]:(?:\\|\/)|\/)?(?:[\w\s.-]+(?:\\|\/))*([\w\s.-]+(?:\\|\/))?\s*$"
         If '$match(pConfig.UnitTestRoot, pathRegex) {
             Set tMsg = "Invalid file path for UnitTestRoot."
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
         }
     }
-
+    set tCoverageClasses = $zstrip(pConfig.CoverageClasses, "*W")
     // Validate CoverageClasses
-    If pConfig.CoverageClasses '= "" {
+    If tCoverageClasses '= "" {
         Set classesRegex = "^(\s*[\w.]+(?<!\.cls)\s*,)*\s*[\w.]+(?<!\.cls)\s*$"
         If '$match(pConfig.CoverageClasses, classesRegex) {
             Set tMsg = "Invalid CoverageClasses format. Must be a comma-separated list not ending in .cls."
@@ -49,29 +50,29 @@ ClassMethod StartTesting(pConfig As pkg.isc.perf.ui.rest.models.CoverageConfig) 
         }
     }
 
+    set tCoverageRoutines = $zstrip(pConfig.CoverageRoutines, "*W")
     // Validate CoverageRoutines
-    If pConfig.CoverageRoutines '= "" {
+    If tCoverageRoutines '= "" {
         Set routinesRegex = "^(\s*[\w.]+(?<!\.mac)\s*,)*\s*[\w.]+(?<!\.mac)\s*$"
         If '$match(pConfig.CoverageRoutines, routinesRegex) {
             Set tMsg = "Invalid CoverageRoutines format. Must be a comma-separated list not ending in .mac."
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
         }
     }
-
+    set tProcessIDs = $zstrip(pConfig.PidList, "*W")
     // Validate PidList
-    If pConfig.PidList '= "" {
+    If tProcessIDs '= "" {
         Set pidRegex = "^(Interop|[0-9]+)(\s*,\s*[0-9]+)*\s*$"
         If '$match(pConfig.PidList, pidRegex) {
             Set tMsg = "Invalid PidList format. Must start with Interop or be a comma-separated list of numbers."
             $$$ThrowStatus($$$ERROR($$$GeneralError, tMsg))
         }
     }
-    Set tUnitTestRoot = $ZSTRIP(pConfig.UnitTestRoot, "<>W")
     Kill tCoverageParams
     set tTiming = pConfig.Timing
-    set tCoverageClasses = $LISTFROMSTRING($zstrip(pConfig.CoverageClasses, "*W"))
-    set tCoverageRoutines = $LISTFROMSTRING($zstrip(pConfig.CoverageRoutines, "*W"))
-    set tProcessIDs = $LISTFROMSTRING($zstrip(pConfig.PidList, "*W"))
+    set tCoverageClasses = $LISTFROMSTRING(tCoverageClasses)
+    set tCoverageRoutines = $LISTFROMSTRING(tCoverageRoutines)
+    set tProcessIDs = $LISTFROMSTRING(tProcessIDs)
     set tCoverageDetail = pConfig.CoverageLevel
     Job ..CoverageCall(tUnitTestRoot, tTiming, tCoverageClasses, tCoverageRoutines, tProcessIDs, tCoverageDetail)
     // the status doesn't actually get used, just has to be a JSON format
