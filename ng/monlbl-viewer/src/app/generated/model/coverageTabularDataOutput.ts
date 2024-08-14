@@ -13,7 +13,6 @@ import { CoverageTabularDataRowOutput } from './coverageTabularDataRowOutput';
 
 
 export interface CoverageTabularDataOutput { 
-    _id: string;
     results?: Array<CoverageTabularDataRowOutput>;
 }
 

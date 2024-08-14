@@ -1,4 +1,4 @@
-Class pkg.isc.perf.ui.rest.models.CoverageResults Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.CoverageResults Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 /// coverage/metrics results for each line

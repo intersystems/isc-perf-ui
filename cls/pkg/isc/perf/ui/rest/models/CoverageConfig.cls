@@ -1,4 +1,4 @@
-Class pkg.isc.perf.ui.rest.models.CoverageConfig Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.CoverageConfig Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 Property UnitTestRoot As %String(MAXLEN = 1024);

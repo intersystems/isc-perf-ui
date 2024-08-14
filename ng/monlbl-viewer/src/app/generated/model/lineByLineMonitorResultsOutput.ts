@@ -13,7 +13,6 @@ import { LineByLineMonitorResultOutput } from './lineByLineMonitorResultOutput';
 
 
 export interface LineByLineMonitorResultsOutput { 
-    _id: string;
     results?: Array<LineByLineMonitorResultOutput>;
 }
 

@@ -1,4 +1,4 @@
-Class pkg.isc.perf.ui.rest.models.CoverageTabularDataRow Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.CoverageTabularDataRow Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 Property Routine As %String(MAXLEN = 1024) [ Required ];

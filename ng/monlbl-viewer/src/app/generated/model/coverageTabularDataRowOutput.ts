@@ -21,6 +21,5 @@ export interface CoverageTabularDataRowOutput {
     Routine: string;
     Time: string;
     TotalTime: string;
-    _id: string;
 }
 

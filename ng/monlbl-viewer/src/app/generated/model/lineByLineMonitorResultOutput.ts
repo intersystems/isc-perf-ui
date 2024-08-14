@@ -12,7 +12,6 @@
 
 
 export interface LineByLineMonitorResultOutput { 
-    _id: string;
     code?: string;
     coloredLine?: string;
     line?: string;

@@ -1,4 +1,4 @@
-Class pkg.isc.perf.ui.rest.models.CoverageRoutinePaths Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.CoverageRoutinePaths Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 /// list of routine + test paths

@@ -1,5 +1,5 @@
 /// REST model representing results from the line-by-line monitor
-Class pkg.isc.perf.ui.rest.models.LineByLineMonitorResults Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.LineByLineMonitorResults Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 Property results As list Of pkg.isc.perf.ui.rest.models.LineByLineMonitorResult;

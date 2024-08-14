@@ -14,6 +14,5 @@
 export interface CoverageMethodResultOutput { 
     Complexity?: number;
     Name?: string;
-    _id: string;
 }
 

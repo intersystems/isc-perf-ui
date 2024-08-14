@@ -1,4 +1,4 @@
-Class pkg.isc.perf.ui.rest.models.CoverageResult Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.CoverageResult Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 Property routine As %String(MAXLEN = 1024);

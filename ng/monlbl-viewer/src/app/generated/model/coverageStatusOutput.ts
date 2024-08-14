@@ -12,7 +12,6 @@
 
 
 export interface CoverageStatusOutput { 
-    _id: string;
     status: string;
 }
 

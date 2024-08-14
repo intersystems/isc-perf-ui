@@ -89,15 +89,9 @@
           },
           "Name":{
             "type":"string"
-          },
-          "_id":{
-            "type":"string"
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "coverage-result_output":{
@@ -114,9 +108,6 @@
           "TotalTime":{
             "type":"string"
           },
-          "_id":{
-            "type":"string"
-          },
           "code":{
             "type":"string"
           },
@@ -131,9 +122,6 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "coverage-results_output":{
@@ -144,9 +132,6 @@
             },
             "type":"array"
           },
-          "_id":{
-            "type":"string"
-          },
           "results":{
             "items":{
               "$ref":"#/components/schemas/coverage-result_output"
@@ -155,16 +140,10 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "coverage-routine-path_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "routine":{
             "type":"string"
           },
@@ -174,7 +153,6 @@
         },
         "readOnly":true,
         "required":[
-          "_id",
           "routine",
           "testpath"
         ],
@@ -188,9 +166,6 @@
           "UnitTestURL":{
             "type":"string"
           },
-          "_id":{
-            "type":"string"
-          },
           "covpaths":{
             "items":{
               "$ref":"#/components/schemas/coverage-routine-path_output"
@@ -199,9 +174,6 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "coverage-run-i-ds_output":{
@@ -211,22 +183,13 @@
               "type":"number"
             },
             "type":"array"
-          },
-          "_id":{
-            "type":"string"
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "coverage-status_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "status":{
             "example":"Success",
             "type":"string"
@@ -234,7 +197,6 @@
         },
         "readOnly":true,
         "required":[
-          "_id",
           "status"
         ],
         "type":"object"
@@ -267,9 +229,6 @@
           },
           "TotalTime":{
             "type":"string"
-          },
-          "_id":{
-            "type":"string"
           }
         },
         "readOnly":true,
@@ -282,16 +241,12 @@
           "PercentCoverage",
           "Routine",
           "Time",
-          "TotalTime",
-          "_id"
+          "TotalTime"
         ],
         "type":"object"
       },
       "coverage-tabular-data_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "results":{
             "items":{
               "$ref":"#/components/schemas/coverage-tabular-data-row_output"
@@ -300,9 +255,6 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "integer_input":{
@@ -336,9 +288,6 @@
       },
       "line-by-line-monitor-metrics_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "metrics":{
             "items":{
               "type":"string"
@@ -348,16 +297,12 @@
         },
         "readOnly":true,
         "required":[
-          "_id",
           "metrics"
         ],
         "type":"object"
       },
       "line-by-line-monitor-result_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "code":{
             "type":"string"
           },
@@ -375,16 +320,10 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "line-by-line-monitor-results_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "results":{
             "items":{
               "$ref":"#/components/schemas/line-by-line-monitor-result_output"
@@ -393,16 +332,10 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "line-by-line-monitor-status_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "metrics":{
             "items":{
               "type":"string"
@@ -422,7 +355,6 @@
         },
         "readOnly":true,
         "required":[
-          "_id",
           "metrics",
           "routines",
           "status"

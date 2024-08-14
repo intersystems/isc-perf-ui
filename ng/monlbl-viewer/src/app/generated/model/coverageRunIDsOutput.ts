@@ -13,6 +13,5 @@
 
 export interface CoverageRunIDsOutput { 
     RunIDs?: Array<number>;
-    _id: string;
 }
 

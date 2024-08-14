@@ -12,7 +12,6 @@
 
 
 export interface CoverageRoutinePathOutput { 
-    _id: string;
     routine: string;
     testpath: string;
 }

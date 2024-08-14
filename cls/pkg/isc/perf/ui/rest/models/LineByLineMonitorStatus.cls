@@ -1,5 +1,5 @@
 /// REST model representing the current status of the line-by-line monitor
-Class pkg.isc.perf.ui.rest.models.LineByLineMonitorStatus Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.LineByLineMonitorStatus Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 Property status As %String(VALUELIST = ",stopped,paused,running") [ Required ];
