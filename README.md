@@ -92,7 +92,7 @@ After you press submit, the call to run TestCoverage will begin, and you'll see 
 
 ![Unit test progress](docs/images/unit-test-progress.png)
 
-After the tests have finished running, the dropdown select menu on the right should open with a list of routine + test path combinations, as well as the overall coverage percentage for your code. 
+After the tests have finished running, the dropdown select menu on the right should open with a list of routine + test path combinations, as well as the overall coverage percentage for your code and the link to the results of the unit tests themselves.
 
 ![Routine and test paths](docs/images/routine-and-path-select.png)
 
