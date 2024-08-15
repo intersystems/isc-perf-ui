@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JSONErrorErrorsInner } from './jSONErrorErrorsInner';
 
 
 /**
@@ -18,7 +19,7 @@ export interface JSONError {
     /**
      * An array containing information about each of the errors that occurred
      */
-    errors?: Array<object>;
+    errors?: Array<JSONErrorErrorsInner>;
     /**
      * A description of the error(s) that occurred
      */

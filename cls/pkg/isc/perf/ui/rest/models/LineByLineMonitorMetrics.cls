@@ -1,5 +1,5 @@
 /// REST model for metrics available in the line-by-line monitor
-Class pkg.isc.perf.ui.rest.models.LineByLineMonitorMetrics Extends (%RegisteredObject, %JSON.Adaptor)
+Class pkg.isc.perf.ui.rest.models.LineByLineMonitorMetrics Extends (%RegisteredObject, %pkg.isc.json.adaptor)
 {
 
 Property metrics As list Of %String [ Required ];

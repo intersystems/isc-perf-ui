@@ -9,12 +9,12 @@
 </div>
 <div class="modal-body">
   <mdb-form-control>
-    <textarea mdbInput matInput [(ngModel)]="routines" class="form-control" id="textAreaExample" rows="4" value="AppS.REST.*"></textarea>
+    <textarea mdbInput [(ngModel)]="routines" class="form-control" id="textAreaExample" rows="4" value="AppS.REST.*"></textarea>
     <label mdbLabel class="form-label" for="textAreaExample">Routines (wildcards accepted; one per line)</label>
   </mdb-form-control>
   <mdb-form-control>
     <label mdbLabel class="form-label">Metrics</label>
-    <app-multi-dropdown [items]="this.selectedMetrics" [showSearch]="false"></app-multi-dropdown>
+    <app-multi-dropdown mdbInput [items]="this.selectedMetrics" [showSearch]="false"></app-multi-dropdown>
   </mdb-form-control>
 </div>
 <div class="modal-footer">

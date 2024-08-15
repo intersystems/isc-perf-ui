@@ -1,0 +1,34 @@
+<!-- src/app/parameter-explanations/parameter-explanations.component.html -->
+<mat-card>
+  <mat-card-header>
+    <h3>Parameter Explanations</h3>
+  </mat-card-header>
+  <mat-card-content>
+    <ul>
+      <li>
+        <strong>UnitTestRoot:</strong> The root directory for unit tests.
+      </li>
+      <li>
+        <strong>Coverage Level:</strong> The level of coverage detail required (0-3).
+        <ul>
+          <li>0 to track code coverage overall</li>
+          <li>1 to track it per test suite (the default)</li>
+          <li>2 to track it per test class</li>
+          <li>3 to track it per test method</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Coverage Classes:</strong> The classes to include in the coverage, comma-separated list.
+      </li>
+      <li>
+        <strong>Coverage Routines:</strong> The routines to include in the coverage, comma-separated list.
+      </li>
+      <li>
+        <strong>PidList:</strong> List of process IDs to track execution from.
+      </li>
+      <li>
+        <strong>Timing:</strong> Whether to include timing data (0 or 1, 1 is to include).
+      </li>
+    </ul>
+  </mat-card-content>
+</mat-card>

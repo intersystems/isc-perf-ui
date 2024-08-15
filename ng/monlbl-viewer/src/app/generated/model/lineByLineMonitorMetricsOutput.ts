@@ -12,7 +12,6 @@
 
 
 export interface LineByLineMonitorMetricsOutput { 
-    _id: string;
     metrics: Array<string>;
 }
 

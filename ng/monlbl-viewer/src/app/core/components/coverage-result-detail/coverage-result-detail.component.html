@@ -1,0 +1,78 @@
+<div class="back-button-container">
+  <button mat-icon-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button mat-raised-button color="accent" (click)="toggleMethodsTable()">
+    {{ showMethodsTable ? 'Hide Methods' : 'Show Methods' }}
+  </button>
+</div>
+
+<!-- Methods Table -->
+<div *ngIf="showMethodsTable" class="methods-table-container mat-elevation-z2">
+  <div class="complexity-legend">
+    <span class="complexity-item complexity-simple">1-10: Simple</span>
+    <span class="complexity-item complexity-moderate">11-20: Moderate</span>
+    <span class="complexity-item complexity-complex">21-50: Complex</span>
+    <span class="complexity-item complexity-untestable">>50: Untestable</span>
+  </div>
+  <table mat-table [dataSource]="methodDataSource" class="full-width-table methods-table">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let method">{{ method.Name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="complexity">
+      <th mat-header-cell *matHeaderCellDef>Complexity</th>
+      <td mat-cell *matCellDef="let method" [ngClass]="getComplexityClass(method.Complexity)">
+        {{ method.Complexity }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="methodColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: methodColumns;"></tr>
+  </table>
+</div>
+
+<p class="table-instruction">Click on a column header to sort by that column.</p>
+
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8 full-width-table">
+  <ng-container matColumnDef="TIME">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>TIME</th>
+    <td mat-cell *matCellDef="let element" class="centered-column">
+      {{ element.TIME !== '0' ? element.TIME : '' }}
+    </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="TotalTime">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>TotalTime</th>
+    <td mat-cell *matCellDef="let element" class="centered-column">
+      {{ element.TotalTime !== '0' ? element.TotalTime : '' }}
+    </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="RtnLineCount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>RtnLineCount</th>
+    <td mat-cell *matCellDef="let element" 
+        [ngClass]="{'green-background': element.Executable && element.RtnLineCount > 0, 'red-background': element.Executable && element.RtnLineCount === 0}">
+      {{element.RtnLineCount}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="line">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Line</th>
+    <td mat-cell *matCellDef="let element" class="line-column">{{element.line}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef>Code</th>
+    <td mat-cell *matCellDef="let element" class="code-column">
+      <span 
+            [innerHTML]="getSafeHtml(element.coloredLine)" 
+            class="code-line">
+      </span>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row class="code-row" *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -3,9 +3,45 @@
 
 /* You can add global styles to this file, and also import other style files */
 a { cursor: pointer }
-@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '~@fortawesome/fontawesome-free/scss/solid.scss';
-@import '~@fortawesome/fontawesome-free/scss/regular.scss';
-@import '~@fortawesome/fontawesome-free/scss/brands.scss';
+@import '../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '../node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
+@import '../node_modules/@fortawesome/fontawesome-free/scss/regular.scss';
+@import '../node_modules/@fortawesome/fontawesome-free/scss/brands.scss';
  
-@import '~mdb-angular-ui-kit/assets/scss/mdb.scss';
+@import '../node_modules/mdb-angular-ui-kit/assets/scss/mdb.scss';
+@import 'node_modules/@angular/material/theming';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Include the common styles for Angular Material.
+@include mat-core();
+
+// Define your custom palettes and themes.
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink, A200, A100, A400);
+$warn: mat-palette($mat-red);
+
+// Create a theme instance.
+$theme: mat-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  ),
+  typography: mat-typography-config(),
+));
+
+// Include the Angular Material theme styles.
+@include angular-material-theme($theme);
+
+mat-card {
+    margin-bottom: 20px;
+    background-color: #fafafa;
+    padding: 16px;
+}
+  
+mat-card-header {
+    color: mat-color($primary);
+    margin-bottom: 30px;
+}

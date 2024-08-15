@@ -1,0 +1,28 @@
+
+  
+  .RoutineForm {
+    width: 100%;
+  }
+  
+  .wrap-option {
+    white-space: normal;
+    height: auto;
+    line-height: 24px;
+    padding: 8px;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  mat-card {
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  // In styles.scss or component's scss file
+.error-snackbar {
+  background-color: #f44336; // Red color for errors
+  color: white;
+}

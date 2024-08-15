@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StatusComponent } from './core/components/status/status.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoginComponent } from './core/components/login/login.component';
 import { HomeComponent } from './core/components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorInterceptor } from './core/error-interceptor';
@@ -30,17 +28,41 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApiModule, BASE_PATH } from './generated';
 import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.component';
+import { TestCoverageLauncherComponent } from './core/components/test-coverage-launcher/test-coverage-launcher.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { CoverageResultsDisplayComponent } from './core/components/coverage-results-display/coverage-results-display.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CoverageResultDetailComponent } from './core/components/coverage-result-detail/coverage-result-detail.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { TestCoverageHeaderComponent } from './core/components/test-coverage-header/test-coverage-header.component';
+import { ParameterExplanationsComponent } from './core/components/parameter-explanations/parameter-explanations.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { OutputLogComponent } from './core/components/output-log/output-log.component';
+import { HistoricalResultsComponent } from './core/components/historical-results/historical-results.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     StatusComponent,
-    LoginComponent,
     HomeComponent,
     CodeComponent,
     RemoveClassDescriptorsPipe,
     LauncherComponent,
-    MultiDropdownComponent
+    MultiDropdownComponent,
+    TestCoverageLauncherComponent,
+    CoverageResultsDisplayComponent,
+    CoverageResultDetailComponent,
+    TestCoverageHeaderComponent,
+    ParameterExplanationsComponent,
+    OutputLogComponent,
+    HistoricalResultsComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +86,17 @@ import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.c
     MdbTabsModule,
     MdbTooltipModule,
     MdbValidationModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatTableModule,
+    MatSortModule,
+    MatSnackBarModule,
+    MatCardModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
@@ -72,4 +104,6 @@ import { MultiDropdownComponent } from './shared/multi-dropdown/multi-dropdown.c
   ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }

@@ -12,7 +12,6 @@
 
 
 export interface LineByLineMonitorStatusOutput { 
-    _id: string;
     metrics: Array<string>;
     routines: Array<string>;
     status: string;

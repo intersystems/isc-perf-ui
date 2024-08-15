@@ -58,6 +58,210 @@
         "description":"A string-format representation of the error that occurred",
         "type":"string"
       },
+      "coverage-config_input":{
+        "properties":{
+          "CoverageClasses":{
+            "type":"string"
+          },
+          "CoverageLevel":{
+            "type":"number"
+          },
+          "CoverageRoutines":{
+            "type":"string"
+          },
+          "PidList":{
+            "type":"string"
+          },
+          "Timing":{
+            "type":"number"
+          },
+          "UnitTestRoot":{
+            "type":"string"
+          }
+        },
+        "type":"object",
+        "writeOnly":true
+      },
+      "coverage-method-result_output":{
+        "properties":{
+          "Complexity":{
+            "type":"number"
+          },
+          "Name":{
+            "type":"string"
+          }
+        },
+        "readOnly":true,
+        "type":"object"
+      },
+      "coverage-result_output":{
+        "properties":{
+          "Executable":{
+            "type":"boolean"
+          },
+          "RtnLineCount":{
+            "type":"number"
+          },
+          "TIME":{
+            "type":"string"
+          },
+          "TotalTime":{
+            "type":"string"
+          },
+          "code":{
+            "type":"string"
+          },
+          "coloredLine":{
+            "type":"string"
+          },
+          "line":{
+            "type":"number"
+          },
+          "routine":{
+            "type":"string"
+          }
+        },
+        "readOnly":true,
+        "type":"object"
+      },
+      "coverage-results_output":{
+        "properties":{
+          "MethodResults":{
+            "items":{
+              "$ref":"#/components/schemas/coverage-method-result_output"
+            },
+            "type":"array"
+          },
+          "results":{
+            "items":{
+              "$ref":"#/components/schemas/coverage-result_output"
+            },
+            "type":"array"
+          }
+        },
+        "readOnly":true,
+        "type":"object"
+      },
+      "coverage-routine-path_output":{
+        "properties":{
+          "routine":{
+            "type":"string"
+          },
+          "testpath":{
+            "type":"string"
+          }
+        },
+        "readOnly":true,
+        "required":[
+          "routine",
+          "testpath"
+        ],
+        "type":"object"
+      },
+      "coverage-routine-paths_output":{
+        "properties":{
+          "CoveragePercent":{
+            "type":"number"
+          },
+          "UnitTestURL":{
+            "type":"string"
+          },
+          "covpaths":{
+            "items":{
+              "$ref":"#/components/schemas/coverage-routine-path_output"
+            },
+            "type":"array"
+          }
+        },
+        "readOnly":true,
+        "type":"object"
+      },
+      "coverage-run-i-ds_output":{
+        "properties":{
+          "RunIDs":{
+            "items":{
+              "type":"number"
+            },
+            "type":"array"
+          }
+        },
+        "readOnly":true,
+        "type":"object"
+      },
+      "coverage-status_output":{
+        "properties":{
+          "status":{
+            "example":"Success",
+            "type":"string"
+          }
+        },
+        "readOnly":true,
+        "required":[
+          "status"
+        ],
+        "type":"object"
+      },
+      "coverage-tabular-data-row_output":{
+        "properties":{
+          "ExecutableLines":{
+            "type":"number"
+          },
+          "ExecutableMethods":{
+            "type":"number"
+          },
+          "LinesCovered":{
+            "type":"number"
+          },
+          "MethodCoverage":{
+            "type":"string"
+          },
+          "MethodsCovered":{
+            "type":"number"
+          },
+          "PercentCoverage":{
+            "type":"string"
+          },
+          "Routine":{
+            "type":"string"
+          },
+          "Time":{
+            "type":"string"
+          },
+          "TotalTime":{
+            "type":"string"
+          }
+        },
+        "readOnly":true,
+        "required":[
+          "ExecutableLines",
+          "ExecutableMethods",
+          "LinesCovered",
+          "MethodCoverage",
+          "MethodsCovered",
+          "PercentCoverage",
+          "Routine",
+          "Time",
+          "TotalTime"
+        ],
+        "type":"object"
+      },
+      "coverage-tabular-data_output":{
+        "properties":{
+          "results":{
+            "items":{
+              "$ref":"#/components/schemas/coverage-tabular-data-row_output"
+            },
+            "type":"array"
+          }
+        },
+        "readOnly":true,
+        "type":"object"
+      },
+      "integer_input":{
+        "example":0,
+        "type":"number",
+        "writeOnly":true
+      },
       "line-by-line-monitor-config_input":{
         "properties":{
           "metrics":{
@@ -84,9 +288,6 @@
       },
       "line-by-line-monitor-metrics_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "metrics":{
             "items":{
               "type":"string"
@@ -96,16 +297,12 @@
         },
         "readOnly":true,
         "required":[
-          "_id",
           "metrics"
         ],
         "type":"object"
       },
       "line-by-line-monitor-result_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "code":{
             "type":"string"
           },
@@ -123,16 +320,10 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "line-by-line-monitor-results_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "results":{
             "items":{
               "$ref":"#/components/schemas/line-by-line-monitor-result_output"
@@ -141,16 +332,10 @@
           }
         },
         "readOnly":true,
-        "required":[
-          "_id"
-        ],
         "type":"object"
       },
       "line-by-line-monitor-status_output":{
         "properties":{
-          "_id":{
-            "type":"string"
-          },
           "metrics":{
             "items":{
               "type":"string"
@@ -164,13 +349,12 @@
             "type":"array"
           },
           "status":{
-            "example":"running",
+            "example":"stopped",
             "type":"string"
           }
         },
         "readOnly":true,
         "required":[
-          "_id",
           "metrics",
           "routines",
           "status"
@@ -180,7 +364,7 @@
       "platform-user_output":{
         "properties":{
           "Username":{
-            "example":"tleavitt",
+            "example":"SuperUser",
             "type":"string"
           },
           "_id":{
@@ -391,6 +575,433 @@
         }
       }
     },
+    "/coverage/$RunIDs":{
+      "get":{
+        "description":"Performs the RunIDs action.",
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-run-i-ds_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
+    "/coverage/$active":{
+      "get":{
+        "description":"Performs the active action.",
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-status_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
+    "/coverage/$clear":{
+      "post":{
+        "description":"clears the TestCoverage data tables",
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-status_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
+    "/coverage/$results":{
+      "get":{
+        "description":"return the coverage results for a given routine, testpath, and run",
+        "parameters":[
+          {
+            "in":"query",
+            "name":"RunID",
+            "required":true,
+            "schema":{
+              "$ref":"#/components/schemas/integer_input"
+            }
+          },
+          {
+            "in":"query",
+            "name":"routine",
+            "required":true,
+            "schema":{
+              "$ref":"#/components/schemas/string_input"
+            }
+          },
+          {
+            "in":"query",
+            "name":"testpath",
+            "required":true,
+            "schema":{
+              "$ref":"#/components/schemas/string_input"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-results_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
+    "/coverage/$routinepaths":{
+      "get":{
+        "description":"get all routine + test path combinations for the given run + the aggregate coverage %",
+        "parameters":[
+          {
+            "in":"query",
+            "name":"RunID",
+            "required":true,
+            "schema":{
+              "$ref":"#/components/schemas/integer_input"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-routine-paths_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
+    "/coverage/$start":{
+      "post":{
+        "description":"Jobs off the call to RunTest with the user inputted parameters",
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/coverage-config_input"
+              }
+            }
+          },
+          "required":true
+        },
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-status_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
+    "/coverage/$tabular":{
+      "get":{
+        "description":"Performs the tabular action.",
+        "parameters":[
+          {
+            "in":"query",
+            "name":"RunID",
+            "required":true,
+            "schema":{
+              "$ref":"#/components/schemas/integer_input"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/coverage-tabular-data_output"
+                }
+              }
+            },
+            "description":"A successful response"
+          },
+          "403":{
+            "$ref":"#/components/responses/403"
+          },
+          "406":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: The requested mediatype is not compatible with any supported response mediatypes."
+          },
+          "415":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/JSONError"
+                }
+              },
+              "default":{
+                "schema":{
+                  "$ref":"#/components/schemas/TextError"
+                }
+              }
+            },
+            "description":"Unsupported Mediatype: Mediatype is not compatible with any supported request mediatypes."
+          }
+        },
+        "tags":[
+          "coverage"
+        ]
+      }
+    },
     "/monitor/$clear-counters":{
       "post":{
         "description":"Performs the clear-counters action.",
@@ -555,16 +1166,12 @@
         "description":"Performs the results action.",
         "parameters":[
           {
-            "content":{
-              "application/json":{
-                "schema":{
-                  "$ref":"#/components/schemas/string_input"
-                }
-              }
-            },
             "in":"query",
             "name":"routine",
-            "required":false
+            "required":false,
+            "schema":{
+              "$ref":"#/components/schemas/string_input"
+            }
           }
         ],
         "responses":{
