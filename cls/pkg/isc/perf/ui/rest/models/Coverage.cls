@@ -227,7 +227,7 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
 
                 if (coloredLine [ "COS_00") {
                     // this means that there was an error from the syntax colorer for this line
-                    set response.results.GetAt(lineNumber).coloredLine = response.results.GetAt(lineNumber).code
+                    set response.results.GetAt(lineNumber).coloredLine = $ZCONVERT(response.results.GetAt(lineNumber).code, "O", "HTML")
                 } else {
                     // Remove line breaks
                     set coloredLine = $replace(coloredLine,"<BR>","")
@@ -243,12 +243,14 @@ ClassMethod GetResults(routine As %String = "", testpath As %String = "", RunID 
     If (resultSet.%SQLCODE < 0) {
         Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
     }
+    
     while resultSet.%Next(.tSC) {
         $$$ThrowOnError(tSC)
         set tName = resultSet.%GetData(1)
         set tComplexity = resultSet.%GetData(2)
         do response.MethodResults.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageMethodResult).%New(tName, tComplexity))
     }
+    $$$ThrowOnError(tSC)
 
     quit response
 }
@@ -274,7 +276,7 @@ ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Co
     If (resultSet.%SQLCODE < 0) {
         Throw ##class(%Exception.SQL).CreateFromSQLCODE(resultSet.%SQLCODE, resultSet.%Message)
     }
-   
+    
     while resultSet.%Next(.tSC) {
         $$$ThrowOnError(tSC)
         set tName = resultSet.%GetData(1)
@@ -284,6 +286,7 @@ ClassMethod GetRoutinePaths(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Co
         set path = ##class(pkg.isc.perf.ui.rest.models.CoverageRoutinePath).%New(tFullName, tTestPath)
         do response.covpaths.Insert(path)
     }
+    $$$ThrowOnError(tSC)
 
     // get the unit test result url
     Set tQuery("$NAMESPACE") = $namespace
@@ -339,6 +342,7 @@ ClassMethod GetTabularData(RunID As %Integer) As pkg.isc.perf.ui.rest.models.Cov
         set tTotalTime = resultSet.%GetData(9)
         do response.results.Insert(##class(pkg.isc.perf.ui.rest.models.CoverageTabularDataRow).%New(tRoutine, tPercentCoverage, tExecutableLines, tLinesCovered, tMethodCoverage, tExecutableMethods, tMethodsCovered, tTime, tTotalTime))
     }
+    $$$ThrowOnError(tSC)
     return response
 }
 
@@ -355,6 +359,7 @@ ClassMethod GetRunIDs() As pkg.isc.perf.ui.rest.models.CoverageRunIDs
         set tRunID = resultSet.%GetData(1)
         do response.RunIDs.Insert(tRunID)
     }
+    $$$ThrowOnError(tSC)
     return response
 }
 

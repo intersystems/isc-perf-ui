@@ -66,13 +66,10 @@
   <ng-container matColumnDef="code">
     <th mat-header-cell *matHeaderCellDef>Code</th>
     <td mat-cell *matCellDef="let element" class="code-column">
-      <span *ngIf="element.coloredLine !== element.code; else plainLine" 
+      <span 
             [innerHTML]="getSafeHtml(element.coloredLine)" 
             class="code-line">
       </span>
-      <ng-template #plainLine>
-        <span>{{ element.coloredLine }}</span>
-      </ng-template>
     </td>
   </ng-container>
 
