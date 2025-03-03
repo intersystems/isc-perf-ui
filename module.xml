@@ -3,7 +3,7 @@
   <Document name="isc.perf.ui.ZPM">
     <Module>
       <Name>isc.perf.ui</Name>
-      <Version>2.0.0</Version>
+      <Version>2.0.1</Version>
       <Description>Provides visual representation of %SYS.MONLBL results</Description>
       <Keywords>performance monitor</Keywords>
       <Packaging>module</Packaging>
@@ -28,7 +28,7 @@
         <Resource Name="/ng/monlbl-viewer" ProcessorClass="pkg.isc.ipm.js.angular.processor">
           <Attribute Name="baseHref">#{$Case($Get(^%SYS("WebServer","URLPrefix")),"":"",:"/"_$Get(^%SYS("WebServer","URLPrefix")))}/csp/${namespace}/monlbl-viewer</Attribute>
         </Resource>
-        <Resource Name="/ng/monlbl-viewer/dist/monlbl-viewer" ProcessorClass="CSPApplication" Generated="true">
+        <Resource Name="/ng/monlbl-viewer/dist/monlbl-viewer" ProcessorClass="WebApplication" Generated="true">
           <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.StaticFilesHandler</Attribute>
           <Attribute Name="Directory">${cspdir}${namespace}/monlbl-viewer</Attribute>
           <Attribute Name="Url">/csp/${namespace}/monlbl-viewer</Attribute>
@@ -39,7 +39,7 @@
           <Attribute Name="PasswordAuthEnabled">1</Attribute>
           <Attribute Name="UnauthenticatedEnabled">0</Attribute>
         </Resource>
-        <Resource Name="/csp/monlbl-viewer/api" ProcessorClass="CSPApplication" Generated="true">
+        <Resource Name="/csp/monlbl-viewer/api" ProcessorClass="WebApplication" Generated="true">
           <Attribute Name="DispatchClass">pkg.isc.perf.ui.rest.Handler</Attribute>
           <Attribute Name="Url">/csp/${namespace}/monlbl-viewer/api</Attribute>
           <Attribute Name="Recurse">1</Attribute>
@@ -47,7 +47,7 @@
           <Attribute Name="UnauthenticatedEnabled">0</Attribute>
           <Attribute Name="CookiePath">/csp/${namespace}/monlbl-viewer</Attribute>
         </Resource>
-        <Resource Name="/ng/monlbl-viewer/dist" ProcessorClass="CSPApplication" Generated="true">
+        <Resource Name="/ng/monlbl-viewer/dist" ProcessorClass="WebApplication" Generated="true">
         <Attribute Name="PermittedClasses">1"pkg.isc.perf.ui.".E</Attribute>
         <Attribute Name="Directory">${cspdir}${namespace}/monlbl-viewer/socket</Attribute>
         <Attribute Name="Url">/csp/${namespace}/monlbl-viewer/socket</Attribute>
